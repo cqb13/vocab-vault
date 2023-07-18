@@ -1,8 +1,6 @@
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
 use std::cmp::Ordering;
-use std::collections::hash_map::Entry;
-use std::collections::HashMap;
 use std::fs;
 
 #[derive(Serialize, Deserialize)]
@@ -85,8 +83,7 @@ pub fn translate_to_latin(english_text: &str) -> Vec<WordInfo> {
 
     output = weigh_words(output);
 
-    // words like "here" have duplicate defs, which should be removed to make space for more options
-    output = remove_duplicates(output);
+    //output = remove_duplicates(output);
 
     // other words are probably rare/irrelevant or wrong
     if output.len() > RESPONSE_LIMIT {
@@ -118,39 +115,18 @@ fn weigh_words(word_list: Vec<WordInfo>) -> Vec<WordInfo> {
     weighted_word_list
 }
 
-fn remove_duplicates(word_list: Vec<WordInfo>) -> Vec<WordInfo> {
-    let mut word_info_map: HashMap<String, WordInfo> = HashMap::new();
-
-    for word_info in word_list {
-        let key = format!("{}-{}", word_info.wid, word_info.true_frequency);
-        match word_info_map.entry(key) {
-            Entry::Occupied(mut existing_word_info) => {
-                if word_info.true_frequency < existing_word_info.get().true_frequency {
-                    existing_word_info.insert(word_info);
-                }
-            }
-            Entry::Vacant(v) => {
-                v.insert(word_info);
-            }
-        }
-    }
-
-    word_info_map.into_iter().map(|(_, v)| v).collect()
-}
-
 fn find_definition(word_list: Vec<WordInfo>) -> Vec<WordInfo> {
     let latin_dictionary: Value =
         serde_json::from_str(&fs::read_to_string("src/data/latin_dictionary.json").unwrap())
             .unwrap();
 
-    let mut updated_word_list = word_list; // Create a mutable copy of the vector
+    let mut updated_word_list = word_list;
 
     for word_info in &mut updated_word_list {
         for object in latin_dictionary.as_array().unwrap() {
             if object["id"].as_i64().unwrap_or_default() as i32 == word_info.wid {
                 word_info.latin_entry.pos = object["pos"].as_str().unwrap_or_default().to_string();
 
-                // Convert JSON array elements to specific data types
                 if let Some(n) = object["n"].as_array() {
                     word_info.latin_entry.n = n
                         .iter()
