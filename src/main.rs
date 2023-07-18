@@ -4,12 +4,20 @@ use serde::{Deserialize, Serialize};
 use serde_json;
 
 mod english_to_latin;
+mod latin_to_english;
 
 #[derive(Serialize, Deserialize)]
 struct EnglishTranslation {
     word: String,
     def: Vec<WordInfo>,
 }
+
+#[derive(Serialize, Deserialize)]
+struct LatinTranslation {
+    word: String,
+    def: Vec<WordInfo>,
+}
+
 
 fn main() {
     let matches = App::new("Translator CLI")
@@ -50,11 +58,22 @@ fn main() {
 }
 
 fn translate_to_english(latin_text: &str) {
-    // Replace this with your Latin to English translation logic
-    println!(
-        "English Translation of '{}': This is just a placeholder.",
-        latin_text
-    );
+    let latin_words: Vec<&str> = latin_text.split(" ").collect();
+    let mut translations = Vec::new();
+
+    for latin_word in latin_words {
+        let output = latin_to_english::translate_to_english(latin_word);
+        //if output.len() > 0 {
+        //    translations.push(LatinTranslation {
+        //        word: latin_word.to_string(),
+        //        def: output,
+        //    });
+        //}
+        translations.push(output);
+    }
+
+    let json_output = serde_json::to_string_pretty(&translations).unwrap();
+    println!("{}", json_output);
 }
 
 fn translate_to_latin(english_text: &str) {

@@ -3,6 +3,8 @@ use serde_json::Value;
 use std::cmp::Ordering;
 use std::fs;
 
+use crate::latin_to_english::LatinWordInfo;
+
 #[derive(Serialize, Deserialize)]
 pub struct WordInfo {
     pub orth: String,
@@ -13,18 +15,7 @@ pub struct WordInfo {
     pub frequency: i16,
     pub compound: i16,
     pub semi: i16,
-    pub latin_entry: LatinDictEntry,
-}
-
-#[derive(Serialize, Deserialize)]
-pub struct LatinDictEntry {
-    pos: String,
-    n: Vec<i8>,
-    parts: Vec<String>,
-    senses: Vec<String>,
-    form: String,
-    orth: String,
-    id: i32,
+    pub latin_entry: LatinWordInfo,
 }
 
 impl From<WordInfo> for Vec<String> {
@@ -42,14 +33,14 @@ impl From<WordInfo> for Vec<String> {
     }
 }
 
-pub fn translate_to_latin(english_text: &str) -> Vec<WordInfo> {
+pub fn translate_to_latin(english_word: &str) -> Vec<WordInfo> {
     const RESPONSE_LIMIT: usize = 6;
     let mut output: Vec<WordInfo> = Vec::new();
 
     let english_words: Value =
         serde_json::from_str(&fs::read_to_string("src/data/english_words.json").unwrap()).unwrap();
     for object in english_words.as_array().unwrap() {
-        if object["orth"].as_str().unwrap_or_default().to_lowercase() == english_text.to_lowercase()
+        if object["orth"].as_str().unwrap_or_default().to_lowercase() == english_word.to_lowercase()
         {
             let word_info = WordInfo {
                 orth: object["orth"].as_str().unwrap_or_default().to_string(),
@@ -67,7 +58,7 @@ pub fn translate_to_latin(english_text: &str) -> Vec<WordInfo> {
                 frequency: object["frequency"].as_i64().unwrap_or_default() as i16,
                 compound: object["compound"].as_i64().unwrap_or_default() as i16,
                 semi: object["semi"].as_i64().unwrap_or_default() as i16,
-                latin_entry: LatinDictEntry {
+                latin_entry: LatinWordInfo {
                     pos: "".to_string(),
                     n: Vec::new(),
                     parts: Vec::new(),
