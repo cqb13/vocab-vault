@@ -10,13 +10,7 @@ pub mod utils {
 }
 
 #[derive(Serialize, Deserialize)]
-struct EnglishTranslation {
-    word: String,
-    def: Vec<WordInfo>,
-}
-
-#[derive(Serialize, Deserialize)]
-struct LatinTranslation {
+struct Translation {
     word: String,
     def: Vec<WordInfo>,
 }
@@ -33,6 +27,13 @@ fn main() {
                     Arg::with_name("text")
                         .help("The Latin text to translate to English")
                         .required(true),
+                )
+                .arg(
+                    Arg::with_name("formatted")
+                        .short('f')
+                        .long("formatted")
+                        .help("Determines if the output should be formatted")
+                        .takes_value(false),
                 ),
         )
         .subcommand(
@@ -42,13 +43,21 @@ fn main() {
                     Arg::with_name("text")
                         .help("The English text to translate to Latin")
                         .required(true),
+                )
+                .arg(
+                    Arg::with_name("formatted")
+                        .short('f')
+                        .long("formatted")
+                        .help("Determines if the output should be formatted")
+                        .takes_value(false),
                 ),
         )
         .get_matches();
 
     if let Some(matches) = matches.subcommand_matches("transEng") {
         if let Some(text) = matches.value_of("text") {
-            translate_to_latin(text);
+            let formatted_output = matches.is_present("formatted");
+            translate_to_latin(text, formatted_output);
         }
     } else if let Some(matches) = matches.subcommand_matches("transLat") {
         if let Some(text) = matches.value_of("text") {
@@ -78,20 +87,23 @@ fn translate_to_english(latin_text: &str) {
     println!("{}", json_output);
 }
 
-fn translate_to_latin(english_text: &str) {
+fn translate_to_latin(english_text: &str, formatted_output: bool) {
     let english_words: Vec<&str> = english_text.split(" ").collect();
-    let mut translations: Vec<EnglishTranslation> = Vec::new();
+    let mut translations: Vec<Translation> = Vec::new();
 
     for word in english_words {
         let output = english_to_latin::translate_to_latin(word);
         if output.len() > 0 {
-            translations.push(EnglishTranslation {
+            translations.push(Translation {
                 word: word.to_string(),
                 def: output,
             });
         }
     }
 
+    if formatted_output {
+        // formatting code
+    }
     let json_output = serde_json::to_string_pretty(&translations).unwrap();
     println!("{}", json_output);
 }

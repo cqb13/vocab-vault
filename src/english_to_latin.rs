@@ -37,25 +37,24 @@ pub fn translate_to_latin(english_word: &str) -> Vec<WordInfo> {
     let mut output: Vec<WordInfo> = Vec::new();
 
     let english_words: Value = get_english_words();
-    for object in english_words.as_array().unwrap() {
-        if object["orth"].as_str().unwrap_or_default().to_lowercase() == english_word.to_lowercase()
-        {
+    for word in english_words.as_array().unwrap() {
+        if word["orth"].as_str().unwrap_or_default().to_lowercase() == english_word.to_lowercase() {
             let word_info = WordInfo {
-                orth: object["orth"].as_str().unwrap_or_default().to_string(),
-                wid: object["wid"].as_i64().unwrap_or_default() as i32,
-                pos: object["pos"].as_str().unwrap_or_default().to_string(),
-                frequency_type: object["frequencyType"]
+                orth: word["orth"].as_str().unwrap_or_default().to_string(),
+                wid: word["wid"].as_i64().unwrap_or_default() as i32,
+                pos: word["pos"].as_str().unwrap_or_default().to_string(),
+                frequency_type: word["frequencyType"]
                     .as_str()
                     .unwrap_or_default()
                     .to_string(),
                 true_frequency: calculate_true_frequency(
-                    object["frequency"].as_i64().unwrap_or_default() as i16,
-                    object["compound"].as_i64().unwrap_or_default() as i16,
-                    object["semi"].as_i64().unwrap_or_default() as i16,
+                    word["frequency"].as_i64().unwrap_or_default() as i16,
+                    word["compound"].as_i64().unwrap_or_default() as i16,
+                    word["semi"].as_i64().unwrap_or_default() as i16,
                 ),
-                frequency: object["frequency"].as_i64().unwrap_or_default() as i16,
-                compound: object["compound"].as_i64().unwrap_or_default() as i16,
-                semi: object["semi"].as_i64().unwrap_or_default() as i16,
+                frequency: word["frequency"].as_i64().unwrap_or_default() as i16,
+                compound: word["compound"].as_i64().unwrap_or_default() as i16,
+                semi: word["semi"].as_i64().unwrap_or_default() as i16,
                 latin_entry: LatinWordInfo {
                     pos: "".to_string(),
                     n: Vec::new(),
@@ -109,25 +108,26 @@ fn find_definition(word_list: Vec<WordInfo>) -> Vec<WordInfo> {
     let mut updated_word_list = word_list;
 
     for word_info in &mut updated_word_list {
-        for object in latin_dictionary.as_array().unwrap() {
-            if object["id"].as_i64().unwrap_or_default() as i32 == word_info.wid {
-                word_info.latin_entry.pos = object["pos"].as_str().unwrap_or_default().to_string();
+        for latin_word in latin_dictionary.as_array().unwrap() {
+            if latin_word["id"].as_i64().unwrap_or_default() as i32 == word_info.wid {
+                word_info.latin_entry.pos =
+                    latin_word["pos"].as_str().unwrap_or_default().to_string();
 
-                if let Some(n) = object["n"].as_array() {
+                if let Some(n) = latin_word["n"].as_array() {
                     word_info.latin_entry.n = n
                         .iter()
                         .map(|x| x.as_i64().unwrap_or_default() as i8)
                         .collect();
                 }
 
-                if let Some(parts) = object["parts"].as_array() {
+                if let Some(parts) = latin_word["parts"].as_array() {
                     word_info.latin_entry.parts = parts
                         .iter()
                         .map(|x| x.as_str().unwrap_or_default().to_string())
                         .collect();
                 }
 
-                if let Some(senses) = object["senses"].as_array() {
+                if let Some(senses) = latin_word["senses"].as_array() {
                     word_info.latin_entry.senses = senses
                         .iter()
                         .map(|x| x.as_str().unwrap_or_default().to_string())
@@ -135,10 +135,10 @@ fn find_definition(word_list: Vec<WordInfo>) -> Vec<WordInfo> {
                 }
 
                 word_info.latin_entry.form =
-                    object["form"].as_str().unwrap_or_default().to_string();
+                    latin_word["form"].as_str().unwrap_or_default().to_string();
                 word_info.latin_entry.orth =
-                    object["orth"].as_str().unwrap_or_default().to_string();
-                word_info.latin_entry.id = object["id"].as_i64().unwrap_or_default() as i32;
+                    latin_word["orth"].as_str().unwrap_or_default().to_string();
+                word_info.latin_entry.id = latin_word["id"].as_i64().unwrap_or_default() as i32;
             }
         }
     }
