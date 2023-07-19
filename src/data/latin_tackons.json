@@ -1,0 +1,30 @@
+[
+    {
+        "orth": "que",
+        "pos": "X",
+        "senses": [
+            "-que = and (enclitic, translated before attached word); completes plerus/uter;"
+        ]
+    },
+    {
+        "orth": "ne",
+        "pos": "X",
+        "senses": [
+            "-ne = is it not that (enclitic); or ...(introduces a question or alternative);"
+        ]
+    },
+    {
+        "orth": "ve",
+        "pos": "X",
+        "senses": [
+            "-ve = or if you will (enclitic); or as you please; or; (rare)"
+        ]
+    },
+    {
+        "orth": "est",
+        "pos": "PRON 4 1 X",
+        "senses": [
+            "-est = is, in a contraction; (idest = it/that is); (rare)"
+        ]
+    }
+]

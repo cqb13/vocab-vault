@@ -24,3 +24,27 @@ pub fn get_latin_inflections() -> Value {
 pub fn get_latin_addons() -> Value {
     serde_json::from_str(&fs::read_to_string("src/data/latin_addons.json").unwrap()).unwrap()
 }
+
+pub fn get_latin_prefixes() -> Value {
+    serde_json::from_str(&fs::read_to_string("src/data/latin_prefixes.json").unwrap()).unwrap()
+}
+
+pub fn get_latin_suffixes() -> Value {
+    serde_json::from_str(&fs::read_to_string("src/data/latin_suffixes.json").unwrap()).unwrap()
+}
+
+pub fn get_latin_packons() -> Value {
+    serde_json::from_str(&fs::read_to_string("src/data/latin_packons.json").unwrap()).unwrap()
+}
+
+pub fn get_latin_not_packons() -> Value {
+    serde_json::from_str(&fs::read_to_string("src/data/latin_not_packons.json").unwrap()).unwrap()
+}
+
+pub fn get_latin_tackons() -> Value {
+    serde_json::from_str(&fs::read_to_string("src/data/latin_tackons.json").unwrap()).unwrap()
+}
+
+pub fn get_latin_tickons() -> Value {
+    serde_json::from_str(&fs::read_to_string("src/data/latin_tickons.json").unwrap()).unwrap()
+}

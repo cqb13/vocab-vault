@@ -1,0 +1,1434 @@
+[
+    {
+        "pos": "N",
+        "form": "N 2 ADJ 1 1 POS 0",
+        "orth": "atic",
+        "senses": [
+            "-ic; -en; --ery; -al; made of; belonging to; has property of; is like;"
+        ]
+    },
+    {
+        "pos": "N",
+        "form": "N 2 N 3 1 M P   2",
+        "orth": "ific",
+        "senses": [
+            "denotes one who makes (the source noun), master of, professional in;"
+        ]
+    },
+    {
+        "pos": "N",
+        "form": "N 2 ADJ 1 1 POS 0",
+        "orth": "tic",
+        "senses": [
+            "-ic; -en; --ery; -al; made of; belonging to; has property of; is like;"
+        ]
+    },
+    {
+        "pos": "V",
+        "form": "V 4 N 3 1 F p  2",
+        "orth": "ric",
+        "senses": [
+            "-or; -er; indicates the doer; one who preforms the action of the verb (act.or);"
+        ]
+    },
+    {
+        "pos": "V",
+        "form": "V 2 V 3 1 X  1",
+        "orth": "esc",
+        "senses": [
+            "begin to -, grow - (Inceptive or Inchoative) (esp. on 2nd declension verbs);"
+        ]
+    },
+    {
+        "pos": "V",
+        "form": "V 2 V 3 1 X  2",
+        "orth": "esc",
+        "senses": [
+            "begin to -, grow - (Inceptive or Inchoative) (esp. on 2nd declension verbs);"
+        ]
+    },
+    {
+        "pos": "X",
+        "form": "X 2 ADJ 3 1 POS 2",
+        "orth": "ac",
+        "senses": [
+            "-ing; having a tendency;"
+        ]
+    },
+    {
+        "pos": "N",
+        "form": "N 2 ADJ 1 1 POS 0",
+        "orth": "ic",
+        "senses": [
+            "-ic; of, pertaining/belonging to; connected with; derived/coming from (place);"
+        ]
+    },
+    {
+        "pos": "V",
+        "form": "V 2 V 3 1 X  1",
+        "orth": "sc",
+        "senses": [
+            "begin to -, grow - (Inceptive or Inchoative);"
+        ]
+    },
+    {
+        "pos": "V",
+        "form": "V 2 V 3 1 X  2",
+        "orth": "sc",
+        "senses": [
+            "begin to -, grow - (Inceptive or Inchoative);"
+        ]
+    },
+    {
+        "pos": "N",
+        "form": "N 2 ADJ 1 1 POS 0",
+        "orth": "c i",
+        "senses": [
+            "-ic; of, pertaining/belonging to; connected with; derived/coming from (place);"
+        ]
+    },
+    {
+        "pos": "V",
+        "form": "V 2 ADJ 1 1 POS 0",
+        "orth": "abund",
+        "senses": [
+            "-bund; -ent; -ful; -ing; characteristic of; verbal ADJ of active force w/object;"
+        ]
+    },
+    {
+        "pos": "V",
+        "form": "V 2 ADJ 1 1 POS 0",
+        "orth": "ebund",
+        "senses": [
+            "-bund; -ent; -ful; -ing; characteristic of; verbal ADJ of active force w/object;"
+        ]
+    },
+    {
+        "pos": "V",
+        "form": "V 2 ADJ 1 1 POS 0",
+        "orth": "ibund",
+        "senses": [
+            "-bund; -ent; -ful; -ing; characteristic of; verbal ADJ of active force w/object;"
+        ]
+    },
+    {
+        "pos": "V",
+        "form": "V 2 ADJ 1 1 POS 0",
+        "orth": "cund",
+        "senses": [
+            "-ent; -ful; -ing; characteristic of; capacity or inclination;"
+        ]
+    },
+    {
+        "pos": "V",
+        "form": "V 2 ADJ 1 1 POS 0",
+        "orth": "id",
+        "senses": [
+            "-ous; tending to, in a condition of, in a state of;"
+        ]
+    },
+    {
+        "pos": "A",
+        "form": "ADJ 2 ADV SUPER 0",
+        "orth": "issime",
+        "senses": [
+            "-estily; -estly; most -ly, much -ly, very -ly;"
+        ]
+    },
+    {
+        "pos": "N",
+        "form": "N 2 ADJ 1 1 POS 0",
+        "orth": "ace",
+        "senses": [
+            "of/made of (material); resembling (material); similar to, -like;"
+        ]
+    },
+    {
+        "pos": "N",
+        "form": "N 2 ADV POS 1",
+        "orth": "ose",
+        "senses": [
+            "-fully, -ily, -ly; -tiously;"
+        ]
+    },
+    {
+        "pos": "A",
+        "form": "ADJ 4 ADV SUPER 0",
+        "orth": "me",
+        "senses": [
+            "-estily; -estly; most -ly, much -ly, very -ly;"
+        ]
+    },
+    {
+        "pos": "N",
+        "form": "N 2 ADJ 1 1 POS 0",
+        "orth": "e",
+        "senses": [
+            "make of;"
+        ]
+    },
+    {
+        "pos": "A",
+        "form": "ADJ 2 ADV POS 1",
+        "orth": "e",
+        "senses": [
+            "-ily; -ly;"
+        ]
+    },
+    {
+        "pos": "V",
+        "form": "V 1 ADJ 0 0 SUPER 0",
+        "orth": "antissi",
+        "senses": [
+            "most -ing, much -ing, makes ADJ SUPER of verb, ('a' stem is for V 1 0);"
+        ]
+    },
+    {
+        "pos": "V",
+        "form": "V 1 ADJ 0 0 SUPER 0",
+        "orth": "entissi",
+        "senses": [
+            "most -ing, much -ing, makes ADJ of verb, ('e' stem is for V 2/3);"
+        ]
+    },
+    {
+        "pos": "N",
+        "form": "N 1 N 2 2 N t 0",
+        "orth": "cini",
+        "senses": [
+            "-ing, -age; forms activity/profession of person (latro.cinium => brigandage);"
+        ]
+    },
+    {
+        "pos": "A",
+        "form": "ADJ 2 ADJ 0 0 SUPER 4",
+        "orth": "issi",
+        "senses": [
+            "-est, most ~, much ~, makes SUPER;"
+        ]
+    },
+    {
+        "pos": "V",
+        "form": "V   4 ADJ 0 0 SUPER 4",
+        "orth": "issi",
+        "senses": [
+            "makes a verb PERF PPL into an adjective SUPER (amat.issimus => most/much loved);"
+        ]
+    },
+    {
+        "pos": "N",
+        "form": "N 2 ADJ 1 1 POS 0",
+        "orth": "boni",
+        "senses": [
+            "of good;"
+        ]
+    },
+    {
+        "pos": "V",
+        "form": "V 2 N 1 1 F t 0",
+        "orth": "moni",
+        "senses": [
+            "-monia; act of; means of; result of;"
+        ]
+    },
+    {
+        "pos": "V",
+        "form": "V 2 N 2 2 N t 0",
+        "orth": "moni",
+        "senses": [
+            "-monia; act of; means of; result of;"
+        ]
+    },
+    {
+        "pos": "V",
+        "form": "V 1 N 1 1 F t 0",
+        "orth": "anti",
+        "senses": [
+            "-ance; state of; quality of; act of; (with 1st conj verbs);"
+        ]
+    },
+    {
+        "pos": "V",
+        "form": "V 1 ADJ 0 0 COMP 0",
+        "orth": "anti         --  Conflicts with another -anti-",
+        "senses": [
+            "more -ing, makes ADJ COMP of verb, ('a' stem is for V 1 0);"
+        ]
+    },
+    {
+        "pos": "V",
+        "form": "V 1 N 1 1 F t 0",
+        "orth": "enti",
+        "senses": [
+            "-ence; state of; quality of; act of; (with other than 1st conj verbs);"
+        ]
+    },
+    {
+        "pos": "V",
+        "form": "V 1 ADJ 0 0 COMP 0",
+        "orth": "enti",
+        "senses": [
+            "more -ing, makes ADJ COMP of verb, ('e' stem is for V 2/3);"
+        ]
+    },
+    {
+        "pos": "N",
+        "form": "N 2 N 1 1 F t  0",
+        "orth": "ari",
+        "senses": [
+            "place where (argent.aria = money place, bank); female agent (rare);"
+        ]
+    },
+    {
+        "pos": "N",
+        "form": "N 2 N 2 2 N t  0",
+        "orth": "ari",
+        "senses": [
+            "-arium, -ary; place where;"
+        ]
+    },
+    {
+        "pos": "N",
+        "form": "N 2 N 2 1 M p  0",
+        "orth": "ari",
+        "senses": [
+            "-er; -ist; dealer in thing, maker/artisan (argent.arius = money/silver changer);"
+        ]
+    },
+    {
+        "pos": "N",
+        "form": "N 2 ADJ 1 1 POS 0",
+        "orth": "ari",
+        "senses": [
+            "of, pertaining/belonging to; connected with; derived from; made of; -like;"
+        ]
+    },
+    {
+        "pos": "N",
+        "form": "NUM 3 ADJ 1 1 POS 0",
+        "orth": "ari",
+        "senses": [
+            "consisting of/containing X things; X each; (with number X); of X; digits wide;"
+        ]
+    },
+    {
+        "pos": "N",
+        "form": "N 2 N 2 2 N t  0",
+        "orth": "ori",
+        "senses": [
+            "-orium, -ory, -or; place where;"
+        ]
+    },
+    {
+        "pos": "V",
+        "form": "V 4 ADJ 1 1 POS 0",
+        "orth": "ori",
+        "senses": [
+            "-orous, -ory; having to do with, pretaining to; tending to;"
+        ]
+    },
+    {
+        "pos": "A",
+        "form": "ADJ 2 N 1 1 F t  0",
+        "orth": "iti",
+        "senses": [
+            "-ity, -ship, -ance, ility, ness; makes abstract noun of the adjective;"
+        ]
+    },
+    {
+        "pos": "A",
+        "form": "ADJ 2 N 5 1 F t  0",
+        "orth": "iti",
+        "senses": [
+            "-ity, -ship, -ance, ility, ness; makes abstract noun of the adjective;"
+        ]
+    },
+    {
+        "pos": "V",
+        "form": "V   2 N 2 2 N t  0",
+        "orth": "iti",
+        "senses": [
+            "-ity, -ship, -ance, ility, ness; makes abstract noun of the verb;"
+        ]
+    },
+    {
+        "pos": "A",
+        "form": "ADJ 2 ADJ 0 0 SUPER 4",
+        "orth": "li  l",
+        "senses": [
+            "-est, most ~, much ~, makes ADJ with stem ending in 'l' SUPER;"
+        ]
+    },
+    {
+        "pos": "A",
+        "form": "ADJ 1 ADJ 0 0 SUPER 4",
+        "orth": "ri  r",
+        "senses": [
+            "-est, most ~, much ~, makes ADJ with stem ending in 'r' SUPER;"
+        ]
+    },
+    {
+        "pos": "A",
+        "form": "ADJ 2 N 1 1 F t  0",
+        "orth": "ti",
+        "senses": [
+            "-ness, makes abstract noun;"
+        ]
+    },
+    {
+        "pos": "V",
+        "form": "V 4 ADV POS 1",
+        "orth": "i                      --  ?????????????",
+        "senses": [
+            "-ly; (use imagination! run -> hastily; strive -> eagerly; stand -> immediately);"
+        ]
+    },
+    {
+        "pos": "A",
+        "form": "ADJ 2 N 1 1 F t  0",
+        "orth": "i",
+        "senses": [
+            "-ness, -es, makes abstract noun;"
+        ]
+    },
+    {
+        "pos": "N",
+        "form": "N 2 N 1 1 F t  0",
+        "orth": "i",
+        "senses": [
+            "art or craft done by the person (abstract noun of person); office of, -ship;"
+        ]
+    },
+    {
+        "pos": "V",
+        "form": "V 2 N 2 2 N t  0",
+        "orth": "i",
+        "senses": [
+            "makes abstract noun of the verb; place/instrument/result of verb action;"
+        ]
+    },
+    {
+        "pos": "A",
+        "form": "ADJ 2 ADJ 0 0 COMP 3",
+        "orth": "i",
+        "senses": [
+            "-er, makes adjective comparative;"
+        ]
+    },
+    {
+        "pos": "V",
+        "form": "V   4 ADJ 0 0 COMP 3",
+        "orth": "i",
+        "senses": [
+            "makes a verb PERF PPL into an adjective COMP (amat.ior => more loved);"
+        ]
+    },
+    {
+        "pos": "X",
+        "form": "X 2 ADJ 3 2 POS  0",
+        "orth": "abil",
+        "senses": [
+            "-able, -ble; having the passive quality, able to, able to be;"
+        ]
+    },
+    {
+        "pos": "N",
+        "form": "N 2 ADJ 3 2 POS 0",
+        "orth": "atil",
+        "senses": [
+            "-il; of a, pertaining to a, in a condition of, in a state of;"
+        ]
+    },
+    {
+        "pos": "V",
+        "form": "V 2 ADJ 3 2 POS  0",
+        "orth": "ibil",
+        "senses": [
+            "-able, -ble; having the passive quality, able to, able to be; -ful;"
+        ]
+    },
+    {
+        "pos": "N",
+        "form": "N 2 N 1 1 F x 0",
+        "orth": "icul",
+        "senses": [
+            "little, small, -let (Diminutive) target is of gender of root => decl;"
+        ]
+    },
+    {
+        "pos": "N",
+        "form": "N 2 N 2 1 M x 0",
+        "orth": "icul",
+        "senses": [
+            "little, small, -let (Diminutive) target is of gender of root => decl;"
+        ]
+    },
+    {
+        "pos": "N",
+        "form": "N 2 N 2 2 N x 0",
+        "orth": "icul",
+        "senses": [
+            "little, small, -let (Diminutive) target is of gender of root => decl;"
+        ]
+    },
+    {
+        "pos": "V",
+        "form": "V 2 ADJ 3 2 POS  0",
+        "orth": "bil",
+        "senses": [
+            "-able, -ble; having the passive quality, able to, able to be; having ability;"
+        ]
+    },
+    {
+        "pos": "X",
+        "form": "X 2 N 1 1 F t 0",
+        "orth": "bul",
+        "senses": [
+            "forms noun of means, instrument; place;"
+        ]
+    },
+    {
+        "pos": "X",
+        "form": "X 2 N 2 2 N t 0",
+        "orth": "bul",
+        "senses": [
+            "forms noun of means, instrument; place;"
+        ]
+    },
+    {
+        "pos": "N",
+        "form": "N 2 N 1 1 M p 0",
+        "orth": "col",
+        "senses": [
+            "denotes one who inhabits/tills/worships;"
+        ]
+    },
+    {
+        "pos": "V",
+        "form": "V 2 N 2 2 N t 0",
+        "orth": "cul",
+        "senses": [
+            "denotes means or instrument or place for special purpose for action of V;"
+        ]
+    },
+    {
+        "pos": "N",
+        "form": "N 2 N 1 1 F x 0",
+        "orth": "ell",
+        "senses": [
+            "little, small, -let (Diminutive) target is of gender of root => decl; !!!!!!!!"
+        ]
+    },
+    {
+        "pos": "N",
+        "form": "N 2 N 2 1 M x 0",
+        "orth": "ell",
+        "senses": [
+            "little, small, -let (Diminutive) target is of gender of root => decl;"
+        ]
+    },
+    {
+        "pos": "N",
+        "form": "N 2 N 2 2 N x 0",
+        "orth": "ell",
+        "senses": [
+            "little, small, -let (Diminutive) target is of gender of root => decl;"
+        ]
+    },
+    {
+        "pos": "N",
+        "form": "N 2 N 1 1 F x 0",
+        "orth": "ill",
+        "senses": [
+            "little, small, -let (Diminutive) target is of gender of root => decl;"
+        ]
+    },
+    {
+        "pos": "N",
+        "form": "N 2 N 2 1 M x 0",
+        "orth": "ill",
+        "senses": [
+            "little, small, -let (Diminutive) target is of gender of root => decl;"
+        ]
+    },
+    {
+        "pos": "N",
+        "form": "N 2 N 2 2 N x 0",
+        "orth": "ill",
+        "senses": [
+            "little, small, -let (Diminutive) target is of gender of root => decl;"
+        ]
+    },
+    {
+        "pos": "N",
+        "form": "N 2 ADJ 3 2 POS 0",
+        "orth": "al",
+        "senses": [
+            "-al; of a ~, pertaining to a ~, in a condition of ~, in a state of ~;"
+        ]
+    },
+    {
+        "pos": "V",
+        "form": "V 2 ADJ 3 2 POS 0",
+        "orth": "il",
+        "senses": [
+            "-able, -ble; having the passive quality, able to, able to be;"
+        ]
+    },
+    {
+        "pos": "N",
+        "form": "N 2 ADJ 3 2 POS 0",
+        "orth": "il",
+        "senses": [
+            "-il; of a ~, pertaining to a ~, in a condition of ~, in a state of ~;"
+        ]
+    },
+    {
+        "pos": "N",
+        "form": "N 2 N 1 1 F x 0",
+        "orth": "ol",
+        "senses": [
+            "little, small, -let (Diminutive) target is of gender of root => decl;"
+        ]
+    },
+    {
+        "pos": "N",
+        "form": "N 2 N 2 1 M x 0",
+        "orth": "ol",
+        "senses": [
+            "little, small, -let (Diminutive) target is of gender of root => decl;"
+        ]
+    },
+    {
+        "pos": "N",
+        "form": "N 2 N 2 2 N x 0",
+        "orth": "ol",
+        "senses": [
+            "little, small, -let (Diminutive) target is of gender of root => decl;"
+        ]
+    },
+    {
+        "pos": "N",
+        "form": "N 2 N 1 1 F x 0",
+        "orth": "ul",
+        "senses": [
+            "little, small, -let (Diminutive) target is of gender of root => decl;"
+        ]
+    },
+    {
+        "pos": "N",
+        "form": "N 2 N 2 1 M x 0",
+        "orth": "ul",
+        "senses": [
+            "little, small, -let (Diminutive) target is of gender of root => decl;"
+        ]
+    },
+    {
+        "pos": "N",
+        "form": "N 2 N 2 2 N x 0",
+        "orth": "ul",
+        "senses": [
+            "little, small, -let (Diminutive) target is of gender of root => decl;"
+        ]
+    },
+    {
+        "pos": "N",
+        "form": "N 2 ADJ 1 1 POS 0",
+        "orth": "ul",
+        "senses": [
+            "-ulus; of a, pertaining to a, in a condition of, in a state of;"
+        ]
+    },
+    {
+        "pos": "N",
+        "form": "N 2 ADJ 1 1 POS 0",
+        "orth": "itim",
+        "senses": [
+            "-itime, -tine, -tane; of, belonging to (esp. of place and time);"
+        ]
+    },
+    {
+        "pos": "X",
+        "form": "X 2 ADV POS 1",
+        "orth": "atim",
+        "senses": [
+            "_ by _; eg. step by step; little by little;"
+        ]
+    },
+    {
+        "pos": "X",
+        "form": "X 2 ADV POS 1",
+        "orth": "itim",
+        "senses": [
+            "_ by _; eg. vir.itim => man by man;"
+        ]
+    },
+    {
+        "pos": "N",
+        "form": "N 2 ADJ 1 1 POS 0",
+        "orth": "tim",
+        "senses": [
+            "-itime, -tine, -tane; of, belonging to  (esp. of place and time);"
+        ]
+    },
+    {
+        "pos": "X",
+        "form": "X 2 N 2 1 M T   0",
+        "orth": "ism",
+        "senses": [
+            "-ism; makes noun of action/ideology/association/fellowship;"
+        ]
+    },
+    {
+        "pos": "A",
+        "form": "ADJ 1 ADV POS 1",
+        "orth": "um",
+        "senses": [
+            "-ly;"
+        ]
+    },
+    {
+        "pos": "A",
+        "form": "ADJ 2 N 3 1 F t  2",
+        "orth": "udin  t",
+        "senses": [
+            "-ness; makes abstract noun;"
+        ]
+    },
+    {
+        "pos": "V",
+        "form": "V 4 N 3 1 F t  2",
+        "orth": "sion",
+        "senses": [
+            "-ing, -ion, -ery; the action or result of the action of the verb;"
+        ]
+    },
+    {
+        "pos": "V",
+        "form": "V 2 N 3 1 F t  2",
+        "orth": "sion",
+        "senses": [
+            "-ing, -ion, -ery; the action or result of the action of the verb;"
+        ]
+    },
+    {
+        "pos": "V",
+        "form": "V 4 N 3 1 F t  2",
+        "orth": "tion",
+        "senses": [
+            "-ing, -ion, -ery; the action or result of the action of the verb;"
+        ]
+    },
+    {
+        "pos": "V",
+        "form": "V 2 N 3 1 F t  2",
+        "orth": "tion",
+        "senses": [
+            "-ing, -ion, -ery; the action or result of the action of the verb;"
+        ]
+    },
+    {
+        "pos": "N",
+        "form": "N 2 N 2 1 M p 0",
+        "orth": "ian",
+        "senses": [
+            "of/belonging to  [N -> ADJ] (Cicero -> Ciceronianus);"
+        ]
+    },
+    {
+        "pos": "V",
+        "form": "V 2 N 3 2 N t 1",
+        "orth": "men",
+        "senses": [
+            "act of; means of; result of;"
+        ]
+    },
+    {
+        "pos": "N",
+        "form": "NUM 3 NUM 1 4 DIST 0 3",
+        "orth": "ten",
+        "senses": [
+            "each/apiece/times/fold; (NUM DIST to a late Latin form, Xceni -> Xcenteni);"
+        ]
+    },
+    {
+        "pos": "V",
+        "form": "V 2 N 3 2 N t 2",
+        "orth": "min",
+        "senses": [
+            "act of; means of; result of;"
+        ]
+    },
+    {
+        "pos": "V",
+        "form": "V 2 N 3 1 F t  1",
+        "orth": "don",
+        "senses": [
+            "act of or result of the action of the verb;"
+        ]
+    },
+    {
+        "pos": "V",
+        "form": "V 2 N 3 1 F t  1",
+        "orth": "gon",
+        "senses": [
+            "act of or result of the action of the verb;"
+        ]
+    },
+    {
+        "pos": "V",
+        "form": "V 4 N 3 1 F t  2",
+        "orth": "ion",
+        "senses": [
+            "-ing, -ion, -ery; indicates the action or result of the action of the verb;"
+        ]
+    },
+    {
+        "pos": "V",
+        "form": "V 2 N 3 1 F t  2",
+        "orth": "ion",
+        "senses": [
+            "-ing, -ion, -ery; the action or result of the action of the verb;"
+        ]
+    },
+    {
+        "pos": "N",
+        "form": "N 2 ADJ 1 1 POS 0",
+        "orth": "urn",
+        "senses": [
+            "-urnal, -ily, -y, -ing; of, belonging to  (esp. of place and time);"
+        ]
+    },
+    {
+        "pos": "N",
+        "form": "NUM 2 N 2 1 M p 0",
+        "orth": "an",
+        "senses": [
+            "soldiers of the Nth Legion;"
+        ]
+    },
+    {
+        "pos": "A",
+        "form": "ADJ 2 ADJ 1 1 POS 0",
+        "orth": "an",
+        "senses": [
+            "-anus; (indicates former gens when adopted into another, Sejus -> Sejanus);"
+        ]
+    },
+    {
+        "pos": "N",
+        "form": "N 2 ADJ 1 1 POS 0",
+        "orth": "an",
+        "senses": [
+            "-an, -ain; of, pertaining/belonging to; connected with; derived/coming from;"
+        ]
+    },
+    {
+        "pos": "N",
+        "form": "N 2 ADJ 1 1 POS 0",
+        "orth": "en",
+        "senses": [
+            "-en, -ene; of, pertaining/belonging to; connected with; derived/coming from;"
+        ]
+    },
+    {
+        "pos": "N",
+        "form": "N 2 ADJ 1 1 POS 0",
+        "orth": "in",
+        "senses": [
+            "-ine; -in; of, pertaining/belonging to; connected with; derived/coming from;"
+        ]
+    },
+    {
+        "pos": "N",
+        "form": "N 2 N 1 1 F t 0",
+        "orth": "in",
+        "senses": [
+            "-ing; art or craft (medic.ina = art of doctoring);"
+        ]
+    },
+    {
+        "pos": "A",
+        "form": "ADJ 2 N 3 1 F t  1",
+        "orth": "udo  t",
+        "senses": [
+            "-ness; makes abstract noun;"
+        ]
+    },
+    {
+        "pos": "V",
+        "form": "V 2 N 3 1 F t  1",
+        "orth": "sio",
+        "senses": [
+            "-ing, -ion, -ery; the action or result of the action of the verb;"
+        ]
+    },
+    {
+        "pos": "V",
+        "form": "V 4 N 3 1 F t  1",
+        "orth": "sio",
+        "senses": [
+            "-ing, -ion, -ery; the action or result of the action of the verb;"
+        ]
+    },
+    {
+        "pos": "V",
+        "form": "V 2 N 3 1 F t  1",
+        "orth": "tio",
+        "senses": [
+            "-ing, -ion, -ery; the action or result of the action of the verb;"
+        ]
+    },
+    {
+        "pos": "V",
+        "form": "V 4 N 3 1 F t  1",
+        "orth": "tio",
+        "senses": [
+            "-ing, -ion, -ery; the action or result of the action of the verb;"
+        ]
+    },
+    {
+        "pos": "V",
+        "form": "V 2 N 3 1 F t  1",
+        "orth": "do",
+        "senses": [
+            "act of or result of the action of the verb;"
+        ]
+    },
+    {
+        "pos": "V",
+        "form": "V 2 N 3 1 F t  1",
+        "orth": "go",
+        "senses": [
+            "act of or result of the action of the verb;"
+        ]
+    },
+    {
+        "pos": "V",
+        "form": "V 2 N 3 1 F t  1",
+        "orth": "io",
+        "senses": [
+            "-ing, -ion, -ery; the action or result of the action of the verb;"
+        ]
+    },
+    {
+        "pos": "V",
+        "form": "V 4 N 3 1 F t  1",
+        "orth": "io",
+        "senses": [
+            "-ing, -ion, -ery; indicates the action or result of the action of the verb;"
+        ]
+    },
+    {
+        "pos": "V",
+        "form": "V 2 ADV POS 1",
+        "orth": "abiliter",
+        "senses": [
+            "-abaly;"
+        ]
+    },
+    {
+        "pos": "V",
+        "form": "V 2 ADV POS 1",
+        "orth": "ibiliter",
+        "senses": [
+            "-ibaly;"
+        ]
+    },
+    {
+        "pos": "N",
+        "form": "N 2 ADV POS 1",
+        "orth": "aliter",
+        "senses": [
+            "-ality, -ally;"
+        ]
+    },
+    {
+        "pos": "V",
+        "form": "V 1 ADV POS 1",
+        "orth": "anter",
+        "senses": [
+            "-ingly;"
+        ]
+    },
+    {
+        "pos": "V",
+        "form": "V 1 ADV POS 1",
+        "orth": "enter",
+        "senses": [
+            "-ingly;"
+        ]
+    },
+    {
+        "pos": "N",
+        "form": "N 2 ADJ 1 1 POS 1",
+        "orth": "ester",
+        "senses": [
+            "-urnal, -ily, -y, -ing; of, belonging to  (esp. of place and time);"
+        ]
+    },
+    {
+        "pos": "N",
+        "form": "N 2 ADJ 1 1 POS 2",
+        "orth": "estr",
+        "senses": [
+            "-y; of the, of, belonging to  (esp. of place and time);"
+        ]
+    },
+    {
+        "pos": "A",
+        "form": "ADJ 2 ADV POS 1",
+        "orth": "iter",
+        "senses": [
+            "-ily; -ly;"
+        ]
+    },
+    {
+        "pos": "A",
+        "form": "ADJ 2 ADJ 0 0 COMP  3",
+        "orth": "ior",
+        "senses": [
+            "-er, more ~; makes ADJ POS into ADJ COMP;"
+        ]
+    },
+    {
+        "pos": "N",
+        "form": "N 2 N 3 1 M P 0",
+        "orth": "por",
+        "senses": [
+            "-'s boy; (slave's name adding -por for -puer to anme of master);"
+        ]
+    },
+    {
+        "pos": "X",
+        "form": "X 2 N 3 4 N t 0",
+        "orth": "ar",
+        "senses": [
+            "means/instrument/place for special purpose of N/V (calco/calcar - tread/spur);"
+        ]
+    },
+    {
+        "pos": "N",
+        "form": "N 2 ADJ 3 2 POS 0",
+        "orth": "ar",
+        "senses": [
+            "-ary; of a, pertaining to a; (-like?);"
+        ]
+    },
+    {
+        "pos": "V",
+        "form": "V 2 N 2 2 N t 0",
+        "orth": "br",
+        "senses": [
+            "denotes means or instrument;"
+        ]
+    },
+    {
+        "pos": "V",
+        "form": "V 2 N 2 2 N t 0",
+        "orth": "cr",
+        "senses": [
+            "denotes means or instrument or place for special purpose for action of V;"
+        ]
+    },
+    {
+        "pos": "A",
+        "form": "ADJ 2 ADV POS 1",
+        "orth": "er  t",
+        "senses": [
+            "-ly;"
+        ]
+    },
+    {
+        "pos": "V",
+        "form": "V 4 N 3 1 M p  0",
+        "orth": "or",
+        "senses": [
+            "-or; -er; indicates the doer; one who performs the action of the verb (act.or);"
+        ]
+    },
+    {
+        "pos": "V",
+        "form": "V 2 N 3 1 M p  0",
+        "orth": "or",
+        "senses": [
+            "the thing of the verb; result of; (abstract noun) amor = love, timor = fear;"
+        ]
+    },
+    {
+        "pos": "V",
+        "form": "V 2 N 2 2 N t 0",
+        "orth": "tr",
+        "senses": [
+            "means, instrument; place;"
+        ]
+    },
+    {
+        "pos": "N",
+        "form": "N 2 N 1 1 F t  0",
+        "orth": "ur",
+        "senses": [
+            "-ure, pertaining to, use of;"
+        ]
+    },
+    {
+        "pos": "N",
+        "form": "N 4 N 1 1 F t  0",
+        "orth": "ur",
+        "senses": [
+            "-ure, pertaining to, use of;"
+        ]
+    },
+    {
+        "pos": "A",
+        "form": "ADJ 2 N 3 1 F t  1",
+        "orth": "etas i",
+        "senses": [
+            "-ness, makes abstract noun;"
+        ]
+    },
+    {
+        "pos": "A",
+        "form": "ADJ 2 N 3 1 F t  1",
+        "orth": "itas",
+        "senses": [
+            "-ity; -ness, makes abstract noun of quality or condition;"
+        ]
+    },
+    {
+        "pos": "N",
+        "form": "N 2 N 3 1 F t  1",
+        "orth": "itas",
+        "senses": [
+            "-ness, condition of being; makes abstract noun (civ.itas = citizenship);"
+        ]
+    },
+    {
+        "pos": "X",
+        "form": "X 2 ADV POS 1",
+        "orth": "itus",
+        "senses": [
+            "of _; from the _; -ing;"
+        ]
+    },
+    {
+        "pos": "N",
+        "form": "N 2 N 3 1 F t  1",
+        "orth": "tas",
+        "senses": [
+            "-ness, condition of being; makes abstract noun;"
+        ]
+    },
+    {
+        "pos": "N",
+        "form": "N 2 N 3 1 F t  1",
+        "orth": "tus",
+        "senses": [
+            "-liness, makes abstract noun;"
+        ]
+    },
+    {
+        "pos": "V",
+        "form": "V 1 ADJ 3 1 POS  1",
+        "orth": "ans",
+        "senses": [
+            "-ing, makes ADJ of verb, equivalent to PRES ACTIVE PPL ('a' stem is for V 1 0);"
+        ]
+    },
+    {
+        "pos": "V",
+        "form": "V 1 ADJ 3 1 POS  1",
+        "orth": "ens",
+        "senses": [
+            "-ing, makes ADJ of verb, equivalent to PRES ACTIVE PPL ('e' stem is for V 2/3);"
+        ]
+    },
+    {
+        "pos": "N",
+        "form": "N 2 N 1 1 F p 0",
+        "orth": "iss",
+        "senses": [
+            "female (whatever the noun base was);"
+        ]
+    },
+    {
+        "pos": "A",
+        "form": "ADJ 2 ADV COMP 0",
+        "orth": "ius",
+        "senses": [
+            "more -ly; -ier;"
+        ]
+    },
+    {
+        "pos": "X",
+        "form": "X 2 ADV POS 1",
+        "orth": "tus",
+        "senses": [
+            "of _; from the _;"
+        ]
+    },
+    {
+        "pos": "N",
+        "form": "N 2 N 3 1 F t 1",
+        "orth": "es",
+        "senses": [
+            "result of; place of; (abstract noun);"
+        ]
+    },
+    {
+        "pos": "N",
+        "form": "N 2 N 3 1 F t 2",
+        "orth": "is",
+        "senses": [
+            "result of; place of; (abstract noun);"
+        ]
+    },
+    {
+        "pos": "N",
+        "form": "N 2 ADJ 1 1 POS 0",
+        "orth": "os",
+        "senses": [
+            "-ous, -ose; -some, full of; prone to; rich in; abounding in;"
+        ]
+    },
+    {
+        "pos": "A",
+        "form": "ADJ 2 ADV POS  1",
+        "orth": "us",
+        "senses": [
+            "-ly;"
+        ]
+    },
+    {
+        "pos": "A",
+        "form": "ADJ 3 ADV COMP 0",
+        "orth": "us",
+        "senses": [
+            "more -ly; -lier;"
+        ]
+    },
+    {
+        "pos": "N",
+        "form": "N 2 ADJ 1 1 POS 0",
+        "orth": "olent",
+        "senses": [
+            "-olent; full of; prone to; rich in; abounding in;"
+        ]
+    },
+    {
+        "pos": "N",
+        "form": "N 2 ADJ 1 1 POS 0",
+        "orth": "ulent",
+        "senses": [
+            "-ulent; full of; prone to; rich in; abounding in;"
+        ]
+    },
+    {
+        "pos": "V",
+        "form": "V 2 N 2 2 N t 0",
+        "orth": "ament",
+        "senses": [
+            "-ment; -ion; act of; instrument/equipment/means for ~ing; result of ~ing;"
+        ]
+    },
+    {
+        "pos": "V",
+        "form": "V 2 N 2 2 N t 0",
+        "orth": "ment",
+        "senses": [
+            "-ment; -ion; act of; instrument/equipment/means for ~ing; result of ~ing;"
+        ]
+    },
+    {
+        "pos": "V",
+        "form": "V 4 N 3 1 F t  2",
+        "orth": "etat i",
+        "senses": [
+            "-ness, makes abstract noun;"
+        ]
+    },
+    {
+        "pos": "A",
+        "form": "ADJ 2 N 3 1 F t  2",
+        "orth": "itat",
+        "senses": [
+            "-ity; -ness, makes abstract noun of quality or condition;"
+        ]
+    },
+    {
+        "pos": "N",
+        "form": "N 2 N 3 1 F t  1",
+        "orth": "itat",
+        "senses": [
+            "-ness, condition of being; makes abstract noun (civ.itas = citizenship);"
+        ]
+    },
+    {
+        "pos": "N",
+        "form": "N 2 N 3 1 F t  1",
+        "orth": "tat",
+        "senses": [
+            "-ness, condition of being; makes abstract noun;"
+        ]
+    },
+    {
+        "pos": "A",
+        "form": "ADJ 2 N 3 1 F t  2",
+        "orth": "tat",
+        "senses": [
+            "-ness, makes abstract noun;"
+        ]
+    },
+    {
+        "pos": "V",
+        "form": "V 2 V 1 1 X 4",
+        "orth": "tat",
+        "senses": [
+            "try to do -, keep doing -;"
+        ]
+    },
+    {
+        "pos": "N",
+        "form": "N 2 N 3 1 F t  2",
+        "orth": "tut",
+        "senses": [
+            "-liness, makes abstract noun;"
+        ]
+    },
+    {
+        "pos": "V",
+        "form": "V 1 ADJ 3 1 POS  2",
+        "orth": "ant",
+        "senses": [
+            "-ing, makes ADJ of verb, equivalent to PRES ACTIVE PPL ('a' stem is for V 1 0);"
+        ]
+    },
+    {
+        "pos": "V",
+        "form": "V 1 ADJ 3 1 POS  2",
+        "orth": "ent",
+        "senses": [
+            "-ing, makes ADJ of verb, equivalent to PRES ACTIVE PPL ('e' stem is for V 2/3);"
+        ]
+    },
+    {
+        "pos": "N",
+        "form": "N 2 N 4 1 M t  0",
+        "orth": "at",
+        "senses": [
+            "-ate, -ship, the office of; official body (consul.atus = consulate, consulship);"
+        ]
+    },
+    {
+        "pos": "N",
+        "form": "N 2 ADJ 1 1 POS 0",
+        "orth": "at",
+        "senses": [
+            "-ed, having, having a, provided with; -able;"
+        ]
+    },
+    {
+        "pos": "N",
+        "form": "N 2 ADJ 1 1 POS 0",
+        "orth": "it",
+        "senses": [
+            "-ed, having, having a, provided with; -able;"
+        ]
+    },
+    {
+        "pos": "N",
+        "form": "N 2 ADJ 1 1 POS 0",
+        "orth": "ut",
+        "senses": [
+            "-ed, having, having a, provided with; -able;"
+        ]
+    },
+    {
+        "pos": "V",
+        "form": "V 4 V 1 1 X 1",
+        "orth": "it",
+        "senses": [
+            "try to do -, keep doing - (Intensive/Iterative - forcible or iterative action);"
+        ]
+    },
+    {
+        "pos": "V",
+        "form": "V 2 V 1 1 X 1",
+        "orth": "it",
+        "senses": [
+            "try to do -, keep doing - (Intensive/Iterative - forcible or iterative action);"
+        ]
+    },
+    {
+        "pos": "V",
+        "form": "V 2 V 1 1 X 1",
+        "orth": "t",
+        "senses": [
+            "try to do -, keep doing - (Intensive/Iterative - forcible or iterative action);"
+        ]
+    },
+    {
+        "pos": "N",
+        "form": "N 2 ADJ 1 1 POS 0",
+        "orth": "t",
+        "senses": [
+            "-ed, having, having a, provided with; -able;"
+        ]
+    },
+    {
+        "pos": "N",
+        "form": "N 2 ADJ 1 1 POS 0",
+        "orth": "ativ",
+        "senses": [
+            "-ative; capable/worthy of;"
+        ]
+    },
+    {
+        "pos": "V",
+        "form": "V 2 V 1 1 X 3",
+        "orth": "tav",
+        "senses": [
+            "try to do -, keep doing -;"
+        ]
+    },
+    {
+        "pos": "V",
+        "form": "V 2 ADJ 1 1 POS 0",
+        "orth": "iv",
+        "senses": [
+            "-ive, -ed; tending to, pretaining to;"
+        ]
+    },
+    {
+        "pos": "V",
+        "form": "V 4 ADJ 1 1 POS 0",
+        "orth": "iv",
+        "senses": [
+            "-ive, -ed; having the passive tendency; having been ...-ed;"
+        ]
+    },
+    {
+        "pos": "N",
+        "form": "N 2 N 3 1 M P   1",
+        "orth": "ifex",
+        "senses": [
+            "denotes one who makes (the source noun), master of, professional in;"
+        ]
+    },
+    {
+        "pos": "V",
+        "form": "V 4 N 3 1 F p  1",
+        "orth": "rix",
+        "senses": [
+            "-ess, -or; -er; indicates the doer; one who performs action of verb (act.ess);"
+        ]
+    },
+    {
+        "pos": "X",
+        "form": "X 2 ADJ 3 1 POS 1",
+        "orth": "ax",
+        "senses": [
+            "-ing; having a tendency/ability;"
+        ]
+    }
+]

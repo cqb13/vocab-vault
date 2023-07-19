@@ -1,0 +1,44 @@
+[
+    {
+        "orth": "ec",
+        "pos": "PACK PACK",
+        "senses": [
+            "is there any...that? does any? (w/qui, sometimes w/nam) (passionate interrogation);"
+        ]
+    },
+    {
+        "orth": "ne",
+        "pos": "PACK PACK",
+        "senses": [
+            "not (introducing negative clause, w/qui); verily, truely  (affirmative particle);"
+        ]
+    },
+    {
+        "orth": "nescio",
+        "pos": "PACK PACK",
+        "senses": [
+            "(w/qui/quis) nescioquis=> some (unknown/unspecified), one/someone or other;"
+        ]
+    },
+    {
+        "orth": "neu",
+        "pos": "PACK PACK",
+        "senses": [
+            "nor, and..not, neither..nor (adding a alternative or prohibition, w/qui);"
+        ]
+    },
+    {
+        "orth": "seu",
+        "pos": "PACK PACK",
+        "senses": [
+            "or if (w/qui);"
+        ]
+    },
+    {
+        "orth": "si",
+        "pos": "PACK PACK",
+        "senses": [
+            "if, when, in so much, even if (assumed fact/wish/unfinished, w/qui);"
+        ]
+    }
+]
