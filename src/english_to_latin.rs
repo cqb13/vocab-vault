@@ -1,9 +1,8 @@
+use crate::latin_to_english::LatinWordInfo;
+use crate::utils::data::{get_english_words, get_latin_dictionary};
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
 use std::cmp::Ordering;
-use std::fs;
-
-use crate::latin_to_english::LatinWordInfo;
 
 #[derive(Serialize, Deserialize)]
 pub struct WordInfo {
@@ -37,8 +36,7 @@ pub fn translate_to_latin(english_word: &str) -> Vec<WordInfo> {
     const RESPONSE_LIMIT: usize = 6;
     let mut output: Vec<WordInfo> = Vec::new();
 
-    let english_words: Value =
-        serde_json::from_str(&fs::read_to_string("src/data/english_words.json").unwrap()).unwrap();
+    let english_words: Value = get_english_words();
     for object in english_words.as_array().unwrap() {
         if object["orth"].as_str().unwrap_or_default().to_lowercase() == english_word.to_lowercase()
         {
@@ -107,10 +105,7 @@ fn weigh_words(word_list: Vec<WordInfo>) -> Vec<WordInfo> {
 }
 
 fn find_definition(word_list: Vec<WordInfo>) -> Vec<WordInfo> {
-    let latin_dictionary: Value =
-        serde_json::from_str(&fs::read_to_string("src/data/latin_dictionary.json").unwrap())
-            .unwrap();
-
+    let latin_dictionary: Value = get_latin_dictionary();
     let mut updated_word_list = word_list;
 
     for word_info in &mut updated_word_list {

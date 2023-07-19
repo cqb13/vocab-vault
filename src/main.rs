@@ -5,6 +5,9 @@ use serde_json;
 
 mod english_to_latin;
 mod latin_to_english;
+pub mod utils {
+    pub mod data;
+}
 
 #[derive(Serialize, Deserialize)]
 struct EnglishTranslation {
@@ -17,7 +20,6 @@ struct LatinTranslation {
     word: String,
     def: Vec<WordInfo>,
 }
-
 
 fn main() {
     let matches = App::new("Translator CLI")

@@ -1,7 +1,8 @@
 import json
 
-with open("unique_latin_words.json", "r") as f:
+with open("latin_addons.json", "r") as f:
     data = json.load(f)
+    print(data["tickons"])
 
-with open("unique_latin_words.json", "w") as f:
-    json.dump(data, f, separators=(',', ':'))
+#with open("latin_addons.json", "w") as f:
+#    json.dump(data, f, separators=(',', ':'))
