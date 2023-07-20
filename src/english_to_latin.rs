@@ -2,7 +2,6 @@ use crate::latin_to_english::LatinWordInfo;
 use crate::utils::data::{get_english_words, get_latin_dictionary};
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
-use std::cmp::Ordering;
 
 #[derive(Serialize, Deserialize)]
 pub struct WordInfo {
@@ -33,7 +32,7 @@ impl From<WordInfo> for Vec<String> {
 }
 
 pub fn translate_to_latin(english_word: &str) -> Vec<WordInfo> {
-    const RESPONSE_LIMIT: usize = 6;
+    const MAX_RESPONSE_ITEMS: usize = 6;
     let mut output: Vec<WordInfo> = Vec::new();
 
     let english_words: Value = get_english_words();
@@ -74,40 +73,29 @@ pub fn translate_to_latin(english_word: &str) -> Vec<WordInfo> {
     //output = remove_duplicates(output);
 
     // other words are probably rare/irrelevant or wrong
-    if output.len() > RESPONSE_LIMIT {
-        output.truncate(RESPONSE_LIMIT);
+    if output.len() > MAX_RESPONSE_ITEMS {
+        output.truncate(MAX_RESPONSE_ITEMS);
     }
 
-    output = find_definition(output);
+    find_definition(&mut output);
 
     output
 }
 
 fn calculate_true_frequency(frequency: i16, compound: i16, semi: i16) -> i16 {
-    let true_frequency = frequency + compound - semi;
-    return true_frequency;
+    frequency + compound - semi
 }
 
 fn weigh_words(word_list: Vec<WordInfo>) -> Vec<WordInfo> {
     let mut weighted_word_list = word_list;
-    weighted_word_list.sort_by(|a, b| {
-        if a.true_frequency > b.true_frequency {
-            Ordering::Less
-        } else if a.true_frequency < b.true_frequency {
-            Ordering::Greater
-        } else {
-            Ordering::Equal
-        }
-    });
-
+    weighted_word_list.sort_by(|a, b| a.true_frequency.cmp(&b.true_frequency));
     weighted_word_list
 }
 
-fn find_definition(word_list: Vec<WordInfo>) -> Vec<WordInfo> {
+fn find_definition(word_list: &mut Vec<WordInfo>) {
     let latin_dictionary: Value = get_latin_dictionary();
-    let mut updated_word_list = word_list;
 
-    for word_info in &mut updated_word_list {
+    for word_info in word_list.iter_mut() {
         for latin_word in latin_dictionary.as_array().unwrap() {
             if latin_word["id"].as_i64().unwrap_or_default() as i32 == word_info.wid {
                 word_info.latin_entry.pos =
@@ -142,6 +130,4 @@ fn find_definition(word_list: Vec<WordInfo>) -> Vec<WordInfo> {
             }
         }
     }
-
-    updated_word_list
 }
