@@ -1,1042 +1,836 @@
 [
-    {
-        "pos": "X",
-        "form": "X X",
-        "senses": [
-            "- away, off; - aside;"
-        ],
-        "orth": "abs"
-    },
-    {
-        "pos": "V",
-        "form": "V V",
-        "senses": [
-            "- away, off; - aside;"
-        ],
-        "orth": "ab"
-    },
-    {
-        "pos": "X",
-        "form": "X X",
-        "senses": [
-            "- to, towards, near, for, together (adeo => go to);"
-        ],
-        "orth": "ac c"
-    },
-    {
-        "pos": "X",
-        "form": "X X",
-        "senses": [
-            "- to, towards, near, for, together (adeo => go to);"
-        ],
-        "orth": "ac q"
-    },
-    {
-        "pos": "X",
-        "form": "X X",
-        "senses": [
-            "- to, towards, near, for, together (adeo => go to);"
-        ],
-        "orth": "ad"
-    },
-    {
-        "pos": "X",
-        "form": "X X",
-        "senses": [
-            "having to do with buildings/temples;"
-        ],
-        "orth": "aedi"
-    },
-    {
-        "pos": "X",
-        "form": "X X",
-        "senses": [
-            "equi-, equal;"
-        ],
-        "orth": "aequi"
-    },
-    {
-        "pos": "X",
-        "form": "X X",
-        "senses": [
-            "- to, towards, near, for, together (adeo => go to);"
-        ],
-        "orth": "af f"
-    },
-    {
-        "pos": "X",
-        "form": "X X",
-        "senses": [
-            "- to, towards, near, for, together (adeo => go to);"
-        ],
-        "orth": "ag g"
-    },
-    {
-        "pos": "X",
-        "form": "X X",
-        "senses": [
-            "high, lofty;"
-        ],
-        "orth": "alti"
-    },
-    {
-        "pos": "X",
-        "form": "X X",
-        "senses": [
-            "around, round about; having two;"
-        ],
-        "orth": "ambi"
-    },
-    {
-        "pos": "X",
-        "form": "X X",
-        "senses": [
-            "around, round about; having two;"
-        ],
-        "orth": "amb"
-    },
-    {
-        "pos": "X",
-        "form": "X X",
-        "senses": [
-            "having two/double, (on) both/opposite (sides), front and back;"
-        ],
-        "orth": "amphi"
-    },
-    {
-        "pos": "X",
-        "form": "X X",
-        "senses": [
-            "around, round about; having two;"
-        ],
-        "orth": "am"
-    },
-    {
-        "pos": "X",
-        "form": "X X",
-        "senses": [
-            "ante-, - before;"
-        ],
-        "orth": "ante"
-    },
-    {
-        "pos": "X",
-        "form": "X X",
-        "senses": [
-            "anti-, counter-, against, contrary, opposite/opposed to; for ante-/before;"
-        ],
-        "orth": "anti"
-    },
-    {
-        "pos": "X",
-        "form": "X X",
-        "senses": [
-            "around, round about; having two;"
-        ],
-        "orth": "an"
-    },
-    {
-        "pos": "X",
-        "form": "X X",
-        "senses": [
-            "- to, towards, near, for, together (adeo => go to);"
-        ],
-        "orth": "ap p"
-    },
-    {
-        "pos": "X",
-        "form": "X X",
-        "senses": [
-            "arch-, chief-, first, master; great; extremely, very;"
-        ],
-        "orth": "archi"
-    },
-    {
-        "pos": "X",
-        "form": "X X",
-        "senses": [
-            "- to, towards, near, for, together (adeo => go to);"
-        ],
-        "orth": "as s"
-    },
-    {
-        "pos": "X",
-        "form": "X X",
-        "senses": [
-            "- to, towards, near, for, together (adeo => go to);"
-        ],
-        "orth": "at t"
-    },
-    {
-        "pos": "X",
-        "form": "X X",
-        "senses": [
-            "golden, gold-; of gold, gold-colored;"
-        ],
-        "orth": "auri"
-    },
-    {
-        "pos": "X",
-        "form": "X X",
-        "senses": [
-            "- away, off (aufero => make off with, carry away); - aside;"
-        ],
-        "orth": "au f"
-    },
-    {
-        "pos": "V",
-        "form": "V V",
-        "senses": [
-            "- away, off; - aside;"
-        ],
-        "orth": "a"
-    },
-    {
-        "pos": "V",
-        "form": "V V",
-        "senses": [
-            "well, good"
-        ],
-        "orth": "bene"
-    },
-    {
-        "pos": "V",
-        "form": "V V",
-        "senses": [
-            "well, good;"
-        ],
-        "orth": "beni"
-    },
-    {
-        "pos": "X",
-        "form": "X X",
-        "senses": [
-            "two, twice; double; having two;"
-        ],
-        "orth": "bis"
-    },
-    {
-        "pos": "X",
-        "form": "X X",
-        "senses": [
-            "two, twice; double; having two;"
-        ],
-        "orth": "bi"
-    },
-    {
-        "pos": "X",
-        "form": "X X",
-        "senses": [
-            "sweet-, soothing-, smooth-, charming, flattering;"
-        ],
-        "orth": "blandi"
-    },
-    {
-        "pos": "X",
-        "form": "X X",
-        "senses": [
-            "cardio-, pertaining to the heart;"
-        ],
-        "orth": "cardio"
-    },
-    {
-        "pos": "X",
-        "form": "X X",
-        "senses": [
-            "hundred (numerical prefix);"
-        ],
-        "orth": "centi"
-    },
-    {
-        "pos": "X",
-        "form": "X X",
-        "senses": [
-            "hundred (numerical prefix);"
-        ],
-        "orth": "centu"
-    },
-    {
-        "pos": "X",
-        "form": "X X",
-        "senses": [
-            "- around, about, near;"
-        ],
-        "orth": "circum"
-    },
-    {
-        "pos": "X",
-        "form": "X X",
-        "senses": [
-            "- together, completely, forcibly, strongly;"
-        ],
-        "orth": "col  l"
-    },
-    {
-        "pos": "X",
-        "form": "X X",
-        "senses": [
-            "- together, completely, forcibly, strongly;"
-        ],
-        "orth": "com"
-    },
-    {
-        "pos": "X",
-        "form": "X X",
-        "senses": [
-            "- together, completely, forcibly, strongly;"
-        ],
-        "orth": "conn  e"
-    },
-    {
-        "pos": "X",
-        "form": "X X",
-        "senses": [
-            "- together, completely, forcibly, strongly;"
-        ],
-        "orth": "conn  i"
-    },
-    {
-        "pos": "X",
-        "form": "X X",
-        "senses": [
-            "- against;"
-        ],
-        "orth": "contra"
-    },
-    {
-        "pos": "X",
-        "form": "X X",
-        "senses": [
-            "- together; completely, strongly, forcibly, violently;"
-        ],
-        "orth": "con"
-    },
-    {
-        "pos": "X",
-        "form": "X X",
-        "senses": [
-            "- together; completely, strongly, forcibly, violently;"
-        ],
-        "orth": "co"
-    },
-    {
-        "pos": "X",
-        "form": "X X",
-        "senses": [
-            "ten (numerical prefix);"
-        ],
-        "orth": "decem"
-    },
-    {
-        "pos": "X",
-        "form": "X X",
-        "senses": [
-            "ten (numerical prefix);"
-        ],
-        "orth": "decu"
-    },
-    {
-        "pos": "V",
-        "form": "V V",
-        "senses": [
-            "- down, off, away, from; not; removal, reversal; utterly/completely (intensive);"
-        ],
-        "orth": "de"
-    },
-    {
-        "pos": "V",
-        "form": "V V",
-        "senses": [
-            "- apart/asunder, in different directions; separation/dispersal/process reversal;"
-        ],
-        "orth": "dif f"
-    },
-    {
-        "pos": "V",
-        "form": "V V",
-        "senses": [
-            "- apart/asunder, in different directions; separation/dispersal/process reversal;"
-        ],
-        "orth": "dir"
-    },
-    {
-        "pos": "V",
-        "form": "V V",
-        "senses": [
-            "- apart/asunder, in different directions; separation/dispersal/process reversal;"
-        ],
-        "orth": "dis"
-    },
-    {
-        "pos": "N",
-        "form": "N N",
-        "senses": [
-            "two-;"
-        ],
-        "orth": "di"
-    },
-    {
-        "pos": "V",
-        "form": "V V",
-        "senses": [
-            "- apart/asunder, in different directions; separation/dispersal/process reversal;"
-        ],
-        "orth": "di"
-    },
-    {
-        "pos": "N",
-        "form": "NUM NUM",
-        "senses": [
-            "- less two/two less than (numerical prefix); (duodeviginti => 20 less 2 = 18);"
-        ],
-        "orth": "duode"
-    },
-    {
-        "pos": "N",
-        "form": "NUM NUM",
-        "senses": [
-            "two more than (numerical prefix); (duoetviginti => two more than twenty = 22);"
-        ],
-        "orth": "duoet"
-    },
-    {
-        "pos": "X",
-        "form": "X X",
-        "senses": [
-            "two (numerical prefix);"
-        ],
-        "orth": "du"
-    },
-    {
-        "pos": "V",
-        "form": "V V",
-        "senses": [
-            "- out, away from; beyond; completely;"
-        ],
-        "orth": "ef f"
-    },
-    {
-        "pos": "X",
-        "form": "X X",
-        "senses": [
-            "electro-; electrical; electronic;"
-        ],
-        "orth": "electro"
-    },
-    {
-        "pos": "V",
-        "form": "V V",
-        "senses": [
-            "- outside;"
-        ],
-        "orth": "extra"
-    },
-    {
-        "pos": "V",
-        "form": "V V",
-        "senses": [
-            "- out, away from; beyond; completely;"
-        ],
-        "orth": "ex"
-    },
-    {
-        "pos": "V",
-        "form": "V V",
-        "senses": [
-            "- out, away from; beyond; completely;"
-        ],
-        "orth": "e"
-    },
-    {
-        "pos": "X",
-        "form": "X X",
-        "senses": [
-            "umequal;"
-        ],
-        "orth": "inaequi"
-    },
-    {
-        "pos": "V",
-        "form": "V V",
-        "senses": [
-            "between, within; at intervals, to pieces;"
-        ],
-        "orth": "inter"
-    },
-    {
-        "pos": "N",
-        "form": "N N",
-        "senses": [
-            "between, within; at intervals, to pieces;"
-        ],
-        "orth": "inter"
-    },
-    {
-        "pos": "V",
-        "form": "V V",
-        "senses": [
-            "within, inside; - between, at intervals, to pieces;"
-        ],
-        "orth": "intra"
-    },
-    {
-        "pos": "V",
-        "form": "V V",
-        "senses": [
-            "within, inside; - between, at intervals, to pieces;"
-        ],
-        "orth": "intro"
-    },
-    {
-        "pos": "V",
-        "form": "V V",
-        "senses": [
-            "- in, - on, - against; not -, un-;"
-        ],
-        "orth": "ig n"
-    },
-    {
-        "pos": "N",
-        "form": "N N",
-        "senses": [
-            "two-; second; (Roman numeral for 2); [IIviri/duoviri => 2 man board];"
-        ],
-        "orth": "II"
-    },
-    {
-        "pos": "V",
-        "form": "V V",
-        "senses": [
-            "- in, - on, - against; not -, un-;"
-        ],
-        "orth": "il l"
-    },
-    {
-        "pos": "V",
-        "form": "V V",
-        "senses": [
-            "- in, - on, - against; not -, un-;"
-        ],
-        "orth": "im b"
-    },
-    {
-        "pos": "V",
-        "form": "V V",
-        "senses": [
-            "- in, - on, - against; not -, un-;"
-        ],
-        "orth": "im m"
-    },
-    {
-        "pos": "V",
-        "form": "V V",
-        "senses": [
-            "- in, - on, - against; not -, un-;"
-        ],
-        "orth": "im p"
-    },
-    {
-        "pos": "V",
-        "form": "V V",
-        "senses": [
-            "- in, - on, - against; not -, un-;"
-        ],
-        "orth": "in"
-    },
-    {
-        "pos": "A",
-        "form": "ADJ ADJ",
-        "senses": [
-            "not -, un-, -less;"
-        ],
-        "orth": "in"
-    },
-    {
-        "pos": "V",
-        "form": "V V",
-        "senses": [
-            "- in, - on, - against; not -, un-;"
-        ],
-        "orth": "ir r"
-    },
-    {
-        "pos": "V",
-        "form": "V V",
-        "senses": [
-            "ill, bad;"
-        ],
-        "orth": "male"
-    },
-    {
-        "pos": "N",
-        "form": "N N",
-        "senses": [
-            "much, many;"
-        ],
-        "orth": "multi"
-    },
-    {
-        "pos": "A",
-        "form": "ADV ADV",
-        "senses": [
-            "not;"
-        ],
-        "orth": "ne"
-    },
-    {
-        "pos": "V",
-        "form": "V V",
-        "senses": [
-            "not;"
-        ],
-        "orth": "non"
-    },
-    {
-        "pos": "V",
-        "form": "V V",
-        "senses": [
-            "- towards, to meet, in opposition;"
-        ],
-        "orth": "ob"
-    },
-    {
-        "pos": "X",
-        "form": "X X",
-        "senses": [
-            "eight (numerical prefix);"
-        ],
-        "orth": "octu"
-    },
-    {
-        "pos": "V",
-        "form": "V V",
-        "senses": [
-            "- towards, to meet, in opposition;"
-        ],
-        "orth": "of f"
-    },
-    {
-        "pos": "A",
-        "form": "ADJ ADJ",
-        "senses": [
-            "all-, - everywhere;"
-        ],
-        "orth": "omni"
-    },
-    {
-        "pos": "V",
-        "form": "V V",
-        "senses": [
-            "- towards, to meet, in opposition;"
-        ],
-        "orth": "op p"
-    },
-    {
-        "pos": "V",
-        "form": "V V",
-        "senses": [
-            "- towards, to meet, in opposition;"
-        ],
-        "orth": "os t"
-    },
-    {
-        "pos": "A",
-        "form": "ADJ ADJ",
-        "senses": [
-            "very -, - completely, - thoroughly;"
-        ],
-        "orth": "per"
-    },
-    {
-        "pos": "V",
-        "form": "V V",
-        "senses": [
-            "- through, thoroughly, completely, very; adds to the force of the verb;"
-        ],
-        "orth": "per"
-    },
-    {
-        "pos": "V",
-        "form": "V V",
-        "senses": [
-            "- forward;"
-        ],
-        "orth": "por"
-    },
-    {
-        "pos": "X",
-        "form": "X X",
-        "senses": [
-            "past or by; (drive past, drive by, flow past, flow by);"
-        ],
-        "orth": "praeter"
-    },
-    {
-        "pos": "X",
-        "form": "X X",
-        "senses": [
-            "pre-, before -, in front of -; forth; very -, - completely, - thorughly;"
-        ],
-        "orth": "prae"
-    },
-    {
-        "pos": "N",
-        "form": "N N",
-        "senses": [
-            "before -, in front of -;"
-        ],
-        "orth": "pro"
-    },
-    {
-        "pos": "V",
-        "form": "V V",
-        "senses": [
-            "- forward; before; in front of; forth [pro-cedo => go forth, proceed, continue];"
-        ],
-        "orth": "pro"
-    },
-    {
-        "pos": "X",
-        "form": "X X",
-        "senses": [
-            "pseudo-, false; fallacious, deceitful; sperious; imitation of;"
-        ],
-        "orth": "pseudo"
-    },
-    {
-        "pos": "X",
-        "form": "X X",
-        "senses": [
-            "four (numerical prefix);"
-        ],
-        "orth": "quadri"
-    },
-    {
-        "pos": "X",
-        "form": "X X",
-        "senses": [
-            "four (numerical prefix);"
-        ],
-        "orth": "quadru"
-    },
-    {
-        "pos": "X",
-        "form": "X X",
-        "senses": [
-            "five (numerical prefix);"
-        ],
-        "orth": "quincu"
-    },
-    {
-        "pos": "X",
-        "form": "X X",
-        "senses": [
-            "five (numerical prefix);"
-        ],
-        "orth": "quinqu"
-    },
-    {
-        "pos": "X",
-        "form": "X X",
-        "senses": [
-            "five (numerical prefix);"
-        ],
-        "orth": "quinti"
-    },
-    {
-        "pos": "V",
-        "form": "V V",
-        "senses": [
-            "- back, - again;"
-        ],
-        "orth": "red"
-    },
-    {
-        "pos": "X",
-        "form": "X X",
-        "senses": [
-            "- back, - again;"
-        ],
-        "orth": "re"
-    },
-    {
-        "pos": "V",
-        "form": "V V",
-        "senses": [
-            "- apart, apart from; away;"
-        ],
-        "orth": "sed"
-    },
-    {
-        "pos": "X",
-        "form": "X X",
-        "senses": [
-            "semi-, half, partly;"
-        ],
-        "orth": "semi"
-    },
-    {
-        "pos": "X",
-        "form": "X X",
-        "senses": [
-            "seven (numerical prefix);"
-        ],
-        "orth": "septem"
-    },
-    {
-        "pos": "X",
-        "form": "X X",
-        "senses": [
-            "seven (numerical prefix);"
-        ],
-        "orth": "septu"
-    },
-    {
-        "pos": "X",
-        "form": "X X",
-        "senses": [
-            "one and half (numerical); one plus aliquot fraction; (sesqui-septimus = 8/7);"
-        ],
-        "orth": "sesque"
-    },
-    {
-        "pos": "X",
-        "form": "X X",
-        "senses": [
-            "one and half (numerical); one plus aliquot fraction; (sesqui-septimus = 8/7);"
-        ],
-        "orth": "sesqui"
-    },
-    {
-        "pos": "X",
-        "form": "X X",
-        "senses": [
-            "one and half (numerical); one plus aliquot fraction; (sesqui-septimus = 8/7);"
-        ],
-        "orth": "sexqui"
-    },
-    {
-        "pos": "X",
-        "form": "X X",
-        "senses": [
-            "six-;"
-        ],
-        "orth": "ses"
-    },
-    {
-        "pos": "X",
-        "form": "X X",
-        "senses": [
-            "six (numerical prefix);"
-        ],
-        "orth": "sexti"
-    },
-    {
-        "pos": "X",
-        "form": "X X",
-        "senses": [
-            "six (numerical prefix);"
-        ],
-        "orth": "sextu"
-    },
-    {
-        "pos": "X",
-        "form": "X X",
-        "senses": [
-            "six-;"
-        ],
-        "orth": "sex"
-    },
-    {
-        "pos": "-",
-        "form": "--V V",
-        "senses": [
-            "--- apart, apart from; away (se-cedo = go away, withdraw, secede);"
-        ],
-        "orth": "-- se      --  conflict with semet"
-    },
-    {
-        "pos": "X",
-        "form": "X X",
-        "senses": [
-            "one (numerical prefix), single, simple;"
-        ],
-        "orth": "sim"
-    },
-    {
-        "pos": "V",
-        "form": "V V",
-        "senses": [
-            "sub-; - up to, - under, up from under; to the aid;"
-        ],
-        "orth": "sub"
-    },
-    {
-        "pos": "N",
-        "form": "N N",
-        "senses": [
-            "sub-; somewhat -/-ish/rather -; under, from under/below; lesser/assistant/vice;"
-        ],
-        "orth": "sub"
-    },
-    {
-        "pos": "A",
-        "form": "ADJ ADJ",
-        "senses": [
-            "sub-; somewhat -/-ish/rather -; under, from under/below; lesser/assistant/vice;"
-        ],
-        "orth": "sub"
-    },
-    {
-        "pos": "V",
-        "form": "V V",
-        "senses": [
-            "- up to, - under, up from under; to the aid;"
-        ],
-        "orth": "suc  c"
-    },
-    {
-        "pos": "N",
-        "form": "N N",
-        "senses": [
-            "sub-; somewhat -/-ish/rather -; under, from under/below; lesser/assistant/vice;"
-        ],
-        "orth": "suc c"
-    },
-    {
-        "pos": "A",
-        "form": "ADJ ADJ",
-        "senses": [
-            "sub-; somewhat -/-ish/rather -; under, from under/below; lesser/assistant/vice;"
-        ],
-        "orth": "suc c"
-    },
-    {
-        "pos": "X",
-        "form": "X X",
-        "senses": [
-            "super-, over, above, upon; from above; over and above;"
-        ],
-        "orth": "super"
-    },
-    {
-        "pos": "X",
-        "form": "X X",
-        "senses": [
-            "supra-, over, above, upon, on top of; earlier than; beyond; superior to;"
-        ],
-        "orth": "supra"
-    },
-    {
-        "pos": "X",
-        "form": "X X",
-        "senses": [
-            "number plus 4/5; one plus aliquot fraction; (superquadripartiens = 9/5);"
-        ],
-        "orth": "superquadri"
-    },
-    {
-        "pos": "V",
-        "form": "V V",
-        "senses": [
-            "super-, over, above;"
-        ],
-        "orth": "sur"
-    },
-    {
-        "pos": "V",
-        "form": "V V",
-        "senses": [
-            "- up to, - under, up from under; to the aid;"
-        ],
-        "orth": "sus s"
-    },
-    {
-        "pos": "V",
-        "form": "V V",
-        "senses": [
-            "- across, - over;"
-        ],
-        "orth": "trans"
-    },
-    {
-        "pos": "V",
-        "form": "V V",
-        "senses": [
-            "- across, - over;"
-        ],
-        "orth": "tra"
-    },
-    {
-        "pos": "V",
-        "form": "V V",
-        "senses": [
-            "- across, - over;"
-        ],
-        "orth": "tre i"
-    },
-    {
-        "pos": "X",
-        "form": "X X",
-        "senses": [
-            "three; (also used to represent many times, persistant, extreme, gross);"
-        ],
-        "orth": "tri"
-    },
-    {
-        "pos": "N",
-        "form": "N N",
-        "senses": [
-            "beyond; exceeding; over; more than;"
-        ],
-        "orth": "ultra"
-    },
-    {
-        "pos": "A",
-        "form": "ADJ ADJ",
-        "senses": [
-            "extremely; more; overly; more than;"
-        ],
-        "orth": "ultra"
-    },
-    {
-        "pos": "N",
-        "form": "NUM NUM",
-        "senses": [
-            "- less one, one less than; (undetriginta => thirty less one = 29);"
-        ],
-        "orth": "unde"
-    },
-    {
-        "pos": "A",
-        "form": "ADJ ADJ",
-        "senses": [
-            "one-; having (only/but) one ~; (being) of one ~;"
-        ],
-        "orth": "uni"
-    },
-    {
-        "pos": "A",
-        "form": "ADJ ADJ",
-        "senses": [
-            "not- (vegrandis => small), without; very (vepallidus => very pale);"
-        ],
-        "orth": "ve"
-    },
-    {
-        "pos": "N",
-        "form": "N N",
-        "senses": [
-            "five-; fifth; (Roman numeral for 5);"
-        ],
-        "orth": "V"
-    },
-    {
-        "pos": "N",
-        "form": "N N",
-        "senses": [
-            "ten-; tenth; (Roman numeral for 10);"
-        ],
-        "orth": "X"
-    }
+  {
+    "pos": "X",
+    "form": "X X",
+    "senses": ["- away, off; - aside;"],
+    "orth": "abs"
+  },
+  {
+    "pos": "V",
+    "form": "V V",
+    "senses": ["- away, off; - aside;"],
+    "orth": "ab"
+  },
+  {
+    "pos": "X",
+    "form": "X X",
+    "senses": ["- to, towards, near, for, together (adeo => go to);"],
+    "orth": "ac c"
+  },
+  {
+    "pos": "X",
+    "form": "X X",
+    "senses": ["- to, towards, near, for, together (adeo => go to);"],
+    "orth": "ac q"
+  },
+  {
+    "pos": "X",
+    "form": "X X",
+    "senses": ["- to, towards, near, for, together (adeo => go to);"],
+    "orth": "ad"
+  },
+  {
+    "pos": "X",
+    "form": "X X",
+    "senses": ["having to do with buildings/temples;"],
+    "orth": "aedi"
+  },
+  {
+    "pos": "X",
+    "form": "X X",
+    "senses": ["equi-, equal;"],
+    "orth": "aequi"
+  },
+  {
+    "pos": "X",
+    "form": "X X",
+    "senses": ["- to, towards, near, for, together (adeo => go to);"],
+    "orth": "af f"
+  },
+  {
+    "pos": "X",
+    "form": "X X",
+    "senses": ["- to, towards, near, for, together (adeo => go to);"],
+    "orth": "ag g"
+  },
+  {
+    "pos": "X",
+    "form": "X X",
+    "senses": ["high, lofty;"],
+    "orth": "alti"
+  },
+  {
+    "pos": "X",
+    "form": "X X",
+    "senses": ["around, round about; having two;"],
+    "orth": "ambi"
+  },
+  {
+    "pos": "X",
+    "form": "X X",
+    "senses": ["around, round about; having two;"],
+    "orth": "amb"
+  },
+  {
+    "pos": "X",
+    "form": "X X",
+    "senses": [
+      "having two/double, (on) both/opposite (sides), front and back;"
+    ],
+    "orth": "amphi"
+  },
+  {
+    "pos": "X",
+    "form": "X X",
+    "senses": ["around, round about; having two;"],
+    "orth": "am"
+  },
+  {
+    "pos": "X",
+    "form": "X X",
+    "senses": ["ante-, - before;"],
+    "orth": "ante"
+  },
+  {
+    "pos": "X",
+    "form": "X X",
+    "senses": [
+      "anti-, counter-, against, contrary, opposite/opposed to; for ante-/before;"
+    ],
+    "orth": "anti"
+  },
+  {
+    "pos": "X",
+    "form": "X X",
+    "senses": ["around, round about; having two;"],
+    "orth": "an"
+  },
+  {
+    "pos": "X",
+    "form": "X X",
+    "senses": ["- to, towards, near, for, together (adeo => go to);"],
+    "orth": "ap p"
+  },
+  {
+    "pos": "X",
+    "form": "X X",
+    "senses": ["arch-, chief-, first, master; great; extremely, very;"],
+    "orth": "archi"
+  },
+  {
+    "pos": "X",
+    "form": "X X",
+    "senses": ["- to, towards, near, for, together (adeo => go to);"],
+    "orth": "as s"
+  },
+  {
+    "pos": "X",
+    "form": "X X",
+    "senses": ["- to, towards, near, for, together (adeo => go to);"],
+    "orth": "at t"
+  },
+  {
+    "pos": "X",
+    "form": "X X",
+    "senses": ["golden, gold-; of gold, gold-colored;"],
+    "orth": "auri"
+  },
+  {
+    "pos": "X",
+    "form": "X X",
+    "senses": ["- away, off (aufero => make off with, carry away); - aside;"],
+    "orth": "au f"
+  },
+  {
+    "pos": "V",
+    "form": "V V",
+    "senses": ["- away, off; - aside;"],
+    "orth": "a"
+  },
+  {
+    "pos": "V",
+    "form": "V V",
+    "senses": ["well, good"],
+    "orth": "bene"
+  },
+  {
+    "pos": "V",
+    "form": "V V",
+    "senses": ["well, good;"],
+    "orth": "beni"
+  },
+  {
+    "pos": "X",
+    "form": "X X",
+    "senses": ["two, twice; double; having two;"],
+    "orth": "bis"
+  },
+  {
+    "pos": "X",
+    "form": "X X",
+    "senses": ["two, twice; double; having two;"],
+    "orth": "bi"
+  },
+  {
+    "pos": "X",
+    "form": "X X",
+    "senses": ["sweet-, soothing-, smooth-, charming, flattering;"],
+    "orth": "blandi"
+  },
+  {
+    "pos": "X",
+    "form": "X X",
+    "senses": ["cardio-, pertaining to the heart;"],
+    "orth": "cardio"
+  },
+  {
+    "pos": "X",
+    "form": "X X",
+    "senses": ["hundred (numerical prefix);"],
+    "orth": "centi"
+  },
+  {
+    "pos": "X",
+    "form": "X X",
+    "senses": ["hundred (numerical prefix);"],
+    "orth": "centu"
+  },
+  {
+    "pos": "X",
+    "form": "X X",
+    "senses": ["- around, about, near;"],
+    "orth": "circum"
+  },
+  {
+    "pos": "X",
+    "form": "X X",
+    "senses": ["- together, completely, forcibly, strongly;"],
+    "orth": "col  l"
+  },
+  {
+    "pos": "X",
+    "form": "X X",
+    "senses": ["- together, completely, forcibly, strongly;"],
+    "orth": "com"
+  },
+  {
+    "pos": "X",
+    "form": "X X",
+    "senses": ["- together, completely, forcibly, strongly;"],
+    "orth": "conn  e"
+  },
+  {
+    "pos": "X",
+    "form": "X X",
+    "senses": ["- together, completely, forcibly, strongly;"],
+    "orth": "conn  i"
+  },
+  {
+    "pos": "X",
+    "form": "X X",
+    "senses": ["- against;"],
+    "orth": "contra"
+  },
+  {
+    "pos": "X",
+    "form": "X X",
+    "senses": ["- together; completely, strongly, forcibly, violently;"],
+    "orth": "con"
+  },
+  {
+    "pos": "X",
+    "form": "X X",
+    "senses": ["- together; completely, strongly, forcibly, violently;"],
+    "orth": "co"
+  },
+  {
+    "pos": "X",
+    "form": "X X",
+    "senses": ["ten (numerical prefix);"],
+    "orth": "decem"
+  },
+  {
+    "pos": "X",
+    "form": "X X",
+    "senses": ["ten (numerical prefix);"],
+    "orth": "decu"
+  },
+  {
+    "pos": "V",
+    "form": "V V",
+    "senses": [
+      "- down, off, away, from; not; removal, reversal; utterly/completely (intensive);"
+    ],
+    "orth": "de"
+  },
+  {
+    "pos": "V",
+    "form": "V V",
+    "senses": [
+      "- apart/asunder, in different directions; separation/dispersal/process reversal;"
+    ],
+    "orth": "dif f"
+  },
+  {
+    "pos": "V",
+    "form": "V V",
+    "senses": [
+      "- apart/asunder, in different directions; separation/dispersal/process reversal;"
+    ],
+    "orth": "dir"
+  },
+  {
+    "pos": "V",
+    "form": "V V",
+    "senses": [
+      "- apart/asunder, in different directions; separation/dispersal/process reversal;"
+    ],
+    "orth": "dis"
+  },
+  {
+    "pos": "N",
+    "form": "N N",
+    "senses": ["two-;"],
+    "orth": "di"
+  },
+  {
+    "pos": "V",
+    "form": "V V",
+    "senses": [
+      "- apart/asunder, in different directions; separation/dispersal/process reversal;"
+    ],
+    "orth": "di"
+  },
+  {
+    "pos": "N",
+    "form": "NUM NUM",
+    "senses": [
+      "- less two/two less than (numerical prefix); (duodeviginti => 20 less 2 = 18);"
+    ],
+    "orth": "duode"
+  },
+  {
+    "pos": "N",
+    "form": "NUM NUM",
+    "senses": [
+      "two more than (numerical prefix); (duoetviginti => two more than twenty = 22);"
+    ],
+    "orth": "duoet"
+  },
+  {
+    "pos": "X",
+    "form": "X X",
+    "senses": ["two (numerical prefix);"],
+    "orth": "du"
+  },
+  {
+    "pos": "V",
+    "form": "V V",
+    "senses": ["- out, away from; beyond; completely;"],
+    "orth": "ef f"
+  },
+  {
+    "pos": "X",
+    "form": "X X",
+    "senses": ["electro-; electrical; electronic;"],
+    "orth": "electro"
+  },
+  {
+    "pos": "V",
+    "form": "V V",
+    "senses": ["- outside;"],
+    "orth": "extra"
+  },
+  {
+    "pos": "V",
+    "form": "V V",
+    "senses": ["- out, away from; beyond; completely;"],
+    "orth": "ex"
+  },
+  {
+    "pos": "V",
+    "form": "V V",
+    "senses": ["- out, away from; beyond; completely;"],
+    "orth": "e"
+  },
+  {
+    "pos": "X",
+    "form": "X X",
+    "senses": ["umequal;"],
+    "orth": "inaequi"
+  },
+  {
+    "pos": "V",
+    "form": "V V",
+    "senses": ["between, within; at intervals, to pieces;"],
+    "orth": "inter"
+  },
+  {
+    "pos": "N",
+    "form": "N N",
+    "senses": ["between, within; at intervals, to pieces;"],
+    "orth": "inter"
+  },
+  {
+    "pos": "V",
+    "form": "V V",
+    "senses": ["within, inside; - between, at intervals, to pieces;"],
+    "orth": "intra"
+  },
+  {
+    "pos": "V",
+    "form": "V V",
+    "senses": ["within, inside; - between, at intervals, to pieces;"],
+    "orth": "intro"
+  },
+  {
+    "pos": "V",
+    "form": "V V",
+    "senses": ["- in, - on, - against; not -, un-;"],
+    "orth": "ig n"
+  },
+  {
+    "pos": "N",
+    "form": "N N",
+    "senses": [
+      "two-; second; (Roman numeral for 2); [IIviri/duoviri => 2 man board];"
+    ],
+    "orth": "II"
+  },
+  {
+    "pos": "V",
+    "form": "V V",
+    "senses": ["- in, - on, - against; not -, un-;"],
+    "orth": "il l"
+  },
+  {
+    "pos": "V",
+    "form": "V V",
+    "senses": ["- in, - on, - against; not -, un-;"],
+    "orth": "im b"
+  },
+  {
+    "pos": "V",
+    "form": "V V",
+    "senses": ["- in, - on, - against; not -, un-;"],
+    "orth": "im m"
+  },
+  {
+    "pos": "V",
+    "form": "V V",
+    "senses": ["- in, - on, - against; not -, un-;"],
+    "orth": "im p"
+  },
+  {
+    "pos": "V",
+    "form": "V V",
+    "senses": ["- in, - on, - against; not -, un-;"],
+    "orth": "in"
+  },
+  {
+    "pos": "A",
+    "form": "ADJ ADJ",
+    "senses": ["not -, un-, -less;"],
+    "orth": "in"
+  },
+  {
+    "pos": "V",
+    "form": "V V",
+    "senses": ["- in, - on, - against; not -, un-;"],
+    "orth": "ir r"
+  },
+  {
+    "pos": "V",
+    "form": "V V",
+    "senses": ["ill, bad;"],
+    "orth": "male"
+  },
+  {
+    "pos": "N",
+    "form": "N N",
+    "senses": ["much, many;"],
+    "orth": "multi"
+  },
+  {
+    "pos": "A",
+    "form": "ADV ADV",
+    "senses": ["not;"],
+    "orth": "ne"
+  },
+  {
+    "pos": "V",
+    "form": "V V",
+    "senses": ["not;"],
+    "orth": "non"
+  },
+  {
+    "pos": "V",
+    "form": "V V",
+    "senses": ["- towards, to meet, in opposition;"],
+    "orth": "ob"
+  },
+  {
+    "pos": "X",
+    "form": "X X",
+    "senses": ["eight (numerical prefix);"],
+    "orth": "octu"
+  },
+  {
+    "pos": "V",
+    "form": "V V",
+    "senses": ["- towards, to meet, in opposition;"],
+    "orth": "of f"
+  },
+  {
+    "pos": "A",
+    "form": "ADJ ADJ",
+    "senses": ["all-, - everywhere;"],
+    "orth": "omni"
+  },
+  {
+    "pos": "V",
+    "form": "V V",
+    "senses": ["- towards, to meet, in opposition;"],
+    "orth": "op p"
+  },
+  {
+    "pos": "V",
+    "form": "V V",
+    "senses": ["- towards, to meet, in opposition;"],
+    "orth": "os t"
+  },
+  {
+    "pos": "A",
+    "form": "ADJ ADJ",
+    "senses": ["very -, - completely, - thoroughly;"],
+    "orth": "per"
+  },
+  {
+    "pos": "V",
+    "form": "V V",
+    "senses": [
+      "- through, thoroughly, completely, very; adds to the force of the verb;"
+    ],
+    "orth": "per"
+  },
+  {
+    "pos": "V",
+    "form": "V V",
+    "senses": ["- forward;"],
+    "orth": "por"
+  },
+  {
+    "pos": "X",
+    "form": "X X",
+    "senses": ["past or by; (drive past, drive by, flow past, flow by);"],
+    "orth": "praeter"
+  },
+  {
+    "pos": "X",
+    "form": "X X",
+    "senses": [
+      "pre-, before -, in front of -; forth; very -, - completely, - thorughly;"
+    ],
+    "orth": "prae"
+  },
+  {
+    "pos": "N",
+    "form": "N N",
+    "senses": ["before -, in front of -;"],
+    "orth": "pro"
+  },
+  {
+    "pos": "V",
+    "form": "V V",
+    "senses": [
+      "- forward; before; in front of; forth [pro-cedo => go forth, proceed, continue];"
+    ],
+    "orth": "pro"
+  },
+  {
+    "pos": "X",
+    "form": "X X",
+    "senses": [
+      "pseudo-, false; fallacious, deceitful; sperious; imitation of;"
+    ],
+    "orth": "pseudo"
+  },
+  {
+    "pos": "X",
+    "form": "X X",
+    "senses": ["four (numerical prefix);"],
+    "orth": "quadri"
+  },
+  {
+    "pos": "X",
+    "form": "X X",
+    "senses": ["four (numerical prefix);"],
+    "orth": "quadru"
+  },
+  {
+    "pos": "X",
+    "form": "X X",
+    "senses": ["five (numerical prefix);"],
+    "orth": "quincu"
+  },
+  {
+    "pos": "X",
+    "form": "X X",
+    "senses": ["five (numerical prefix);"],
+    "orth": "quinqu"
+  },
+  {
+    "pos": "X",
+    "form": "X X",
+    "senses": ["five (numerical prefix);"],
+    "orth": "quinti"
+  },
+  {
+    "pos": "V",
+    "form": "V V",
+    "senses": ["- back, - again;"],
+    "orth": "red"
+  },
+  {
+    "pos": "X",
+    "form": "X X",
+    "senses": ["- back, - again;"],
+    "orth": "re"
+  },
+  {
+    "pos": "V",
+    "form": "V V",
+    "senses": ["- apart, apart from; away;"],
+    "orth": "sed"
+  },
+  {
+    "pos": "X",
+    "form": "X X",
+    "senses": ["semi-, half, partly;"],
+    "orth": "semi"
+  },
+  {
+    "pos": "X",
+    "form": "X X",
+    "senses": ["seven (numerical prefix);"],
+    "orth": "septem"
+  },
+  {
+    "pos": "X",
+    "form": "X X",
+    "senses": ["seven (numerical prefix);"],
+    "orth": "septu"
+  },
+  {
+    "pos": "X",
+    "form": "X X",
+    "senses": [
+      "one and half (numerical); one plus aliquot fraction; (sesqui-septimus = 8/7);"
+    ],
+    "orth": "sesque"
+  },
+  {
+    "pos": "X",
+    "form": "X X",
+    "senses": [
+      "one and half (numerical); one plus aliquot fraction; (sesqui-septimus = 8/7);"
+    ],
+    "orth": "sesqui"
+  },
+  {
+    "pos": "X",
+    "form": "X X",
+    "senses": [
+      "one and half (numerical); one plus aliquot fraction; (sesqui-septimus = 8/7);"
+    ],
+    "orth": "sexqui"
+  },
+  {
+    "pos": "X",
+    "form": "X X",
+    "senses": ["six-;"],
+    "orth": "ses"
+  },
+  {
+    "pos": "X",
+    "form": "X X",
+    "senses": ["six (numerical prefix);"],
+    "orth": "sexti"
+  },
+  {
+    "pos": "X",
+    "form": "X X",
+    "senses": ["six (numerical prefix);"],
+    "orth": "sextu"
+  },
+  {
+    "pos": "X",
+    "form": "X X",
+    "senses": ["six-;"],
+    "orth": "sex"
+  },
+  {
+    "pos": "-",
+    "form": "--V V",
+    "senses": [
+      "--- apart, apart from; away (se-cedo = go away, withdraw, secede);"
+    ],
+    "orth": "-- se      --  conflict with semet"
+  },
+  {
+    "pos": "X",
+    "form": "X X",
+    "senses": ["one (numerical prefix), single, simple;"],
+    "orth": "sim"
+  },
+  {
+    "pos": "V",
+    "form": "V V",
+    "senses": ["sub-; - up to, - under, up from under; to the aid;"],
+    "orth": "sub"
+  },
+  {
+    "pos": "N",
+    "form": "N N",
+    "senses": [
+      "sub-; somewhat -/-ish/rather -; under, from under/below; lesser/assistant/vice;"
+    ],
+    "orth": "sub"
+  },
+  {
+    "pos": "A",
+    "form": "ADJ ADJ",
+    "senses": [
+      "sub-; somewhat -/-ish/rather -; under, from under/below; lesser/assistant/vice;"
+    ],
+    "orth": "sub"
+  },
+  {
+    "pos": "V",
+    "form": "V V",
+    "senses": ["- up to, - under, up from under; to the aid;"],
+    "orth": "suc  c"
+  },
+  {
+    "pos": "N",
+    "form": "N N",
+    "senses": [
+      "sub-; somewhat -/-ish/rather -; under, from under/below; lesser/assistant/vice;"
+    ],
+    "orth": "suc c"
+  },
+  {
+    "pos": "A",
+    "form": "ADJ ADJ",
+    "senses": [
+      "sub-; somewhat -/-ish/rather -; under, from under/below; lesser/assistant/vice;"
+    ],
+    "orth": "suc c"
+  },
+  {
+    "pos": "X",
+    "form": "X X",
+    "senses": ["super-, over, above, upon; from above; over and above;"],
+    "orth": "super"
+  },
+  {
+    "pos": "X",
+    "form": "X X",
+    "senses": [
+      "supra-, over, above, upon, on top of; earlier than; beyond; superior to;"
+    ],
+    "orth": "supra"
+  },
+  {
+    "pos": "X",
+    "form": "X X",
+    "senses": [
+      "number plus 4/5; one plus aliquot fraction; (superquadripartiens = 9/5);"
+    ],
+    "orth": "superquadri"
+  },
+  {
+    "pos": "V",
+    "form": "V V",
+    "senses": ["super-, over, above;"],
+    "orth": "sur"
+  },
+  {
+    "pos": "V",
+    "form": "V V",
+    "senses": ["- up to, - under, up from under; to the aid;"],
+    "orth": "sus s"
+  },
+  {
+    "pos": "V",
+    "form": "V V",
+    "senses": ["- across, - over;"],
+    "orth": "trans"
+  },
+  {
+    "pos": "V",
+    "form": "V V",
+    "senses": ["- across, - over;"],
+    "orth": "tra"
+  },
+  {
+    "pos": "V",
+    "form": "V V",
+    "senses": ["- across, - over;"],
+    "orth": "tre i"
+  },
+  {
+    "pos": "X",
+    "form": "X X",
+    "senses": [
+      "three; (also used to represent many times, persistant, extreme, gross);"
+    ],
+    "orth": "tri"
+  },
+  {
+    "pos": "N",
+    "form": "N N",
+    "senses": ["beyond; exceeding; over; more than;"],
+    "orth": "ultra"
+  },
+  {
+    "pos": "A",
+    "form": "ADJ ADJ",
+    "senses": ["extremely; more; overly; more than;"],
+    "orth": "ultra"
+  },
+  {
+    "pos": "N",
+    "form": "NUM NUM",
+    "senses": [
+      "- less one, one less than; (undetriginta => thirty less one = 29);"
+    ],
+    "orth": "unde"
+  },
+  {
+    "pos": "A",
+    "form": "ADJ ADJ",
+    "senses": ["one-; having (only/but) one ~; (being) of one ~;"],
+    "orth": "uni"
+  },
+  {
+    "pos": "A",
+    "form": "ADJ ADJ",
+    "senses": [
+      "not- (vegrandis => small), without; very (vepallidus => very pale);"
+    ],
+    "orth": "ve"
+  },
+  {
+    "pos": "N",
+    "form": "N N",
+    "senses": ["five-; fifth; (Roman numeral for 5);"],
+    "orth": "V"
+  },
+  {
+    "pos": "N",
+    "form": "N N",
+    "senses": ["ten-; tenth; (Roman numeral for 10);"],
+    "orth": "X"
+  }
 ]

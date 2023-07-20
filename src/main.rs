@@ -7,6 +7,7 @@ mod english_to_latin;
 mod latin_to_english;
 pub mod utils {
     pub mod data;
+    pub mod tricks;
 }
 
 #[derive(Serialize, Deserialize)]
