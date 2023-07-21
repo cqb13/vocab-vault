@@ -1,5 +1,6 @@
 use clap::{App, Arg};
 use english_to_latin::WordInfo;
+use latin_to_english::LatinTranslationInfo;
 use serde::{Deserialize, Serialize};
 use serde_json;
 
@@ -11,10 +12,17 @@ pub mod utils {
 }
 
 #[derive(Serialize, Deserialize)]
-struct Translation {
+struct LatinTranslation {
     word: String,
-    def: Vec<WordInfo>,
+    def: Vec<LatinTranslationInfo>
 }
+
+#[derive(Serialize, Deserialize)]
+struct EnglishTranslation {
+    word: String,
+    def: Vec<WordInfo>
+}
+
 
 fn main() {
     let matches = App::new("Translator CLI")
@@ -75,13 +83,12 @@ fn translate_to_english(latin_text: &str) {
 
     for latin_word in latin_words {
         let output = latin_to_english::translate_to_english(latin_word);
-        //if output.len() > 0 {
-        //    translations.push(LatinTranslation {
-        //        word: latin_word.to_string(),
-        //        def: output,
-        //    });
-        //}
-        translations.push(output);
+        if output.len() > 0 {
+            translations.push(LatinTranslation {
+                word: latin_word.to_string(),
+                def: output,
+            });
+        }
     }
 
     let json_output = serde_json::to_string_pretty(&translations).unwrap();
@@ -90,12 +97,12 @@ fn translate_to_english(latin_text: &str) {
 
 fn translate_to_latin(english_text: &str, formatted_output: bool) {
     let english_words: Vec<&str> = english_text.split(" ").collect();
-    let mut translations: Vec<Translation> = Vec::new();
+    let mut translations: Vec<EnglishTranslation> = Vec::new();
 
     for word in english_words {
         let output = english_to_latin::translate_to_latin(word);
         if output.len() > 0 {
-            translations.push(Translation {
+            translations.push(EnglishTranslation {
                 word: word.to_string(),
                 def: output,
             });
