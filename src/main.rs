@@ -1,8 +1,8 @@
 use clap::{App, Arg};
-use english_to_latin::WordInfo;
 use latin_to_english::LatinTranslationInfo;
 use serde::{Deserialize, Serialize};
 use serde_json;
+use utils::data::EnglishWordInfo;
 
 mod english_to_latin;
 mod latin_to_english;
@@ -14,15 +14,14 @@ pub mod utils {
 #[derive(Serialize, Deserialize)]
 struct LatinTranslation {
     word: String,
-    def: Vec<LatinTranslationInfo>
+    def: Vec<LatinTranslationInfo>,
 }
 
 #[derive(Serialize, Deserialize)]
 struct EnglishTranslation {
     word: String,
-    def: Vec<WordInfo>
+    def: Vec<EnglishWordInfo>,
 }
-
 
 fn main() {
     let matches = App::new("Translator CLI")

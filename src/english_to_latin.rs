@@ -1,44 +1,14 @@
-use crate::latin_to_english::LatinWordInfo;
-use crate::utils::data::{get_english_words, get_latin_dictionary};
-use serde::{Deserialize, Serialize};
+use crate::utils::data::{get_english_words, get_latin_dictionary, LatinWordInfo, EnglishWordInfo};
 use serde_json::Value;
 
-#[derive(Serialize, Deserialize)]
-pub struct WordInfo {
-    pub orth: String,
-    pub wid: i32,
-    pub pos: String,
-    pub frequency_type: String,
-    pub true_frequency: i16,
-    pub frequency: i16,
-    pub compound: i16,
-    pub semi: i16,
-    pub latin_entry: LatinWordInfo,
-}
-
-impl From<WordInfo> for Vec<String> {
-    fn from(word_info: WordInfo) -> Self {
-        vec![
-            word_info.orth,
-            word_info.wid.to_string(),
-            word_info.pos,
-            word_info.frequency_type,
-            word_info.true_frequency.to_string(),
-            word_info.frequency.to_string(),
-            word_info.compound.to_string(),
-            word_info.semi.to_string(),
-        ]
-    }
-}
-
-pub fn translate_to_latin(english_word: &str) -> Vec<WordInfo> {
+pub fn translate_to_latin(english_word: &str) -> Vec<EnglishWordInfo> {
     const MAX_RESPONSE_ITEMS: usize = 6;
-    let mut output: Vec<WordInfo> = Vec::new();
+    let mut output: Vec<EnglishWordInfo> = Vec::new();
 
     let english_words: Value = get_english_words();
     for word in english_words.as_array().unwrap() {
         if word["orth"].as_str().unwrap_or_default().to_lowercase() == english_word.to_lowercase() {
-            let word_info = WordInfo {
+            let word_info = EnglishWordInfo {
                 orth: word["orth"].as_str().unwrap_or_default().to_string(),
                 wid: word["wid"].as_i64().unwrap_or_default() as i32,
                 pos: word["pos"].as_str().unwrap_or_default().to_string(),
@@ -86,13 +56,13 @@ fn calculate_true_frequency(frequency: i16, compound: i16, semi: i16) -> i16 {
     frequency + compound - semi
 }
 
-fn weigh_words(word_list: Vec<WordInfo>) -> Vec<WordInfo> {
+fn weigh_words(word_list: Vec<EnglishWordInfo>) -> Vec<EnglishWordInfo> {
     let mut weighted_word_list = word_list;
     weighted_word_list.sort_by(|a, b| a.true_frequency.cmp(&b.true_frequency));
     weighted_word_list
 }
 
-fn find_definition(word_list: &mut Vec<WordInfo>) {
+fn find_definition(word_list: &mut Vec<EnglishWordInfo>) {
     let latin_dictionary: Value = get_latin_dictionary();
 
     for word_info in word_list.iter_mut() {
