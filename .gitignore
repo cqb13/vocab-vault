@@ -9,7 +9,6 @@
 
 # Editor-specific files
 .vscode
-.vscode/*
 .idea
 
 # Generated files
