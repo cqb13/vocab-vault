@@ -1,6 +1,6 @@
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
-use std::fs;
+use std::include_bytes;
 
 //TODO: account for words that have a string as n
 #[derive(Serialize, Deserialize, Debug)]
@@ -139,49 +139,61 @@ impl From<EnglishWordInfo> for Vec<String> {
 }
 
 pub fn get_english_words() -> Value {
-    serde_json::from_str(&fs::read_to_string("src/data/english_words.json").unwrap()).unwrap()
+    let english_words_json = include_bytes!("../data/english_words.json");
+    serde_json::from_slice(english_words_json).unwrap()
 }
 
 pub fn get_latin_dictionary() -> Value {
-    serde_json::from_str(&fs::read_to_string("src/data/latin_dictionary.json").unwrap()).unwrap()
+    let latin_dictionary_json = include_bytes!("../data/latin_dictionary.json");
+    serde_json::from_slice(latin_dictionary_json).unwrap()
 }
 
 pub fn get_unique_latin_words() -> Value {
-    serde_json::from_str(&fs::read_to_string("src/data/unique_latin_words.json").unwrap()).unwrap()
+    let unique_latin_words_json = include_bytes!("../data/unique_latin_words.json");
+    serde_json::from_slice(unique_latin_words_json).unwrap()
 }
 
 pub fn get_latin_stems() -> Value {
-    serde_json::from_str(&fs::read_to_string("src/data/latin_stems.json").unwrap()).unwrap()
+    let latin_stems_json = include_bytes!("../data/latin_stems.json");
+    serde_json::from_slice(latin_stems_json).unwrap()
 }
 
 pub fn get_latin_inflections() -> Value {
-    serde_json::from_str(&fs::read_to_string("src/data/latin_inflections.json").unwrap()).unwrap()
+    let latin_inflections_json = include_bytes!("../data/latin_inflections.json");
+    serde_json::from_slice(latin_inflections_json).unwrap()
 }
 
 pub fn get_latin_addons() -> Value {
-    serde_json::from_str(&fs::read_to_string("src/data/latin_addons.json").unwrap()).unwrap()
+    let latin_addons_json = include_bytes!("../data/latin_addons.json");
+    serde_json::from_slice(latin_addons_json).unwrap()
 }
 
 pub fn get_latin_prefixes() -> Vec<Modifier> {
-    serde_json::from_str(&fs::read_to_string("src/data/latin_prefixes.json").unwrap()).unwrap()
+    let latin_prefixes_json = include_bytes!("../data/latin_prefixes.json");
+    serde_json::from_slice(latin_prefixes_json).unwrap()
 }
 
 pub fn get_latin_suffixes() -> Vec<Modifier> {
-    serde_json::from_str(&fs::read_to_string("src/data/latin_suffixes.json").unwrap()).unwrap()
+    let latin_suffixes_json = include_bytes!("../data/latin_suffixes.json");
+    serde_json::from_slice(latin_suffixes_json).unwrap()
 }
 
 pub fn get_latin_packons() -> Vec<Attachment> {
-    serde_json::from_str(&fs::read_to_string("src/data/latin_packons.json").unwrap()).unwrap()
+    let latin_packons_json = include_bytes!("../data/latin_packons.json");
+    serde_json::from_slice(latin_packons_json).unwrap()
 }
 
 pub fn get_latin_not_packons() -> Vec<Attachment> {
-    serde_json::from_str(&fs::read_to_string("src/data/latin_not_packons.json").unwrap()).unwrap()
+    let latin_not_packons_json = include_bytes!("../data/latin_not_packons.json");
+    serde_json::from_slice(latin_not_packons_json).unwrap()
 }
 
 pub fn get_latin_tackons() -> Vec<Attachment> {
-    serde_json::from_str(&fs::read_to_string("src/data/latin_tackons.json").unwrap()).unwrap()
+    let latin_tackons_json = include_bytes!("../data/latin_tackons.json");
+    serde_json::from_slice(latin_tackons_json).unwrap()
 }
 
 pub fn get_latin_tickons() -> Vec<Attachment> {
-    serde_json::from_str(&fs::read_to_string("src/data/latin_tickons.json").unwrap()).unwrap()
+    let latin_tickons_json = include_bytes!("../data/latin_tickons.json");
+    serde_json::from_slice(latin_tickons_json).unwrap()
 }
