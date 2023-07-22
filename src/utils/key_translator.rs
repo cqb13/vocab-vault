@@ -42,7 +42,7 @@ pub fn translate_mood(key: &str) -> &str {
 
 pub fn translate_noun(key: &str) -> &str {
     match key {
-        "S" => "singular",          
+        "S" => "singular",
         "M" => "plural / multiple",
         "A" => "abstract idea",
         "G" => "group name (ex. Romans)",

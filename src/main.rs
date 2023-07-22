@@ -8,8 +8,9 @@ mod english_to_latin;
 mod latin_to_english;
 pub mod utils {
     pub mod data;
-    pub mod tricks;
     pub mod key_translator;
+    pub mod principle_part_generator;
+    pub mod tricks;
 }
 
 #[derive(Serialize, Deserialize)]
@@ -28,7 +29,7 @@ fn main() {
     let matches = App::new("Translator CLI")
         .version("0.1.0")
         .author("cqb13")
-        .about("A simple CLI for translation")
+        .about("A CLI for interacting with the Whitaker's Words Dictionary")
         .subcommand(
             App::new("transEng")
                 .about("Translate Latin to English")

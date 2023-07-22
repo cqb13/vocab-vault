@@ -1,4 +1,4 @@
-use crate::utils::data::{get_english_words, get_latin_dictionary, LatinWordInfo, EnglishWordInfo};
+use crate::utils::data::{get_english_words, get_latin_dictionary, EnglishWordInfo, LatinWordInfo};
 use serde_json::Value;
 
 pub fn translate_to_latin(english_word: &str) -> Vec<EnglishWordInfo> {
