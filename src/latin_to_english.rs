@@ -1,16 +1,13 @@
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
 
-use crate::utils::data::get_latin_dictionary;
-use crate::utils::data::get_latin_inflections;
-use crate::utils::data::get_latin_prefixes;
-use crate::utils::data::get_latin_stems;
-use crate::utils::data::get_latin_suffixes;
-use crate::utils::data::get_unique_latin_words;
+use crate::utils::data::{
+    get_latin_dictionary, get_latin_inflections, get_latin_not_packons, get_latin_packons,
+    get_latin_prefixes, get_latin_stems, get_latin_suffixes, get_latin_tackons,
+    get_unique_latin_words, Attachment, Inflection, LatinWordInfo, Stem, UniqueLatinWordInfo,
+};
 
-use crate::utils::tricks::evaluate_roman_numeral;
-use crate::utils::tricks::is_roman_number;
-use crate::utils::tricks::switch_first_i_or_j;
+use crate::utils::tricks::{evaluate_roman_numeral, is_roman_number, switch_first_i_or_j};
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct LatinTranslationInfo {
@@ -25,85 +22,10 @@ pub enum Word {
     UniqueLatinWordInfo(UniqueLatinWordInfo),
 }
 
-//TODO: account for words that have a string as n
-#[derive(Serialize, Deserialize, Debug)]
-pub struct LatinWordInfo {
-    pub pos: String,
-    pub n: Vec<i8>,
-    pub parts: Vec<String>,
-    pub senses: Vec<String>,
-    pub form: String,
-    pub orth: String,
-    pub id: i32,
-}
-
-#[derive(Serialize, Deserialize, Debug)]
-pub struct UniqueLatinWordInfo {
-    pub orth: String,
-    pub senses: Vec<String>,
-    pub pos: String,
-    pub form: String,
-}
-
 #[derive(Serialize, Deserialize, Debug)]
 pub struct StemMatch {
     pub stem: Stem,
     pub inflections: Vec<Inflection>,
-}
-
-#[derive(Serialize, Deserialize, Debug)]
-pub struct Inflection {
-    pub ending: String,
-    pub pos: String,
-    pub notes: String,
-    pub n: Vec<i8>,
-    pub form: String,
-}
-
-impl Clone for Inflection {
-    fn clone(&self) -> Inflection {
-        Inflection {
-            ending: self.ending.clone(),
-            pos: self.pos.clone(),
-            notes: self.notes.clone(),
-            n: self.n.clone(),
-            form: self.form.clone(),
-        }
-    }
-}
-
-#[derive(Serialize, Deserialize, Debug)]
-pub struct Stem {
-    pub pos: String,
-    pub form: String,
-    pub orth: String,
-    pub n: Vec<i8>,
-    pub wid: i32,
-}
-
-impl LatinWordInfo {
-    pub fn new() -> LatinWordInfo {
-        LatinWordInfo {
-            pos: "".to_string(),
-            n: Vec::new(),
-            parts: Vec::new(),
-            senses: Vec::new(),
-            form: "".to_string(),
-            orth: "".to_string(),
-            id: 0,
-        }
-    }
-}
-
-impl UniqueLatinWordInfo {
-    pub fn new() -> UniqueLatinWordInfo {
-        UniqueLatinWordInfo {
-            orth: "".to_string(),
-            senses: Vec::new(),
-            pos: "".to_string(),
-            form: "".to_string(),
-        }
-    }
 }
 
 pub fn translate_to_english(latin_word: &str) -> Vec<LatinTranslationInfo> {
@@ -117,8 +39,8 @@ pub fn translate_to_english(latin_word: &str) -> Vec<LatinTranslationInfo> {
             stems: Vec::new(),
             addon: "".to_string(),
         }];
-    } 
-    
+    }
+
     output = find_form(latin_word, false);
 
     //instead of updating actual word, a copy is created that is switched, to not break splitEnclitic parsing.
@@ -132,6 +54,25 @@ pub fn translate_to_english(latin_word: &str) -> Vec<LatinTranslationInfo> {
     // If nothing is found, try removing enclitics and try again
     // ex: clamaverunt -> clamare
     // doing this here instead of earlier should fix words like salve having the "ve" removed and returning wrong def
+    if output.len() == 0 {
+        let (split_word, enclitic_output) = split_enclitic(latin_word);
+        output = enclitic_output;
+
+        let (unique_latin_word, found) = parse_unique_latin_words(&split_word);
+        if found {
+            output.push(LatinTranslationInfo {
+                word: Word::UniqueLatinWordInfo(unique_latin_word),
+                stems: Vec::new(),
+                addon: "".to_string(),
+            });
+        } else {
+            output.append(&mut find_form(&split_word, false));
+
+            if output.len() == 0 && switch_first_i_or_j(&split_word) != split_word {
+                output.append(&mut find_form(&switch_first_i_or_j(&split_word), false));
+            }
+        }
+    }
 
     if is_roman_number(latin_word) {
         let numeral_evaluation = evaluate_roman_numeral(latin_word);
@@ -150,7 +91,6 @@ pub fn translate_to_english(latin_word: &str) -> Vec<LatinTranslationInfo> {
         }
     }
 
-    
     output
 }
 
@@ -181,13 +121,12 @@ fn parse_unique_latin_words(latin_word: &str) -> (UniqueLatinWordInfo, bool) {
         }
     }
 
-    return (unique_latin_word, found)
+    return (unique_latin_word, found);
 }
 
 fn find_form(latin_word: &str, reduced: bool) -> Vec<LatinTranslationInfo> {
     let mut latin_word_inflections: Vec<Inflection> = Vec::new();
     let latin_inflections: Value = get_latin_inflections();
-    let mut output: Vec<LatinTranslationInfo> = Vec::new();
 
     for inflection in latin_inflections.as_array().unwrap() {
         if latin_word.ends_with(inflection["ending"].as_str().unwrap_or_default()) {
@@ -225,7 +164,7 @@ fn find_form(latin_word: &str, reduced: bool) -> Vec<LatinTranslationInfo> {
         matched_stems = check_stems(latin_word, &latin_word_inflections, false);
     }
 
-    output = lookup_stems(matched_stems);
+    let mut output = lookup_stems(matched_stems);
 
     if output.len() == 0 && !reduced {
         let (mut reduced_output, found) = reduce(&mut latin_word.to_string());
@@ -471,8 +410,88 @@ fn reduce(latin_word: &mut String) -> (Vec<LatinTranslationInfo>, bool) {
         }
     }
     if found == false {
-        return (output, false)
+        return (output, false);
     }
 
     (output, true)
+}
+
+fn split_enclitic(latin_word: &str) -> (String, Vec<LatinTranslationInfo>) {
+    let latin_tackons = get_latin_tackons();
+    let latin_packons = get_latin_packons();
+    let latin_not_packons = get_latin_not_packons();
+    let mut tackon = Attachment::new();
+    let mut output: Vec<LatinTranslationInfo> = Vec::new();
+    let mut split_word = latin_word.to_string();
+
+    for enclitic in latin_tackons {
+        if latin_word.ends_with(&enclitic.orth) {
+            tackon = enclitic;
+            break;
+        }
+    }
+
+    if tackon != Attachment::new() {
+        tackon.form = tackon.orth.clone();
+
+        // Est exception
+        if latin_word != "est" {
+            output.push({
+                LatinTranslationInfo {
+                    word: Word::UniqueLatinWordInfo(UniqueLatinWordInfo {
+                        orth: tackon.orth.clone(),
+                        senses: tackon.senses,
+                        pos: tackon.pos,
+                        form: tackon.form,
+                    }),
+                    stems: Vec::new(),
+                    addon: "tackon".to_string(),
+                }
+            });
+        }
+
+        split_word.truncate(split_word.len() - tackon.orth.len());
+    } else {
+        if latin_word.starts_with("qu") {
+            for packon in latin_packons {
+                if latin_word.ends_with(&packon.orth) {
+                    output.push({
+                        LatinTranslationInfo {
+                            word: Word::UniqueLatinWordInfo(UniqueLatinWordInfo {
+                                orth: packon.orth.clone(),
+                                senses: packon.senses,
+                                pos: packon.pos,
+                                form: packon.form,
+                            }),
+                            stems: Vec::new(),
+                            addon: "packon".to_string(),
+                        }
+                    });
+                }
+
+                split_word.truncate(split_word.len() - packon.orth.len());
+            }
+        } else {
+            for not_packon in latin_not_packons {
+                if latin_word.ends_with(&not_packon.orth) {
+                    output.push({
+                        LatinTranslationInfo {
+                            word: Word::UniqueLatinWordInfo(UniqueLatinWordInfo {
+                                orth: not_packon.orth.clone(),
+                                senses: not_packon.senses,
+                                pos: not_packon.pos,
+                                form: not_packon.form,
+                            }),
+                            stems: Vec::new(),
+                            addon: "not packon".to_string(),
+                        }
+                    });
+                }
+
+                split_word.truncate(split_word.len() - not_packon.orth.len());
+            }
+        }
+    }
+
+    (split_word, output)
 }

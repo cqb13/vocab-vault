@@ -85,11 +85,29 @@ pub struct Modifier {
     pub orth: String,
 }
 
-#[derive(Serialize, Deserialize, Debug)]
-pub struct Attachments {
+#[derive(Serialize, Deserialize, Clone, Debug)]
+pub struct Attachment {
     pub pos: String,
     pub senses: Vec<String>,
     pub orth: String,
+    pub form: String,
+}
+
+impl Attachment {
+    pub fn new() -> Attachment {
+        Attachment {
+            pos: "".to_string(),
+            senses: Vec::new(),
+            orth: "".to_string(),
+            form: "".to_string(),
+        }
+    }
+}
+
+impl PartialEq for Attachment {
+    fn eq(&self, other: &Self) -> bool {
+        self.orth == other.orth
+    }
 }
 
 #[derive(Serialize, Deserialize)]
@@ -152,18 +170,18 @@ pub fn get_latin_suffixes() -> Vec<Modifier> {
     serde_json::from_str(&fs::read_to_string("src/data/latin_suffixes.json").unwrap()).unwrap()
 }
 
-pub fn get_latin_packons() -> Value {
+pub fn get_latin_packons() -> Vec<Attachment> {
     serde_json::from_str(&fs::read_to_string("src/data/latin_packons.json").unwrap()).unwrap()
 }
 
-pub fn get_latin_not_packons() -> Value {
+pub fn get_latin_not_packons() -> Vec<Attachment> {
     serde_json::from_str(&fs::read_to_string("src/data/latin_not_packons.json").unwrap()).unwrap()
 }
 
-pub fn get_latin_tackons() -> Value {
+pub fn get_latin_tackons() -> Vec<Attachment> {
     serde_json::from_str(&fs::read_to_string("src/data/latin_tackons.json").unwrap()).unwrap()
 }
 
-pub fn get_latin_tickons() -> Value {
+pub fn get_latin_tickons() -> Vec<Attachment> {
     serde_json::from_str(&fs::read_to_string("src/data/latin_tickons.json").unwrap()).unwrap()
 }
