@@ -90,7 +90,6 @@ pub struct Attachment {
     pub pos: String,
     pub senses: Vec<String>,
     pub orth: String,
-    pub form: String,
 }
 
 impl Attachment {
@@ -99,7 +98,6 @@ impl Attachment {
             pos: "".to_string(),
             senses: Vec::new(),
             orth: "".to_string(),
-            form: "".to_string(),
         }
     }
 }

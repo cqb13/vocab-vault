@@ -1,79 +1,73 @@
 [
-    {
-        "orth": "cumque",
-        "pos": "ADJ 0 0 POS",
-        "senses": [
-            "-ever/-soever; (for generalized/indefinite force); (what/how -> what/however);"
-        ]
-    },
-    {
-        "orth": "cunque",
-        "pos": "ADJ 0 0 POS",
-        "senses": [
-            "-ever/-soever; (for generalized/indefinite force); (what/how -> what/however);"
-        ]
-    },
-    {
-        "orth": "cine",
-        "pos": "PRON 3 1 ADJECT",
-        "senses": [
-            "TACKON w/hic this?   (hic + ce + ne (enclitic));"
-        ]
-    },
-    {
-        "orth": "pte",
-        "pos": "ADJ 1 0 POS",
-        "senses": [
-            "TACKON ! (emphatic particle w/personal ADJ); (usually with ABL, suapte);"
-        ]
-    },
-    {
-        "orth": "ce",
-        "pos": "PRON 3 1 ADJECT",
-        "senses": [
-            "TACKON w/hic this;"
-        ]
-    },
-    {
-        "orth": "modi",
-        "pos": "PRON 3 1 ADJECT",
-        "senses": [
-            "TACKON w/GEN of ~ kind, sort, nature; (w/hic); [huiusmodi => of this sort];"
-        ]
-    },
-    {
-        "orth": "dem",
-        "pos": "PRON 4 2 DEMONS",
-        "senses": [
-            "TACKON w/i-ea-id   idem => same;"
-        ]
-    },
-    {
-        "orth": "cum",
-        "pos": "PRON 5 0 PERS",
-        "senses": [
-            "TACKON with (enclitic with PRON 5 0); [w/ABL  mecum => at my house/with me];"
-        ]
-    },
-    {
-        "orth": "vis",
-        "pos": "ADJ  1 1 POS",
-        "senses": [
-            "TACKON (what)-ever (w/quantus) [quantusvis => of whatever size you like];"
-        ]
-    },
-    {
-        "orth": "met",
-        "pos": "PRON 5 0 PERS",
-        "senses": [
-            "TACKON w/personal self, own; on subst PERS [meamet/egomet => my own/myself];"
-        ]
-    },
-    {
-        "orth": "familias",
-        "pos": "N  3 0 C P",
-        "senses": [
-            "TACKON of the family/household; (archaic GEN); [pater~ => head of household];"
-        ]
-    }
+  {
+    "orth": "cumque",
+    "pos": "ADJ 0 0 POS",
+    "senses": [
+      "-ever/-soever; (for generalized/indefinite force); (what/how -> what/however);"
+    ]
+  },
+  {
+    "orth": "cunque",
+    "pos": "ADJ 0 0 POS",
+    "senses": [
+      "-ever/-soever; (for generalized/indefinite force); (what/how -> what/however);"
+    ]
+  },
+  {
+    "orth": "cine",
+    "pos": "PRON 3 1 ADJECT",
+    "senses": ["TACKON w/hic this?   (hic + ce + ne (enclitic));"]
+  },
+  {
+    "orth": "pte",
+    "pos": "ADJ 1 0 POS",
+    "senses": [
+      "TACKON ! (emphatic particle w/personal ADJ); (usually with ABL, suapte);"
+    ]
+  },
+  {
+    "orth": "ce",
+    "pos": "PRON 3 1 ADJECT",
+    "senses": ["TACKON w/hic this;"]
+  },
+  {
+    "orth": "modi",
+    "pos": "PRON 3 1 ADJECT",
+    "senses": [
+      "TACKON w/GEN of ~ kind, sort, nature; (w/hic); [huiusmodi => of this sort];"
+    ]
+  },
+  {
+    "orth": "dem",
+    "pos": "PRON 4 2 DEMONS",
+    "senses": ["TACKON w/i-ea-id   idem => same;"]
+  },
+  {
+    "orth": "cum",
+    "pos": "PRON 5 0 PERS",
+    "senses": [
+      "TACKON with (enclitic with PRON 5 0); [w/ABL  mecum => at my house/with me];"
+    ]
+  },
+  {
+    "orth": "vis",
+    "pos": "ADJ  1 1 POS",
+    "senses": [
+      "TACKON (what)-ever (w/quantus) [quantusvis => of whatever size you like];"
+    ]
+  },
+  {
+    "orth": "met",
+    "pos": "PRON 5 0 PERS",
+    "senses": [
+      "TACKON w/personal self, own; on subst PERS [meamet/egomet => my own/myself];"
+    ]
+  },
+  {
+    "orth": "familias",
+    "pos": "N  3 0 C P",
+    "senses": [
+      "TACKON of the family/household; (archaic GEN); [pater~ => head of household];"
+    ]
+  }
 ]

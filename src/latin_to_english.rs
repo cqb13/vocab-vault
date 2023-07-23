@@ -29,19 +29,21 @@ pub struct StemMatch {
 }
 
 pub fn translate_to_english(latin_word: &str) -> Vec<LatinTranslationInfo> {
-    let mut output: Vec<LatinTranslationInfo>;
+    let mut output: Vec<LatinTranslationInfo> = Vec::new();
 
     let (unique_latin_word, found) = parse_unique_latin_words(latin_word);
 
     if found {
-        return vec![LatinTranslationInfo {
+        output.push(LatinTranslationInfo {
             word: Word::UniqueLatinWordInfo(unique_latin_word),
             stems: Vec::new(),
-            addon: "".to_string(),
-        }];
+            addon: "unique".to_string(),
+        });
     }
 
-    output = find_form(latin_word, false);
+    if output.len() == 0 {
+        output = find_form(latin_word, false);
+    }
 
     //instead of updating actual word, a copy is created that is switched, to not break splitEnclitic parsing.
     // Some words that start with i can also start with j
@@ -105,17 +107,15 @@ fn parse_unique_latin_words(latin_word: &str) -> (UniqueLatinWordInfo, bool) {
             .to_lowercase()
             == latin_word.to_lowercase()
         {
-            unique_latin_word = UniqueLatinWordInfo {
-                orth: unique_word["orth"].as_str().unwrap_or_default().to_string(),
-                senses: unique_word["senses"]
-                    .as_array()
-                    .unwrap()
-                    .iter()
-                    .map(|sense| sense.as_str().unwrap_or_default().to_string())
-                    .collect(),
-                pos: unique_word["pos"].as_str().unwrap_or_default().to_string(),
-                form: unique_word["form"].as_str().unwrap_or_default().to_string(),
-            };
+            unique_latin_word.orth = unique_word["orth"].as_str().unwrap_or_default().to_string();
+            unique_latin_word.senses = unique_word["senses"]
+                .as_array()
+                .unwrap()
+                .iter()
+                .map(|sense| sense.as_str().unwrap_or_default().to_string())
+                .collect();
+            unique_latin_word.pos = unique_word["pos"].as_str().unwrap_or_default().to_string();
+            unique_latin_word.form = unique_word["form"].as_str().unwrap_or_default().to_string();
             found = true;
             break;
         }
@@ -432,8 +432,6 @@ fn split_enclitic(latin_word: &str) -> (String, Vec<LatinTranslationInfo>) {
     }
 
     if tackon != Attachment::new() {
-        tackon.form = tackon.orth.clone();
-
         // Est exception
         if latin_word != "est" {
             output.push({
@@ -442,7 +440,7 @@ fn split_enclitic(latin_word: &str) -> (String, Vec<LatinTranslationInfo>) {
                         orth: tackon.orth.clone(),
                         senses: tackon.senses,
                         pos: tackon.pos,
-                        form: tackon.form,
+                        form: tackon.orth.clone(),
                     }),
                     stems: Vec::new(),
                     addon: "tackon".to_string(),
@@ -461,7 +459,7 @@ fn split_enclitic(latin_word: &str) -> (String, Vec<LatinTranslationInfo>) {
                                 orth: packon.orth.clone(),
                                 senses: packon.senses,
                                 pos: packon.pos,
-                                form: packon.form,
+                                form: "".to_string(),
                             }),
                             stems: Vec::new(),
                             addon: "packon".to_string(),
@@ -480,7 +478,7 @@ fn split_enclitic(latin_word: &str) -> (String, Vec<LatinTranslationInfo>) {
                                 orth: not_packon.orth.clone(),
                                 senses: not_packon.senses,
                                 pos: not_packon.pos,
-                                form: not_packon.form,
+                                form: "".to_string(),
                             }),
                             stems: Vec::new(),
                             addon: "not packon".to_string(),

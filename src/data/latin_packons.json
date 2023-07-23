@@ -1,79 +1,73 @@
 [
-    {
-        "orth": "cumque",
-        "pos": "PACK    1  0 REL",
-        "senses": [
-            "PACKON w/qui => whoever; whatever; everyone who, all that, anything that;"
-        ]
-    },
-    {
-        "orth": "cunque",
-        "pos": "PACK    1  0 REL",
-        "senses": [
-            "PACKON w/qui => whoever; whatever; everyone who, all that, anything that;"
-        ]
-    },
-    {
-        "orth": "que",
-        "pos": "PACK    1  0 INDEF",
-        "senses": [
-            "PACKON w/qui => whoever it be; whatever; each, each one; everyone, everything;"
-        ]
-    },
-    {
-        "orth": "piam",
-        "pos": "PACK    1  0 INDEF",
-        "senses": [
-            "PACKON w/qui =>  any/somebody, any, some, any/something;"
-        ]
-    },
-    {
-        "orth": "quam",
-        "pos": "PACK    1  0 INDEF",
-        "senses": [
-            "PACKON w/quis =>  any; any man/person, anybody/anyone, any whatever, anything;"
-        ]
-    },
-    {
-        "orth": "dam",
-        "pos": "PACK    1  0 INDEF",
-        "senses": [
-            "PACKON w/qui => certain; a certain (one); a certain thing;"
-        ]
-    },
-    {
-        "orth": "nam",
-        "pos": "PACK    1  0 INTERR",
-        "senses": [
-            "PACKON w/qui => who then/in the world; which, I insist/meant; why/what pray;"
-        ]
-    },
-    {
-        "orth": "cum",
-        "pos": "PACK    1  0 INTERR",
-        "senses": [
-            "PACKON w/qui pron with ABL => with what, with whom;"
-        ]
-    },
-    {
-        "orth": "vis",
-        "pos": "PACK    1  0 INDEF",
-        "senses": [
-            "PACKON w/qui whoever it be, whomever you please; any/anything whatever;"
-        ]
-    },
-    {
-        "orth": "libet",
-        "pos": "PACK    1  0 INDEF",
-        "senses": [
-            "PACKON w/qui-anyone; -whatever; what you will; no matter which;"
-        ]
-    },
-    {
-        "orth": "lubet",
-        "pos": "PACK    1  0 INDEF",
-        "senses": [
-            "PACKON w/qui -anyone; -whatever; what you will; no matter which;"
-        ]
-    }
+  {
+    "orth": "cumque",
+    "pos": "PACK    1  0 REL",
+    "senses": [
+      "PACKON w/qui => whoever; whatever; everyone who, all that, anything that;"
+    ]
+  },
+  {
+    "orth": "cunque",
+    "pos": "PACK    1  0 REL",
+    "senses": [
+      "PACKON w/qui => whoever; whatever; everyone who, all that, anything that;"
+    ]
+  },
+  {
+    "orth": "que",
+    "pos": "PACK    1  0 INDEF",
+    "senses": [
+      "PACKON w/qui => whoever it be; whatever; each, each one; everyone, everything;"
+    ]
+  },
+  {
+    "orth": "piam",
+    "pos": "PACK    1  0 INDEF",
+    "senses": ["PACKON w/qui =>  any/somebody, any, some, any/something;"]
+  },
+  {
+    "orth": "quam",
+    "pos": "PACK    1  0 INDEF",
+    "senses": [
+      "PACKON w/quis =>  any; any man/person, anybody/anyone, any whatever, anything;"
+    ]
+  },
+  {
+    "orth": "dam",
+    "pos": "PACK    1  0 INDEF",
+    "senses": ["PACKON w/qui => certain; a certain (one); a certain thing;"]
+  },
+  {
+    "orth": "nam",
+    "pos": "PACK    1  0 INTERR",
+    "senses": [
+      "PACKON w/qui => who then/in the world; which, I insist/meant; why/what pray;"
+    ]
+  },
+  {
+    "orth": "cum",
+    "pos": "PACK    1  0 INTERR",
+    "senses": ["PACKON w/qui pron with ABL => with what, with whom;"]
+  },
+  {
+    "orth": "vis",
+    "pos": "PACK    1  0 INDEF",
+    "senses": [
+      "PACKON w/qui whoever it be, whomever you please; any/anything whatever;"
+    ]
+  },
+  {
+    "orth": "libet",
+    "pos": "PACK    1  0 INDEF",
+    "senses": [
+      "PACKON w/qui-anyone; -whatever; what you will; no matter which;"
+    ]
+  },
+  {
+    "orth": "lubet",
+    "pos": "PACK    1  0 INDEF",
+    "senses": [
+      "PACKON w/qui -anyone; -whatever; what you will; no matter which;"
+    ]
+  }
 ]
