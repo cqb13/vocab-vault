@@ -5,6 +5,7 @@ pub fn generate_for_nouns(
 ) -> Vec<String> {
     let num_type_1 = number_types[0];
     let num_type_2 = number_types[1];
+    //TODO account for 0 in num2
 
     match (num_type_1, num_type_2) {
         (1, 1) => set_principle_parts(parts, vec!["a", "ae"], None),
@@ -43,6 +44,8 @@ pub fn generate_for_nouns(
 pub fn generate_for_verbs(number_types: Vec<i8>, parts: Vec<String>) -> Vec<String> {
     let num_type_1 = number_types[0];
     let num_type_2 = number_types[1];
+
+    //TODO account for 0 in num2
 
     match (num_type_1, num_type_2) {
         (1, 1) => set_principle_parts(parts, vec!["o", "are", "i", "us"], None),

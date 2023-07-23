@@ -108,7 +108,7 @@ impl PartialEq for Attachment {
     }
 }
 
-#[derive(Serialize, Deserialize)]
+#[derive(Serialize, Deserialize, Debug)]
 pub struct EnglishWordInfo {
     pub orth: String,
     pub wid: i32,
