@@ -25,6 +25,7 @@ struct EnglishTranslation {
     def: Vec<EnglishWordInfo>,
 }
 
+//TODO add a param -m for experimental feature of trying to predict where macrons should be in the word
 fn main() {
     let matches = App::new("Translator CLI")
         .version("0.1.0")
@@ -44,6 +45,13 @@ fn main() {
                         .long("formatted")
                         .help("Determines if the output should be formatted")
                         .takes_value(false),
+                )
+                .arg(
+                    Arg::with_name("predict macrons")
+                        .short('m')
+                        .long("predict macrons")
+                        .help("Tries to predict where macrons should be in the word")
+                        .takes_value(false),
                 ),
         )
         .subcommand(
@@ -60,21 +68,28 @@ fn main() {
                         .long("formatted")
                         .help("Determines if the output should be formatted")
                         .takes_value(false),
+                )
+                .arg(
+                    Arg::with_name("predict macrons")
+                        .short('m')
+                        .long("predict macrons")
+                        .help("Tries to predict where macrons should be in the word")
+                        .takes_value(false),
                 ),
         )
         .get_matches();
 
-    if let Some(matches) = matches.subcommand_matches("transEng") {
-        if let Some(text) = matches.value_of("text") {
-            let formatted_output = matches.is_present("formatted");
+    match matches.subcommand() {
+        Some(("transEng", trans_eng_matches)) => {
+            let text = trans_eng_matches.value_of("text").unwrap();
+            let formatted_output = trans_eng_matches.is_present("formatted");
             translate_to_latin(text, formatted_output);
         }
-    } else if let Some(matches) = matches.subcommand_matches("transLat") {
-        if let Some(text) = matches.value_of("text") {
+        Some(("transLat", trans_lat_matches)) => {
+            let text = trans_lat_matches.value_of("text").unwrap();
             translate_to_english(text);
         }
-    } else {
-        println!("Please provide a valid command: transEng or transLat");
+        _ => println!("Please provide a valid command: transEng or transLat"),
     }
 }
 

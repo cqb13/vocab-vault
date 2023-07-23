@@ -1,4 +1,4 @@
-use serde::{Deserialize, Serialize};
+use serde::{Deserialize, Serialize, Serializer};
 use serde_json::Value;
 
 use crate::utils::data::{
@@ -11,14 +11,18 @@ use crate::utils::tricks::{evaluate_roman_numeral, is_roman_number, switch_first
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct LatinTranslationInfo {
+    #[serde(serialize_with = "serialize_word")]
     pub word: Word,
     pub stems: Vec<StemMatch>,
     pub addon: String,
 }
 
 #[derive(Serialize, Deserialize, Debug)]
+#[serde(tag = "type")]
 pub enum Word {
+    #[serde(rename = "LatinWordInfo")]
     LatinWordInfo(LatinWordInfo),
+    #[serde(rename = "UniqueLatinWordInfo")]
     UniqueLatinWordInfo(UniqueLatinWordInfo),
 }
 
@@ -26,6 +30,16 @@ pub enum Word {
 pub struct StemMatch {
     pub stem: Stem,
     pub inflections: Vec<Inflection>,
+}
+
+fn serialize_word<S>(word: &Word, serializer: S) -> Result<S::Ok, S::Error>
+where
+    S: Serializer,
+{
+    match word {
+        Word::UniqueLatinWordInfo(info) => info.serialize(serializer),
+        Word::LatinWordInfo(info) => info.serialize(serializer),
+    }
 }
 
 pub fn translate_to_english(latin_word: &str) -> Vec<LatinTranslationInfo> {
@@ -37,7 +51,7 @@ pub fn translate_to_english(latin_word: &str) -> Vec<LatinTranslationInfo> {
         output.push(LatinTranslationInfo {
             word: Word::UniqueLatinWordInfo(unique_latin_word),
             stems: Vec::new(),
-            addon: "unique".to_string(),
+            addon: "".to_string(),
         });
     }
 
