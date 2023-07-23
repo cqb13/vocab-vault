@@ -40,7 +40,7 @@ pub fn translate_to_latin(english_word: &str) -> Vec<EnglishWordInfo> {
 
     output = weigh_words(output);
 
-    //output = remove_duplicates(output);
+    output = remove_duplicates(output);
 
     // other words are probably rare/irrelevant or wrong
     if output.len() > MAX_RESPONSE_ITEMS {
@@ -58,8 +58,22 @@ fn calculate_true_frequency(frequency: i16, compound: i16, semi: i16) -> i16 {
 
 fn weigh_words(word_list: Vec<EnglishWordInfo>) -> Vec<EnglishWordInfo> {
     let mut weighted_word_list = word_list;
-    weighted_word_list.sort_by(|a, b| a.true_frequency.cmp(&b.true_frequency));
+    weighted_word_list.sort_by(|a, b| b.true_frequency.cmp(&a.true_frequency));
     weighted_word_list
+}
+
+fn remove_duplicates(word_list: Vec<EnglishWordInfo>) -> Vec<EnglishWordInfo> {
+    let mut deduped_word_list: Vec<EnglishWordInfo> = Vec::new();
+    let mut seen_wids: Vec<i32> = Vec::new();
+
+    for word_info in word_list {
+        if !seen_wids.contains(&word_info.wid) {
+            seen_wids.push(word_info.wid);
+            deduped_word_list.push(word_info);
+        }
+    }
+
+    deduped_word_list
 }
 
 fn find_definition(word_list: &mut Vec<EnglishWordInfo>) {
