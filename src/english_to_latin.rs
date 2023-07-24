@@ -1,38 +1,26 @@
 use crate::utils::data::{get_english_words, get_latin_dictionary, EnglishWordInfo, LatinWordInfo};
-use serde_json::Value;
 
 pub fn translate_to_latin(english_word: &str) -> Vec<EnglishWordInfo> {
     const MAX_RESPONSE_ITEMS: usize = 6;
     let mut output: Vec<EnglishWordInfo> = Vec::new();
 
-    let english_words: Value = get_english_words();
-    for word in english_words.as_array().unwrap() {
-        if word["orth"].as_str().unwrap_or_default().to_lowercase() == english_word.to_lowercase() {
+    let english_words = get_english_words();
+    for word in english_words {
+        if word.orth == english_word.to_lowercase() {
             let word_info = EnglishWordInfo {
-                orth: word["orth"].as_str().unwrap_or_default().to_string(),
-                wid: word["wid"].as_i64().unwrap_or_default() as i32,
-                pos: word["pos"].as_str().unwrap_or_default().to_string(),
-                frequency_type: word["frequencyType"]
-                    .as_str()
-                    .unwrap_or_default()
-                    .to_string(),
+                orth: word.orth,
+                wid: word.wid,
+                pos: word.pos,
+                frequency_type: word.frequency_type,
                 true_frequency: calculate_true_frequency(
-                    word["frequency"].as_i64().unwrap_or_default() as i16,
-                    word["compound"].as_i64().unwrap_or_default() as i16,
-                    word["semi"].as_i64().unwrap_or_default() as i16,
+                    word.frequency,
+                    word.compound,
+                    word.semi,
                 ),
-                frequency: word["frequency"].as_i64().unwrap_or_default() as i16,
-                compound: word["compound"].as_i64().unwrap_or_default() as i16,
-                semi: word["semi"].as_i64().unwrap_or_default() as i16,
-                latin_entry: LatinWordInfo {
-                    pos: "".to_string(),
-                    n: Vec::new(),
-                    parts: Vec::new(),
-                    senses: Vec::new(),
-                    form: "".to_string(),
-                    orth: "".to_string(),
-                    id: 0,
-                },
+                frequency: word.frequency,
+                compound: word.compound,
+                semi: word.semi,
+                latin_entry: LatinWordInfo::new(),
             };
             output.push(word_info.into());
         }
@@ -77,40 +65,12 @@ fn remove_duplicates(word_list: Vec<EnglishWordInfo>) -> Vec<EnglishWordInfo> {
 }
 
 fn find_definition(word_list: &mut Vec<EnglishWordInfo>) {
-    let latin_dictionary: Value = get_latin_dictionary();
+    let latin_dictionary = get_latin_dictionary();
 
     for word_info in word_list.iter_mut() {
-        for latin_word in latin_dictionary.as_array().unwrap() {
-            if latin_word["id"].as_i64().unwrap_or_default() as i32 == word_info.wid {
-                word_info.latin_entry.pos =
-                    latin_word["pos"].as_str().unwrap_or_default().to_string();
-
-                if let Some(n) = latin_word["n"].as_array() {
-                    word_info.latin_entry.n = n
-                        .iter()
-                        .map(|x| x.as_i64().unwrap_or_default() as i8)
-                        .collect();
-                }
-
-                if let Some(parts) = latin_word["parts"].as_array() {
-                    word_info.latin_entry.parts = parts
-                        .iter()
-                        .map(|x| x.as_str().unwrap_or_default().to_string())
-                        .collect();
-                }
-
-                if let Some(senses) = latin_word["senses"].as_array() {
-                    word_info.latin_entry.senses = senses
-                        .iter()
-                        .map(|x| x.as_str().unwrap_or_default().to_string())
-                        .collect();
-                }
-
-                word_info.latin_entry.form =
-                    latin_word["form"].as_str().unwrap_or_default().to_string();
-                word_info.latin_entry.orth =
-                    latin_word["orth"].as_str().unwrap_or_default().to_string();
-                word_info.latin_entry.id = latin_word["id"].as_i64().unwrap_or_default() as i32;
+        for latin_word in latin_dictionary {
+            if latin_word.id == word_info.wid {
+                word_info.latin_entry = latin_word;
             }
         }
     }

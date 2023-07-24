@@ -1,5 +1,4 @@
 use serde::{Deserialize, Serialize};
-use serde_json::Value;
 use std::include_bytes;
 
 //TODO: account for words that have a string as n
@@ -12,6 +11,20 @@ pub struct LatinWordInfo {
     pub form: String,
     pub orth: String,
     pub id: i32,
+}
+
+impl Clone for LatinWordInfo {
+    fn clone(&self) -> LatinWordInfo {
+        LatinWordInfo {
+            pos: self.pos.clone(),
+            n: self.n.clone(),
+            parts: self.parts.clone(),
+            senses: self.senses.clone(),
+            form: self.form.clone(),
+            orth: self.orth.clone(),
+            id: self.id.clone(),
+        }
+    }
 }
 
 impl LatinWordInfo {
@@ -47,6 +60,17 @@ impl UniqueLatinWordInfo {
     }
 }
 
+impl Clone for UniqueLatinWordInfo {
+    fn clone(&self) -> UniqueLatinWordInfo {
+        UniqueLatinWordInfo {
+            orth: self.orth.clone(),
+            senses: self.senses.clone(),
+            pos: self.pos.clone(),
+            form: self.form.clone(),
+        }
+    }
+}
+
 #[derive(Serialize, Deserialize, Debug)]
 pub struct Inflection {
     pub ending: String,
@@ -75,6 +99,36 @@ pub struct Stem {
     pub orth: String,
     pub n: Vec<i8>,
     pub wid: i32,
+}
+
+impl Stem {
+    pub fn new() -> Stem {
+        Stem {
+            pos: "".to_string(),
+            form: "".to_string(),
+            orth: "".to_string(),
+            n: Vec::new(),
+            wid: 0,
+        }
+    }
+}
+
+impl PartialEq for Stem {
+    fn eq(&self, other: &Self) -> bool {
+        self.orth == other.orth
+    }
+}
+
+impl Clone for Stem {
+    fn clone(&self) -> Stem {
+        Stem {
+            pos: self.pos.clone(),
+            form: self.form.clone(),
+            orth: self.orth.clone(),
+            n: self.n.clone(),
+            wid: self.wid.clone(),
+        }
+    }
 }
 
 #[derive(Serialize, Deserialize, Debug)]
@@ -121,6 +175,22 @@ pub struct EnglishWordInfo {
     pub latin_entry: LatinWordInfo,
 }
 
+impl Clone for EnglishWordInfo {
+    fn clone(&self) -> EnglishWordInfo {
+        EnglishWordInfo {
+            orth: self.orth.clone(),
+            wid: self.wid.clone(),
+            pos: self.pos.clone(),
+            frequency_type: self.frequency_type.clone(),
+            true_frequency: self.true_frequency.clone(),
+            frequency: self.frequency.clone(),
+            compound: self.compound.clone(),
+            semi: self.semi.clone(),
+            latin_entry: self.latin_entry.clone(),
+        }
+    }
+}
+
 impl From<EnglishWordInfo> for Vec<String> {
     fn from(word_info: EnglishWordInfo) -> Self {
         vec![
@@ -136,34 +206,29 @@ impl From<EnglishWordInfo> for Vec<String> {
     }
 }
 
-pub fn get_english_words() -> Value {
+pub fn get_english_words() -> Vec<EnglishWordInfo> {
     let english_words_json = include_bytes!("../data/english_words.json");
     serde_json::from_slice(english_words_json).unwrap()
 }
 
-pub fn get_latin_dictionary() -> Value {
+pub fn get_latin_dictionary() -> Vec<LatinWordInfo> {
     let latin_dictionary_json = include_bytes!("../data/latin_dictionary.json");
     serde_json::from_slice(latin_dictionary_json).unwrap()
 }
 
-pub fn get_unique_latin_words() -> Value {
+pub fn get_unique_latin_words() -> Vec<UniqueLatinWordInfo> {
     let unique_latin_words_json = include_bytes!("../data/unique_latin_words.json");
     serde_json::from_slice(unique_latin_words_json).unwrap()
 }
 
-pub fn get_latin_stems() -> Value {
+pub fn get_latin_stems() -> Vec<Stem> {
     let latin_stems_json = include_bytes!("../data/latin_stems.json");
     serde_json::from_slice(latin_stems_json).unwrap()
 }
 
-pub fn get_latin_inflections() -> Value {
+pub fn get_latin_inflections() -> Vec<Inflection> {
     let latin_inflections_json = include_bytes!("../data/latin_inflections.json");
     serde_json::from_slice(latin_inflections_json).unwrap()
-}
-
-pub fn get_latin_addons() -> Value {
-    let latin_addons_json = include_bytes!("../data/latin_addons.json");
-    serde_json::from_slice(latin_addons_json).unwrap()
 }
 
 pub fn get_latin_prefixes() -> Vec<Modifier> {
