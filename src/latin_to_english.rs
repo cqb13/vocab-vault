@@ -252,9 +252,9 @@ fn lookup_stems(stems: Vec<Stem>, inflections: Vec<Inflection>) -> Vec<LatinTran
                     }
                 });
 
-                //if let Some(matching_word) = matching_word {
-                //    add_stem_to_word(stem, Some(matching_word));
-                //}
+                if let Some(matching_word) = matching_word {
+                    add_stem_to_word(stem, Some(matching_word));
+                }
 
             } else {
                 let new_inflections: Vec<Inflection>;
@@ -285,17 +285,16 @@ fn lookup_stems(stems: Vec<Stem>, inflections: Vec<Inflection>) -> Vec<LatinTran
     output
 }
 
-//fn add_stem_to_word(matched_stem: Stem, matching_word: Option<&mut LatinTranslationInfo>) {
-//    if let Some(word) = matching_word {
-//        let stem_to_add = &matched_stem.orth;
-//        let word_stems = &mut word.stem;
-//
-//        if !word_stems.iter().any(|stem| stem.orth == *stem_to_add) {
-//            word_stems.push(matched_stem);
-//        }
-//    }
-//}
+fn add_stem_to_word(matched_stem: Stem, matching_word: Option<&mut LatinTranslationInfo>) {
+    if let Some(word) = matching_word {
+        let stem_to_add = &matched_stem.orth;
+        let word_stems = &mut word.stem;
 
+        if word_stems.orth != *stem_to_add {
+            word_stems.orth = stem_to_add.to_string();
+        }
+    }
+}
 
 fn remove_extra_inflections(inflections: Vec<Inflection>, pos_to_remove: &str) -> Vec<Inflection> {
     let inflections = inflections
