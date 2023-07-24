@@ -20,7 +20,7 @@ use utils::formatter::{sanitize_word, format};
 struct Translation {
     word: String,
     #[serde(serialize_with = "serialize_translation")]
-    def: TranslationType,
+    definitions: TranslationType,
 }
 
 #[derive(Serialize, Deserialize, Debug)]
@@ -118,7 +118,7 @@ fn translate_to_english(latin_text: &str) {
         if output.len() > 0 {
             translations.push(Translation {
                 word: latin_word.to_string(),
-                def: TranslationType::Latin(output),
+                definitions: TranslationType::Latin(output),
             });
         }
     }
@@ -136,7 +136,7 @@ fn translate_to_latin(english_text: &str, formatted_output: bool) {
         if output.len() > 0 {
             translations.push(Translation {
                 word: word.to_string(),
-                def: TranslationType::English(output),
+                definitions: TranslationType::English(output),
             });
         }
     }

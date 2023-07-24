@@ -5,7 +5,7 @@ use std::include_bytes;
 #[derive(Serialize, Deserialize, Debug)]
 pub struct LatinWordInfo {
     pub pos: String,
-    pub n: Vec<i8>,
+    pub n: Vec<NValue>,
     pub parts: Vec<String>,
     pub senses: Vec<String>,
     pub form: String,
@@ -75,8 +75,8 @@ impl Clone for UniqueLatinWordInfo {
 pub struct Inflection {
     pub ending: String,
     pub pos: String,
-    pub notes: String,
-    pub n: Vec<i8>,
+    pub notes: Option<String>,
+    pub n: Vec<NValue>,
     pub form: String,
 }
 
@@ -97,7 +97,7 @@ pub struct Stem {
     pub pos: String,
     pub form: String,
     pub orth: String,
-    pub n: Vec<i8>,
+    pub n: Vec<NValue>,
     pub wid: i32,
 }
 
@@ -168,13 +168,12 @@ pub struct EnglishWordInfo {
     pub wid: i32,
     pub pos: String,
     pub frequency_type: String,
-    pub true_frequency: i16,
+    pub true_frequency: Option<i16>,
     pub frequency: i16,
     pub compound: i16,
     pub semi: i16,
-    pub latin_entry: LatinWordInfo,
+    pub latin_entry: Option<LatinWordInfo>,
 }
-
 impl Clone for EnglishWordInfo {
     fn clone(&self) -> EnglishWordInfo {
         EnglishWordInfo {
@@ -198,11 +197,47 @@ impl From<EnglishWordInfo> for Vec<String> {
             word_info.wid.to_string(),
             word_info.pos,
             word_info.frequency_type,
-            word_info.true_frequency.to_string(),
+            word_info
+                .true_frequency
+                .map_or_else(|| "None".to_string(), |freq| freq.to_string()),
             word_info.frequency.to_string(),
             word_info.compound.to_string(),
             word_info.semi.to_string(),
         ]
+    }
+}
+
+#[derive(Serialize, Deserialize, Debug)]
+#[serde(untagged)]
+pub enum NValue {
+    StrIntInt(String, i8, i8),
+    IntInt(i8, i8),
+    Integer(i8),
+    String(String),
+}
+
+impl Clone for NValue {
+    fn clone(&self) -> NValue {
+        match self {
+            NValue::StrIntInt(s, i1, i2) => NValue::StrIntInt(s.clone(), i1.clone(), i2.clone()),
+            NValue::IntInt(i1, i2) => NValue::IntInt(i1.clone(), i2.clone()),
+            NValue::Integer(i) => NValue::Integer(i.clone()),
+            NValue::String(s) => NValue::String(s.clone()),
+        }
+    }
+}
+
+impl PartialEq for NValue {
+    fn eq(&self, other: &Self) -> bool {
+        match (self, other) {
+            (NValue::StrIntInt(s1, i1, i2), NValue::StrIntInt(s2, i3, i4)) => {
+                s1 == s2 && i1 == i3 && i2 == i4
+            }
+            (NValue::IntInt(i1, i2), NValue::IntInt(i3, i4)) => i1 == i3 && i2 == i4,
+            (NValue::Integer(i1), NValue::Integer(i2)) => i1 == i2,
+            (NValue::String(s1), NValue::String(s2)) => s1 == s2,
+            _ => false,
+        }
     }
 }
 

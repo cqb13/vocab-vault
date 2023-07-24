@@ -12,15 +12,16 @@ pub fn translate_to_latin(english_word: &str) -> Vec<EnglishWordInfo> {
                 wid: word.wid,
                 pos: word.pos,
                 frequency_type: word.frequency_type,
-                true_frequency: calculate_true_frequency(
+                true_frequency: Some(calculate_true_frequency(
                     word.frequency,
                     word.compound,
                     word.semi,
-                ),
+                )),
+
                 frequency: word.frequency,
                 compound: word.compound,
                 semi: word.semi,
-                latin_entry: LatinWordInfo::new(),
+                latin_entry: Some(LatinWordInfo::new()),
             };
             output.push(word_info.into());
         }
@@ -68,9 +69,9 @@ fn find_definition(word_list: &mut Vec<EnglishWordInfo>) {
     let latin_dictionary = get_latin_dictionary();
 
     for word_info in word_list.iter_mut() {
-        for latin_word in latin_dictionary {
+        for latin_word in &latin_dictionary {
             if latin_word.id == word_info.wid {
-                word_info.latin_entry = latin_word;
+                word_info.latin_entry = Some(latin_word.clone());
             }
         }
     }
