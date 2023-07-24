@@ -112,8 +112,7 @@ fn parse_unique_latin_words(latin_word: &str) -> (UniqueLatinWordInfo, bool) {
     let unique_words = get_unique_latin_words();
     let mut found = false;
     for unique_word in unique_words {
-        if unique_word.orth.to_lowercase()== latin_word
-        {
+        if unique_word.orth.to_lowercase() == latin_word {
             unique_latin_word = unique_word.clone();
             found = true;
             break;
@@ -131,8 +130,7 @@ fn find_form(latin_word: &str, reduced: bool) -> Vec<LatinTranslationInfo> {
         if latin_word.ends_with(inflection.ending.as_str()) {
             // if the longest inflection has been found, stop looking
             if latin_word_inflections.len() > 0
-                && latin_word_inflections[0].ending.len()
-                    > inflection.ending.len()
+                && latin_word_inflections[0].ending.len() > inflection.ending.len()
             {
                 break;
             } else {
@@ -141,15 +139,15 @@ fn find_form(latin_word: &str, reduced: bool) -> Vec<LatinTranslationInfo> {
         }
     }
 
-    let (mut stem, mut inflections) = check_stems(latin_word, &latin_word_inflections, true);
+    let (mut stems, mut inflections) = check_stems(latin_word, &latin_word_inflections, true);
     // If no stems were found, try again without ensuring infls
     // allows for words that end with erunt and similar cases
     // ex: clamaverunt return null without this
-    if stem == Stem::new() {
-        (stem, inflections) = check_stems(latin_word, &latin_word_inflections, false);
+    if stems.len() == 0 {
+        (stems, inflections) = check_stems(latin_word, &latin_word_inflections, false);
     }
 
-    let mut output = lookup_stems(stem, inflections);
+    let mut output = lookup_stems(stems, inflections);
 
     if output.len() == 0 && !reduced {
         let (mut reduced_output, found) = reduce(&mut latin_word.to_string());
@@ -170,9 +168,9 @@ fn check_stems(
     latin_word: &str,
     latin_word_inflections: &Vec<Inflection>,
     ensure_inflections: bool,
-) -> (Stem, Vec<Inflection>) {
+) -> (Vec<Stem>, Vec<Inflection>) {
     let latin_stems = get_latin_stems();
-    let mut matched_stem: Stem = Stem::new();
+    let mut matched_stems: Vec<Stem> = Vec::new();
     let mut inflections: Vec<Inflection> = Vec::new();
 
     for inflection in latin_word_inflections {
@@ -184,25 +182,25 @@ fn check_stems(
                     || (inflection.pos == "VPAR" && stem.pos == "V")
                     || (inflection.pos == "V" && stem.pos == "VPAR")
                 {
-                    if inflection.n[0] != stem.n[0]
-                        && ensure_inflections
-                    {
+                    if inflection.n[0] != stem.n[0] && ensure_inflections {
                         continue;
                     }
 
                     let mut is_matched_stem = false;
 
-                    if stem.form == matched_stem.form {
-                        is_matched_stem = true;
-                        let mut in_stem_inflections = false;
-                        for stem_inflection in &inflections {
-                            if stem_inflection.form == inflection.form {
-                                in_stem_inflections = true;
-                                break;
+                    for matched_stem in &matched_stems {
+                        if stem.form == matched_stem.form {
+                            is_matched_stem = true;
+                            let mut in_stem_inflections = false;
+                            for stem_inflection in &inflections {
+                                if stem_inflection.form == inflection.form {
+                                    in_stem_inflections = true;
+                                    break;
+                                }
                             }
-                        }
-                        if !in_stem_inflections {
-                            inflections.push(inflection.clone());
+                            if !in_stem_inflections {
+                                inflections.push(inflection.clone());
+                            }
                         }
                     }
 
@@ -214,77 +212,90 @@ fn check_stems(
                     }
 
                     if !is_matched_stem {
-                        matched_stem = stem.clone();
-                        inflections = vec![inflection.clone()];
+                        matched_stems.push(stem.clone());
+                        inflections.push(inflection.clone());
                     }
                 }
             }
         }
     }
 
-    (matched_stem, inflections)
+    (matched_stems, inflections)
 }
 
-fn lookup_stems(stem: Stem, inflections: Vec<Inflection>) -> Vec<LatinTranslationInfo> {
+fn lookup_stems(stems: Vec<Stem>, inflections: Vec<Inflection>) -> Vec<LatinTranslationInfo> {
     let latin_dictionary = get_latin_dictionary();
     let mut output: Vec<LatinTranslationInfo> = Vec::new();
 
-    let dict_word = latin_dictionary.iter().find(|word| word.id == stem.wid);
+    for stem in stems {
+        let dict_word = latin_dictionary.iter().find(|word| word.id == stem.wid);
 
-    if let Some(latin_word) = dict_word {
-        let word_is_in_out = output.iter().any(|w| match &w.word {
-            Word::LatinWordInfo(latin_word_info) => {
-                latin_word_info.id == latin_word.id
-                    || latin_word_info.orth == latin_word.orth
-            }
-            Word::UniqueLatinWordInfo(unique_latin_word_info) => {
-                unique_latin_word_info.orth == latin_word.orth
-            }
-        });
-
-        // if the word is already in the output add the stem to it
-        if word_is_in_out {
-            let matching_word = output.iter_mut().find(|w| match &w.word {
+        if let Some(latin_word) = dict_word {
+            let word_is_in_out = output.iter().any(|w| match &w.word {
                 Word::LatinWordInfo(latin_word_info) => {
-                    latin_word_info.id == latin_word.id
-                        || latin_word_info.orth
-                            == latin_word.orth
+                    latin_word_info.id == latin_word.id || latin_word_info.orth == latin_word.orth
                 }
                 Word::UniqueLatinWordInfo(unique_latin_word_info) => {
-                    unique_latin_word_info.orth
-                        == latin_word.orth
+                    unique_latin_word_info.orth == latin_word.orth
                 }
             });
 
-            if let Some(matching_word) = matching_word {
-                matching_word.stem = stem;
-            }
-        } else {
-            let new_inflections: Vec<Inflection>;
-            if latin_word.pos == "V" {
-                let fourth_part = latin_word.parts[3].as_str();
-                if fourth_part != stem.orth {
-                    new_inflections = remove_extra_inflections(inflections.clone(), "VPAR");
-                } else {
-                    new_inflections = remove_extra_inflections(inflections.clone(), "V");
-                }
+            // if the word is already in the output add the stem to it
+            if word_is_in_out {
+                let matching_word = output.iter_mut().find(|w| match &w.word {
+                    Word::LatinWordInfo(latin_word_info) => {
+                        latin_word_info.id == latin_word.id
+                            || latin_word_info.orth == latin_word.orth
+                    }
+                    Word::UniqueLatinWordInfo(unique_latin_word_info) => {
+                        unique_latin_word_info.orth == latin_word.orth
+                    }
+                });
+
+                //if let Some(matching_word) = matching_word {
+                //    add_stem_to_word(stem, Some(matching_word));
+                //}
+
             } else {
-                new_inflections = inflections;
+                let new_inflections: Vec<Inflection>;
+                if latin_word.pos == "V" {
+                    let fourth_part = latin_word.parts[3].as_str();
+                    if fourth_part != stem.orth {
+                        let inflections_clone = inflections.clone();
+                        new_inflections = remove_extra_inflections(inflections_clone, "VPAR");
+                    } else {
+                        new_inflections = remove_extra_inflections(inflections.clone(), "V");
+                    }
+                } else {
+                    new_inflections = inflections.clone();
+                }
+
+                let new_word = Word::LatinWordInfo((*latin_word).clone());
+
+                output.push(LatinTranslationInfo {
+                    word: new_word,
+                    stem,
+                    inflections: new_inflections,
+                    addon: "".to_string(),
+                });
             }
-
-            let new_word = Word::LatinWordInfo((*latin_word).clone());
-
-            output.push(LatinTranslationInfo {
-                word: new_word,
-                stem,
-                inflections: new_inflections,
-                addon: "".to_string(),
-            });
         }
     }
 
     output
 }
+
+//fn add_stem_to_word(matched_stem: Stem, matching_word: Option<&mut LatinTranslationInfo>) {
+//    if let Some(word) = matching_word {
+//        let stem_to_add = &matched_stem.orth;
+//        let word_stems = &mut word.stem;
+//
+//        if !word_stems.iter().any(|stem| stem.orth == *stem_to_add) {
+//            word_stems.push(matched_stem);
+//        }
+//    }
+//}
+
 
 fn remove_extra_inflections(inflections: Vec<Inflection>, pos_to_remove: &str) -> Vec<Inflection> {
     let inflections = inflections
