@@ -44,6 +44,42 @@ impl LatinWordInfo {
 }
 
 #[derive(Serialize, Deserialize, Debug)]
+pub struct UniqueLatinWordInfo {
+    pub orth: String,
+    pub senses: Vec<String>,
+    pub pos: String,
+    pub form: String,
+    pub n: Vec<NValue>,
+    pub info: Option<WordInfo>,
+}
+
+impl UniqueLatinWordInfo {
+    pub fn new() -> UniqueLatinWordInfo {
+        UniqueLatinWordInfo {
+            orth: "".to_string(),
+            senses: Vec::new(),
+            pos: "".to_string(),
+            form: "".to_string(),
+            n: Vec::new(),
+            info: None,
+        }
+    }
+}
+
+impl Clone for UniqueLatinWordInfo {
+    fn clone(&self) -> UniqueLatinWordInfo {
+        UniqueLatinWordInfo {
+            orth: self.orth.clone(),
+            senses: self.senses.clone(),
+            pos: self.pos.clone(),
+            form: self.form.clone(),
+            n: self.n.clone(),
+            info: self.info.clone(),
+        }
+    }
+}
+
+#[derive(Serialize, Deserialize, Debug)]
 pub struct WordInfo {
     pub age: String,
     pub area: String,
@@ -72,36 +108,6 @@ impl Clone for WordInfo {
             geo: self.geo.clone(),
             freq: self.freq.clone(),
             source: self.source.clone(),
-        }
-    }
-}
-
-#[derive(Serialize, Deserialize, Debug)]
-pub struct UniqueLatinWordInfo {
-    pub orth: String,
-    pub senses: Vec<String>,
-    pub pos: String,
-    pub form: String,
-}
-
-impl UniqueLatinWordInfo {
-    pub fn new() -> UniqueLatinWordInfo {
-        UniqueLatinWordInfo {
-            orth: "".to_string(),
-            senses: Vec::new(),
-            pos: "".to_string(),
-            form: "".to_string(),
-        }
-    }
-}
-
-impl Clone for UniqueLatinWordInfo {
-    fn clone(&self) -> UniqueLatinWordInfo {
-        UniqueLatinWordInfo {
-            orth: self.orth.clone(),
-            senses: self.senses.clone(),
-            pos: self.pos.clone(),
-            form: self.form.clone(),
         }
     }
 }
