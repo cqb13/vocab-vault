@@ -1,7 +1,6 @@
 use serde::{Deserialize, Serialize};
 use std::include_bytes;
 
-//TODO: account for words that have a string as n
 #[derive(Serialize, Deserialize, Debug)]
 pub struct LatinWordInfo {
     pub pos: String,
@@ -9,6 +8,7 @@ pub struct LatinWordInfo {
     pub parts: Vec<String>,
     pub senses: Vec<String>,
     pub form: String,
+    pub info: WordInfo,
     pub orth: String,
     pub id: i32,
 }
@@ -21,6 +21,7 @@ impl Clone for LatinWordInfo {
             parts: self.parts.clone(),
             senses: self.senses.clone(),
             form: self.form.clone(),
+            info: self.info.clone(),
             orth: self.orth.clone(),
             id: self.id.clone(),
         }
@@ -35,8 +36,42 @@ impl LatinWordInfo {
             parts: Vec::new(),
             senses: Vec::new(),
             form: "".to_string(),
+            info: WordInfo::new(),
             orth: "".to_string(),
             id: 0,
+        }
+    }
+}
+
+#[derive(Serialize, Deserialize, Debug)]
+pub struct WordInfo {
+    pub age: String,
+    pub area: String,
+    pub geo: String,
+    pub freq: String,
+    pub source: String,
+}
+
+impl WordInfo {
+    pub fn new() -> WordInfo {
+        WordInfo {
+            age: "".to_string(),
+            area: "".to_string(),
+            geo: "".to_string(),
+            freq: "".to_string(),
+            source: "".to_string(),
+        }
+    }
+}
+
+impl Clone for WordInfo {
+    fn clone(&self) -> WordInfo {
+        WordInfo {
+            age: self.age.clone(),
+            area: self.area.clone(),
+            geo: self.geo.clone(),
+            freq: self.freq.clone(),
+            source: self.source.clone(),
         }
     }
 }

@@ -75,7 +75,7 @@ pub fn translate_to_english(latin_word: &str) -> Vec<LatinTranslationInfo> {
                 word: Word::UniqueLatinWordInfo(unique_latin_word),
                 stem: Stem::new(),
                 inflections: Vec::new(),
-                addon: "unique".to_string(),
+                addon: "enclitic".to_string(),
             });
         } else {
             output.append(&mut find_form(&split_word, false));
@@ -223,6 +223,11 @@ fn check_stems(
     (matched_stems, inflections)
 }
 
+//TODO: a new prop needs to be added to LatinWordInfo:
+/*
+senses and extension senses. extension senses are senses that start with a "|", they are found in the next word in the dictionary.
+when adding a word, check the next word, if the senses start with a "|", assign that sense to the extension_senses prop.
+*/
 fn lookup_stems(stems: Vec<Stem>, inflections: Vec<Inflection>) -> Vec<LatinTranslationInfo> {
     let latin_dictionary = get_latin_dictionary();
     let mut output: Vec<LatinTranslationInfo> = Vec::new();
