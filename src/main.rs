@@ -14,22 +14,37 @@ pub mod utils {
     pub mod tricks;
 }
 
-use utils::formatter::{sanitize_word, format};
+use utils::formatter::{sanitize_word, format_output};
 
 #[derive(Serialize, Deserialize, Debug)]
-struct Translation {
+pub struct Translation {
     word: String,
     #[serde(serialize_with = "serialize_translation")]
-    definitions: TranslationType,
+    pub definitions: TranslationType,
 }
 
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(tag = "type")]
-enum TranslationType {
+pub enum TranslationType {
     #[serde(rename = "Latin")]
     Latin(Vec<LatinTranslationInfo>),
     #[serde(rename = "English")]
     English(Vec<EnglishWordInfo>),
+}
+
+pub enum Language {
+    Latin,
+    English,
+}
+
+impl PartialEq for Language {
+    fn eq(&self, other: &Self) -> bool {
+        match (self, other) {
+            (Language::Latin, Language::Latin) => true,
+            (Language::English, Language::English) => true,
+            _ => false,
+        }
+    }
 }
 
 fn serialize_translation<S>(def: &TranslationType, serializer: S) -> Result<S::Ok, S::Error>
@@ -103,13 +118,14 @@ fn main() {
         }
         Some(("transLat", trans_lat_matches)) => {
             let text = trans_lat_matches.value_of("text").unwrap();
-            translate_to_english(text);
+            let formatted_output = trans_lat_matches.is_present("formatted");
+            translate_to_english(text, formatted_output);
         }
         _ => println!("Please provide a valid command: transEng or transLat"),
     }
 }
 
-fn translate_to_english(latin_text: &str) {
+fn translate_to_english(latin_text: &str, formatted_output: bool) {
     let latin_words: Vec<&str> = latin_text.split(" ").collect();
     let mut translations: Vec<Translation> = Vec::new();
 
@@ -121,6 +137,10 @@ fn translate_to_english(latin_text: &str) {
                 definitions: TranslationType::Latin(output),
             });
         }
+    }
+
+    if formatted_output {
+        translations = format_output(translations, Language::Latin);
     }
 
     let json_output = serde_json::to_string_pretty(&translations).unwrap();
@@ -142,7 +162,7 @@ fn translate_to_latin(english_text: &str, formatted_output: bool) {
     }
 
     if formatted_output {
-        format();
+        translations = format_output(translations, Language::English);
     }
     let json_output = serde_json::to_string_pretty(&translations).unwrap();
     println!("{}", json_output);
