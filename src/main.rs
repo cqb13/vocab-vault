@@ -57,6 +57,8 @@ where
     }
 }
 
+//TODO: add a strict filter arg to transLat, it will remove any inflections that have an unknown, or have a common, or any other unspecific definition in the form
+//EX: infls for discipuli 
 fn main() {
     let matches = App::new("Translator CLI")
         .version("0.1.0")

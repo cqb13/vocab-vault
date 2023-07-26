@@ -119,6 +119,7 @@ pub struct Inflection {
     pub notes: Option<String>,
     pub n: Vec<NValue>,
     pub form: String,
+    pub long_form: Option<LongForm>,
 }
 
 impl Clone for Inflection {
@@ -129,6 +130,46 @@ impl Clone for Inflection {
             notes: self.notes.clone(),
             n: self.n.clone(),
             form: self.form.clone(),
+            long_form: self.long_form.clone(),
+        }
+    }
+}
+
+#[derive(Serialize, Deserialize, Debug)]
+pub struct LongForm {
+    pub declension: String,
+    pub number: String,
+    pub gender: String,
+    pub tense: String,
+    pub voice: String,
+    pub mood: String,
+    pub person: i8,
+}
+
+impl LongForm {
+    pub fn new() -> LongForm {
+        LongForm {
+            declension: "".to_string(),
+            number: "".to_string(),
+            gender: "".to_string(),
+            tense: "".to_string(),
+            voice: "".to_string(),
+            mood: "".to_string(),
+            person: 0,
+        }
+    }
+}
+
+impl Clone for LongForm {
+    fn clone(&self) -> LongForm {
+        LongForm {
+            declension: self.declension.clone(),
+            number: self.number.clone(),
+            gender: self.gender.clone(),
+            tense: self.tense.clone(),
+            voice: self.voice.clone(),
+            mood: self.mood.clone(),
+            person: self.person.clone(),
         }
     }
 }

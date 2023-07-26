@@ -4,8 +4,11 @@ use crate::utils::data::Stem;
 use crate::utils::key_translator::translate_part_of_speech;
 use crate::{latin_to_english::Word, Language, Translation, TranslationType};
 
-use super::data::{EnglishWordInfo, Inflection, LatinWordInfo, WordInfo};
-use super::key_translator::{translate_age, translate_area, translate_frequency, translate_source};
+use super::data::{EnglishWordInfo, Inflection, LatinWordInfo, LongForm, WordInfo};
+use super::key_translator::{
+    translate_age, translate_area, translate_declension, translate_frequency, translate_gender,
+    translate_mood, translate_number, translate_source, translate_tense, translate_voice,
+};
 
 pub fn format_output(
     mut translation_output: Vec<Translation>,
@@ -70,6 +73,14 @@ fn format_latin_word_info(latin_word_info: LatinWordInfo) -> LatinWordInfo {
         translate_part_of_speech(&clean_latin_word_info.pos[..]).to_string();
     clean_latin_word_info.info = format_word_info(clean_latin_word_info.info);
 
+    if clean_latin_word_info.pos == "noun" {
+        println!("this")
+    } else if clean_latin_word_info.pos == "adjective" {
+        println!("that")
+    } else if clean_latin_word_info.pos == "verb" || clean_latin_word_info.pos == "participle" {
+        println!("the other")
+    }
+
     clean_latin_word_info
 }
 
@@ -102,6 +113,10 @@ fn format_latin_inflections(inflections: Vec<Inflection>) -> Vec<Inflection> {
 
         clean_inflection.pos = translate_part_of_speech(&clean_inflection.pos[..]).to_string();
         clean_inflection.ending = clean_inflection.ending.trim().to_string();
+        clean_inflection.long_form = Some(format_form(
+            clean_inflection.form.clone(),
+            clean_inflection.pos.clone(),
+        ));
 
         clean_inflections.push(clean_inflection);
     }
@@ -118,6 +133,40 @@ fn remove_inflections_without_endings(inflections: Vec<Inflection>) -> Vec<Infle
     }
 
     clean_inflections
+}
+
+pub fn format_form(form: String, pos: String) -> LongForm {
+    let mut long_form = LongForm::new();
+    let form_array = form.split_whitespace().collect::<Vec<&str>>();
+
+    if pos == "noun" || pos == "pronoun" || pos == "adjective" || pos == "numeral" {
+        // Ex: "FUT   ACTIVE  IND  3 S" -> "future active indicative third singular"
+        if form_array.len() == 3 {
+            long_form.declension = translate_declension(form_array[0]).to_string();
+            long_form.number = translate_number(form_array[1]).to_string();
+            long_form.gender = translate_gender(form_array[2]).to_string();
+        }
+    } else if pos == "verb" {
+        // Ex. "FUT   ACTIVE  IND  3 S" -> "future active indicative third singular"
+        if form_array.len() == 5 {
+            long_form.tense = translate_tense(form_array[0]).to_string();
+            long_form.voice = translate_voice(form_array[1]).to_string();
+            long_form.mood = translate_mood(form_array[2]).to_string();
+            long_form.person = form_array[3].parse::<i8>().unwrap_or(0);
+            long_form.number = translate_number(form_array[4]).to_string();
+        }
+    } else if pos == "participle" {
+        // Ex: "VOC P N PRES ACTIVE  PPL" -> "vocative plural neuter present active participle"
+        if form_array.len() == 5 {
+            long_form.declension = translate_declension(form_array[0]).to_string();
+            long_form.number = translate_number(form_array[1]).to_string();
+            long_form.gender = translate_gender(form_array[2]).to_string();
+            long_form.tense = translate_tense(form_array[3]).to_string();
+            long_form.voice = translate_voice(form_array[4]).to_string();
+        }
+    }
+
+    long_form
 }
 
 pub fn sanitize_word(word: &str) -> String {
