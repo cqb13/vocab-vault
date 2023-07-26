@@ -2,9 +2,9 @@ use regex::Regex;
 
 use crate::utils::data::Stem;
 use crate::utils::key_translator::translate_part_of_speech;
-use crate::{Language, Translation, TranslationType, latin_to_english::Word};
+use crate::{latin_to_english::Word, Language, Translation, TranslationType};
 
-use super::data::{EnglishWordInfo, LatinWordInfo, WordInfo};
+use super::data::{EnglishWordInfo, Inflection, LatinWordInfo, WordInfo};
 use super::key_translator::{translate_age, translate_area, translate_frequency, translate_source};
 
 pub fn format_output(
@@ -35,6 +35,8 @@ pub fn format_output(
                     }
 
                     latin_word_info.stem = format_latin_stem(latin_word_info.stem.clone());
+                    latin_word_info.inflections =
+                        format_latin_inflections(latin_word_info.inflections.clone());
                 }
             } else {
                 panic!("Invalid TranslationType for Latin language.");
@@ -46,7 +48,6 @@ pub fn format_output(
 
     translation_output
 }
-
 
 fn format_english_word(english_word: EnglishWordInfo) -> EnglishWordInfo {
     let mut clean_english_word: EnglishWordInfo = english_word;
@@ -92,9 +93,32 @@ fn format_latin_stem(latin_stem: Stem) -> Stem {
     clean_latin_stem
 }
 
-fn format_latin_inflections() {}
+fn format_latin_inflections(inflections: Vec<Inflection>) -> Vec<Inflection> {
+    let mut clean_inflections: Vec<Inflection> = Vec::new();
+    let cleaned_inflections = remove_inflections_without_endings(inflections);
 
-fn remove_inflections_without_endings() {}
+    for inflection in &cleaned_inflections {
+        let mut clean_inflection: Inflection = inflection.clone();
+
+        clean_inflection.pos = translate_part_of_speech(&clean_inflection.pos[..]).to_string();
+        clean_inflection.ending = clean_inflection.ending.trim().to_string();
+
+        clean_inflections.push(clean_inflection);
+    }
+
+    clean_inflections
+}
+fn remove_inflections_without_endings(inflections: Vec<Inflection>) -> Vec<Inflection> {
+    let mut clean_inflections: Vec<Inflection> = Vec::new();
+
+    for inflection in inflections {
+        if inflection.ending != "" {
+            clean_inflections.push(inflection);
+        }
+    }
+
+    clean_inflections
+}
 
 pub fn sanitize_word(word: &str) -> String {
     let mut word = word.to_owned();
