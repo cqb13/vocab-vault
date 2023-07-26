@@ -26,6 +26,17 @@ pub enum Word {
     UniqueLatinWordInfo(UniqueLatinWordInfo),
 }
 
+impl Clone for Word {
+    fn clone(&self) -> Self {
+        match self {
+            Word::LatinWordInfo(latin_word_info) => Word::LatinWordInfo(latin_word_info.clone()),
+            Word::UniqueLatinWordInfo(unique_latin_word_info) => {
+                Word::UniqueLatinWordInfo(unique_latin_word_info.clone())
+            }
+        }
+    }
+}
+
 fn serialize_word<S>(word: &Word, serializer: S) -> Result<S::Ok, S::Error>
 where
     S: Serializer,
