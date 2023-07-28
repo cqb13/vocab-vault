@@ -7,8 +7,10 @@ use crate::{latin_to_english::Word, Language, Translation, TranslationType};
 use super::data::{EnglishWordInfo, Inflection, LatinWordInfo, LongForm, WordInfo};
 use super::key_translator::{
     translate_age, translate_area, translate_declension, translate_frequency, translate_gender,
-    translate_mood, translate_number, translate_source, translate_tense, translate_voice,
+    translate_mood, translate_number, translate_pronoun, translate_source, translate_tense,
+    translate_verb, translate_voice,
 };
+use super::principle_part_generator::{generate_for_nouns, generate_for_verbs};
 
 pub fn format_output(
     mut translation_output: Vec<Translation>,
@@ -72,16 +74,48 @@ fn format_latin_word_info(latin_word_info: LatinWordInfo) -> LatinWordInfo {
     clean_latin_word_info.pos =
         translate_part_of_speech(&clean_latin_word_info.pos[..]).to_string();
     clean_latin_word_info.info = format_word_info(clean_latin_word_info.info);
+    clean_latin_word_info.form = translate_latin_word_info_form(
+        clean_latin_word_info.form.clone(),
+        clean_latin_word_info.pos.clone(),
+    );
 
     if clean_latin_word_info.pos == "noun" {
-        println!("this")
+        clean_latin_word_info.parts = generate_for_nouns(
+            clean_latin_word_info.n.clone(),
+            clean_latin_word_info.form.clone(),
+            clean_latin_word_info.parts,
+        )
     } else if clean_latin_word_info.pos == "adjective" {
         println!("that")
     } else if clean_latin_word_info.pos == "verb" || clean_latin_word_info.pos == "participle" {
-        println!("the other")
+        clean_latin_word_info.parts =
+            generate_for_verbs(clean_latin_word_info.n.clone(), clean_latin_word_info.parts)
     }
 
     clean_latin_word_info
+}
+
+fn translate_latin_word_info_form(form: String, pos: String) -> String {
+    let form_array = form.split_whitespace().collect::<Vec<&str>>();
+
+    if form_array.len() < 2 {
+        return "part of speech".to_string();
+    }
+
+    //TODO: get tense EX: S or P from form, if it has one.
+    //maybe make long_form default form.
+
+    let mut word_type: String = form_array[2].to_string();
+
+    if pos == "noun" {
+        word_type = translate_gender(&word_type[..]).to_string();
+    } else if pos == "verb" || pos == "participle" {
+        word_type = translate_verb(&word_type[..]).to_string();
+    } else if pos == "pronoun" || pos == "packon" {
+        word_type = translate_pronoun(&word_type[..]).to_string();
+    }
+
+    word_type
 }
 
 fn format_word_info(word_info: WordInfo) -> WordInfo {

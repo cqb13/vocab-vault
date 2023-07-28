@@ -1,10 +1,11 @@
+use super::data::NValue;
+
 pub fn generate_for_nouns(
-    number_types: Vec<i8>,
+    number_types: Vec<NValue>,
     gender: String,
     parts: Vec<String>,
 ) -> Vec<String> {
-    let num_type_1 = number_types[0];
-    let num_type_2 = number_types[1];
+    let (num_type_1, num_type_2) = translate_number_types(number_types);
     //TODO account for 0 in num2
 
     match (num_type_1, num_type_2) {
@@ -36,14 +37,13 @@ pub fn generate_for_nouns(
     }
 }
 
-//pub fn generate_for_adjectives(number_types: Vec<i8>, parts: Vec<String>) -> Vec<String> {
+//pub fn generate_for_adjectives(number_types: Vec<NValue>, parts: Vec<String>) -> Vec<String> {
 //
 //}
 //
 
-pub fn generate_for_verbs(number_types: Vec<i8>, parts: Vec<String>) -> Vec<String> {
-    let num_type_1 = number_types[0];
-    let num_type_2 = number_types[1];
+pub fn generate_for_verbs(number_types: Vec<NValue>, parts: Vec<String>) -> Vec<String> {
+    let (num_type_1, num_type_2) = translate_number_types(number_types);
 
     //TODO account for 0 in num2
 
@@ -88,4 +88,18 @@ fn set_principle_parts(
     }
 
     principle_parts
+}
+
+fn translate_number_types(number_types: Vec<NValue>) -> (i8, i8) {
+    let num_type_1 = match &number_types.get(0) {
+        Some(NValue::Integer(num)) => *num,
+        _ => 0,
+    };
+
+    let num_type_2 = match &number_types.get(1) {
+        Some(NValue::Integer(num)) => *num,
+        _ => 0,
+    };
+
+    (num_type_1, num_type_2)
 }

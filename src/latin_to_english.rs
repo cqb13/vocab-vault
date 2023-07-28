@@ -117,6 +117,7 @@ pub fn translate_to_english(latin_word: &str) -> Vec<LatinTranslationInfo> {
         }
     }
 
+    //TODO: before returning, order words by frequency in word_info. if more than 1 word, remove any words with lesser or less.
     output
 }
 
