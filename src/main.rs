@@ -66,7 +66,7 @@ fn main() {
         .about("A CLI for interacting with the Whitaker's Words Dictionary")
         .subcommand(
             App::new("transEng")
-                .about("Translate Latin to English")
+                .about("Translate English to Latin")
                 .arg(
                     Arg::with_name("text")
                         .help("The Latin text to translate to English")
@@ -80,6 +80,13 @@ fn main() {
                         .takes_value(false),
                 )
                 .arg(
+                    Arg::with_name("clean")
+                        .short('c')
+                        .long("clean")
+                        .help("Cleans the output, by removing objects with vague values, such as 'unknown'.")
+                        .takes_value(false),
+                )
+                .arg(
                     Arg::with_name("predict macrons")
                         .short('m')
                         .long("predict macrons")
@@ -89,7 +96,7 @@ fn main() {
         )
         .subcommand(
             App::new("transLat")
-                .about("Translate English to Latin")
+                .about("Translate Latin to English")
                 .arg(
                     Arg::with_name("text")
                         .help("The English text to translate to Latin")
@@ -100,6 +107,13 @@ fn main() {
                         .short('f')
                         .long("formatted")
                         .help("Determines if the output should be formatted")
+                        .takes_value(false),
+                )
+                .arg(
+                    Arg::with_name("clean")
+                        .short('c')
+                        .long("clean")
+                        .help("Cleans the output, by removing objects with vague values, such as 'unknown'.")
                         .takes_value(false),
                 )
                 .arg(
@@ -116,18 +130,20 @@ fn main() {
         Some(("transEng", trans_eng_matches)) => {
             let text = trans_eng_matches.value_of("text").unwrap();
             let formatted_output = trans_eng_matches.is_present("formatted");
-            translate_to_latin(text, formatted_output);
+            let clean = trans_eng_matches.is_present("clean");
+            translate_to_latin(text, formatted_output, clean);
         }
         Some(("transLat", trans_lat_matches)) => {
             let text = trans_lat_matches.value_of("text").unwrap();
             let formatted_output = trans_lat_matches.is_present("formatted");
-            translate_to_english(text, formatted_output);
+            let clean = trans_lat_matches.is_present("clean");
+            translate_to_english(text, formatted_output, clean);
         }
         _ => println!("Please provide a valid command: transEng or transLat"),
     }
 }
 
-fn translate_to_english(latin_text: &str, formatted_output: bool) {
+fn translate_to_english(latin_text: &str, formatted_output: bool, clean: bool) {
     let latin_words: Vec<&str> = latin_text.split(" ").collect();
     let mut translations: Vec<Translation> = Vec::new();
 
@@ -142,14 +158,14 @@ fn translate_to_english(latin_text: &str, formatted_output: bool) {
     }
 
     if formatted_output {
-        translations = format_output(translations, Language::Latin);
+        translations = format_output(translations, Language::Latin, clean);
     }
 
     let json_output = serde_json::to_string_pretty(&translations).unwrap();
     println!("{}", json_output);
 }
 
-fn translate_to_latin(english_text: &str, formatted_output: bool) {
+fn translate_to_latin(english_text: &str, formatted_output: bool, clean: bool) {
     let english_words: Vec<&str> = english_text.split(" ").collect();
     let mut translations: Vec<Translation> = Vec::new();
 
@@ -164,7 +180,7 @@ fn translate_to_latin(english_text: &str, formatted_output: bool) {
     }
 
     if formatted_output {
-        translations = format_output(translations, Language::English);
+        translations = format_output(translations, Language::English, clean);
     }
     let json_output = serde_json::to_string_pretty(&translations).unwrap();
     println!("{}", json_output);

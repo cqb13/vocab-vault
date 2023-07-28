@@ -116,9 +116,11 @@ impl Clone for WordInfo {
 pub struct Inflection {
     pub ending: String,
     pub pos: String,
-    pub notes: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub note: Option<String>,
     pub n: Vec<NValue>,
-    pub form: String,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub form: Option<String>,
     pub long_form: Option<LongForm>,
 }
 
@@ -127,7 +129,7 @@ impl Clone for Inflection {
         Inflection {
             ending: self.ending.clone(),
             pos: self.pos.clone(),
-            notes: self.notes.clone(),
+            note: self.note.clone(),
             n: self.n.clone(),
             form: self.form.clone(),
             long_form: self.long_form.clone(),
@@ -137,25 +139,32 @@ impl Clone for Inflection {
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct LongForm {
-    pub declension: String,
-    pub number: String,
-    pub gender: String,
-    pub tense: String,
-    pub voice: String,
-    pub mood: String,
-    pub person: i8,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub declension: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub number: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub gender: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub tense: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub voice: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub mood: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub person: Option<i8>,
 }
 
 impl LongForm {
     pub fn new() -> LongForm {
         LongForm {
-            declension: "".to_string(),
-            number: "".to_string(),
-            gender: "".to_string(),
-            tense: "".to_string(),
-            voice: "".to_string(),
-            mood: "".to_string(),
-            person: 0,
+            declension: None,
+            number: None,
+            gender: None,
+            tense: None,
+            voice: None,
+            mood: None,
+            person: None,
         }
     }
 }
