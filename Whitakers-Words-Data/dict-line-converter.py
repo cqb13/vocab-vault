@@ -1,4 +1,6 @@
 import json
+#!!!: senses format issued
+#EX: "\"word\"" should be "word"
 
 def format_senses(parts):
     senses = parts.strip()
@@ -73,7 +75,7 @@ def process_data_line(line, id):
 def read_data_file(file_path):
     with open(file_path, 'r') as file:
         lines = file.readlines()
-    entries = [process_data_line(line, id+1) for id, line in enumerate(lines)]
+    entries = [process_data_line(line, id) for id, line in enumerate(lines)]
     return [entry for entry in entries if entry]
 
 def write_to_json(entries, json_file_path):

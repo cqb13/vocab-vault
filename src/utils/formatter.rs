@@ -34,6 +34,7 @@ pub fn format_output(
                     } else if let Word::UniqueLatinWordInfo(unique_latin_word_info) =
                         &mut latin_word_info.word
                     {
+                        //TODO add unique word formatting
                         //*unique_latin_word_info = format_latin_word_info(unique_latin_word_info.clone());
                         println!("unique_latin_word_info: {:?}", unique_latin_word_info);
                     } else {
@@ -139,7 +140,11 @@ fn format_latin_stem(latin_stem: Stem) -> Stem {
     clean_latin_stem
 }
 
-fn format_latin_inflections(inflections: Vec<Inflection>, pos: String, clean: bool) -> Vec<Inflection> {
+fn format_latin_inflections(
+    inflections: Vec<Inflection>,
+    pos: String,
+    clean: bool,
+) -> Vec<Inflection> {
     let mut clean_inflections: Vec<Inflection> = Vec::new();
     let cleaned_inflections = remove_inflections_without_endings(inflections);
 
