@@ -39,10 +39,10 @@ pub fn format_output(
                     } else {
                         panic!("Invalid Word type for Latin language.");
                     }
-
                     latin_word_info.stem = format_latin_stem(latin_word_info.stem.clone());
+                    let pos = latin_word_info.stem.pos.clone();
                     latin_word_info.inflections =
-                        format_latin_inflections(latin_word_info.inflections.clone(), clean);
+                        format_latin_inflections(latin_word_info.inflections.clone(), pos, clean);
                 }
             } else {
                 panic!("Invalid TranslationType for Latin language.");
@@ -139,7 +139,7 @@ fn format_latin_stem(latin_stem: Stem) -> Stem {
     clean_latin_stem
 }
 
-fn format_latin_inflections(inflections: Vec<Inflection>, clean: bool) -> Vec<Inflection> {
+fn format_latin_inflections(inflections: Vec<Inflection>, pos: String, clean: bool) -> Vec<Inflection> {
     let mut clean_inflections: Vec<Inflection> = Vec::new();
     let cleaned_inflections = remove_inflections_without_endings(inflections);
 
@@ -149,7 +149,11 @@ fn format_latin_inflections(inflections: Vec<Inflection>, clean: bool) -> Vec<In
         clean_inflection.pos = translate_part_of_speech(&clean_inflection.pos[..]).to_string();
         clean_inflection.ending = clean_inflection.ending.trim().to_string();
         clean_inflection.long_form = Some(format_form(
-            clean_inflection.form.clone().or(Some("".to_string())).unwrap(),
+            clean_inflection
+                .form
+                .clone()
+                .or(Some("".to_string()))
+                .unwrap(),
             clean_inflection.pos.clone(),
             clean,
         ));
@@ -163,6 +167,12 @@ fn format_latin_inflections(inflections: Vec<Inflection>, clean: bool) -> Vec<In
         }
 
         clean_inflections.push(clean_inflection);
+    }
+
+    clean_inflections = remove_inflections_with_wrong_pos(clean_inflections, pos);
+
+    if clean {
+        clean_inflections = remove_vague_inflections(clean_inflections);
     }
 
     clean_inflections
@@ -179,6 +189,32 @@ fn remove_inflections_without_endings(inflections: Vec<Inflection>) -> Vec<Infle
     clean_inflections
 }
 
+// Canis generates with a pos of "verb", but is a noun. This removes those.
+fn remove_inflections_with_wrong_pos(inflections: Vec<Inflection>, pos: String) -> Vec<Inflection> {
+    let mut clean_inflections: Vec<Inflection> = Vec::new();
+
+    for inflection in inflections {
+        if inflection.pos == pos {
+            clean_inflections.push(inflection);
+        }
+    }
+
+    clean_inflections
+}
+
+fn remove_vague_inflections(inflections: Vec<Inflection>) -> Vec<Inflection> {
+    let mut clean_inflections: Vec<Inflection> = Vec::new();
+
+    for inflection in inflections {
+        let long_form = inflection.long_form.clone().unwrap_or(LongForm::new());
+        if long_form.gender.as_deref() != Some(&"unknown".to_string()) {
+            clean_inflections.push(inflection);
+        }
+    }
+
+    clean_inflections
+}
+
 pub fn format_form(form: String, pos: String, clean: bool) -> LongForm {
     let mut long_form = LongForm::new();
     let form_array = form.split_whitespace().collect::<Vec<&str>>();
@@ -186,27 +222,27 @@ pub fn format_form(form: String, pos: String, clean: bool) -> LongForm {
     if pos == "noun" || pos == "pronoun" || pos == "adjective" || pos == "numeral" {
         // Ex: "FUT   ACTIVE  IND  3 S" -> "future active indicative third singular"
         if form_array.len() == 3 {
-                    long_form.declension = Some(translate_declension(form_array[0]).to_string());
-                    long_form.number = Some(translate_number(form_array[1]).to_string());
-                    long_form.gender = Some(translate_gender(form_array[2]).to_string());
-                }
-            } else if pos == "verb" {
-                // Ex. "FUT   ACTIVE  IND  3 S" -> "future active indicative third singular"
-                if form_array.len() == 5 {
-                    long_form.tense = Some(translate_tense(form_array[0]).to_string());
-                    long_form.voice = Some(translate_voice(form_array[1]).to_string());
-                    long_form.mood = Some(translate_mood(form_array[2]).to_string());
-                    long_form.person = Some(form_array[3].parse::<i8>().unwrap_or(0));
-                    long_form.number = Some(translate_number(form_array[4]).to_string());
-                }
-            } else if pos == "participle" {
-                // Ex: "VOC P N PRES ACTIVE  PPL" -> "vocative plural neuter present active participle"
-                if form_array.len() == 5 {
-                    long_form.declension = Some(translate_declension(form_array[0]).to_string());
-                    long_form.number = Some(translate_number(form_array[1]).to_string());
-                    long_form.gender = Some(translate_gender(form_array[2]).to_string());
-                    long_form.tense = Some(translate_tense(form_array[3]).to_string());
-                    long_form.voice = Some(translate_voice(form_array[4]).to_string());
+            long_form.declension = Some(translate_declension(form_array[0]).to_string());
+            long_form.number = Some(translate_number(form_array[1]).to_string());
+            long_form.gender = Some(translate_gender(form_array[2]).to_string());
+        }
+    } else if pos == "verb" {
+        // Ex. "FUT   ACTIVE  IND  3 S" -> "future active indicative third singular"
+        if form_array.len() == 5 {
+            long_form.tense = Some(translate_tense(form_array[0]).to_string());
+            long_form.voice = Some(translate_voice(form_array[1]).to_string());
+            long_form.mood = Some(translate_mood(form_array[2]).to_string());
+            long_form.person = Some(form_array[3].parse::<i8>().unwrap_or(0));
+            long_form.number = Some(translate_number(form_array[4]).to_string());
+        }
+    } else if pos == "participle" {
+        // Ex: "VOC P N PRES ACTIVE  PPL" -> "vocative plural neuter present active participle"
+        if form_array.len() == 5 {
+            long_form.declension = Some(translate_declension(form_array[0]).to_string());
+            long_form.number = Some(translate_number(form_array[1]).to_string());
+            long_form.gender = Some(translate_gender(form_array[2]).to_string());
+            long_form.tense = Some(translate_tense(form_array[3]).to_string());
+            long_form.voice = Some(translate_voice(form_array[4]).to_string());
         }
     }
 
