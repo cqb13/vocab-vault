@@ -8,7 +8,7 @@ use super::data::{EnglishWordInfo, Inflection, LatinWordInfo, LongForm, WordInfo
 use super::key_translator::{
     translate_age, translate_area, translate_declension, translate_frequency, translate_gender,
     translate_mood, translate_number, translate_pronoun, translate_source, translate_tense,
-    translate_verb, translate_voice,
+    translate_verb, translate_voice, translate_noun,
 };
 use super::principle_part_generator::{generate_for_nouns, generate_for_verbs};
 
@@ -76,7 +76,7 @@ fn format_latin_word_info(latin_word_info: LatinWordInfo) -> LatinWordInfo {
     clean_latin_word_info.pos =
         translate_part_of_speech(&clean_latin_word_info.pos[..]).to_string();
     clean_latin_word_info.info = format_word_info(clean_latin_word_info.info);
-    clean_latin_word_info.form = Form::StrForm(translate_latin_word_info_form(
+    clean_latin_word_info.form = Form::LongForm(translate_latin_word_info_form(
         match clean_latin_word_info.form.clone() {
             Form::LongForm(_form) => "".to_string(),
             Form::StrForm(form) => form,
@@ -103,27 +103,27 @@ fn format_latin_word_info(latin_word_info: LatinWordInfo) -> LatinWordInfo {
     clean_latin_word_info
 }
 
-fn translate_latin_word_info_form(form: String, pos: String) -> String {
+fn translate_latin_word_info_form(form: String, pos: String) -> LongForm {
     let form_array = form.split_whitespace().collect::<Vec<&str>>();
+    let mut clean_form: LongForm = LongForm::new();
 
     if form_array.len() < 2 {
-        return "part of speech".to_string();
+        clean_form.kind = Some("part of speech".to_string());
+        return clean_form;
     }
 
-    //TODO: get tense EX: S or P from form, if it has one.
-    //maybe make long_form default form.
-
-    let mut word_type: String = form_array[2].to_string();
+    let word_type: String = form_array[2].to_string();
 
     if pos == "noun" {
-        word_type = translate_gender(&word_type[..]).to_string();
+        clean_form.gender = Some(translate_gender(&word_type[..]).to_string());
+        clean_form.kind = Some(translate_noun(&form_array[3]).to_string());
     } else if pos == "verb" || pos == "participle" {
-        word_type = translate_verb(&word_type[..]).to_string();
+        clean_form.verb = Some(translate_verb(&word_type[..]).to_string());
     } else if pos == "pronoun" || pos == "packon" {
-        word_type = translate_pronoun(&word_type[..]).to_string();
+        clean_form.voice = Some(translate_pronoun(&word_type[..]).to_string());
     }
 
-    word_type
+    return clean_form
 }
 
 fn format_word_info(word_info: WordInfo) -> WordInfo {
@@ -142,6 +142,7 @@ fn format_latin_stem(latin_stem: Stem) -> Stem {
     let mut clean_latin_stem: Stem = latin_stem;
 
     clean_latin_stem.pos = translate_part_of_speech(&clean_latin_stem.pos[..]).to_string();
+    //TODO: format the stem form
 
     clean_latin_stem
 }

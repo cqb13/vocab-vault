@@ -135,52 +135,6 @@ impl Clone for Inflection {
 }
 
 #[derive(Serialize, Deserialize, Debug)]
-pub struct LongForm {
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub declension: Option<String>,
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub number: Option<String>,
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub gender: Option<String>,
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub tense: Option<String>,
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub voice: Option<String>,
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub mood: Option<String>,
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub person: Option<i8>,
-}
-
-impl LongForm {
-    pub fn new() -> LongForm {
-        LongForm {
-            declension: None,
-            number: None,
-            gender: None,
-            tense: None,
-            voice: None,
-            mood: None,
-            person: None,
-        }
-    }
-}
-
-impl Clone for LongForm {
-    fn clone(&self) -> LongForm {
-        LongForm {
-            declension: self.declension.clone(),
-            number: self.number.clone(),
-            gender: self.gender.clone(),
-            tense: self.tense.clone(),
-            voice: self.voice.clone(),
-            mood: self.mood.clone(),
-            person: self.person.clone(),
-        }
-    }
-}
-
-#[derive(Serialize, Deserialize, Debug)]
 pub struct Stem {
     pub pos: String,
     pub form: Form,
@@ -374,6 +328,60 @@ impl<'de> Deserialize<'de> for Form {
             Ok(Form::LongForm(long_form))
         } else {
             Ok(Form::StrForm(s))
+        }
+    }
+}
+
+#[derive(Serialize, Deserialize, Debug)]
+pub struct LongForm {
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub declension: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub number: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub gender: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub tense: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub voice: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub mood: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub verb: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub kind: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub person: Option<i8>,
+}
+
+impl LongForm {
+    pub fn new() -> LongForm {
+        LongForm {
+            declension: None,
+            number: None,
+            gender: None,
+            tense: None,
+            voice: None,
+            mood: None,
+            verb: None,
+            kind: None,
+            person: None,
+        }
+    }
+}
+
+impl Clone for LongForm {
+    fn clone(&self) -> LongForm {
+        LongForm {
+            declension: self.declension.clone(),
+            number: self.number.clone(),
+            gender: self.gender.clone(),
+            tense: self.tense.clone(),
+            voice: self.voice.clone(),
+            mood: self.mood.clone(),
+            verb: self.verb.clone(),
+            kind: self.kind.clone(),
+            person: self.person.clone(),
         }
     }
 }
