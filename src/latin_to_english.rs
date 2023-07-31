@@ -3,7 +3,7 @@ use serde::{Deserialize, Serialize, Serializer};
 use crate::utils::data::{
     get_latin_dictionary, get_latin_inflections, get_latin_not_packons, get_latin_packons,
     get_latin_prefixes, get_latin_stems, get_latin_suffixes, get_latin_tackons,
-    get_unique_latin_words, Attachment, Inflection, LatinWordInfo, Stem, UniqueLatinWordInfo,
+    get_unique_latin_words, Attachment, Inflection, LatinWordInfo, Stem, UniqueLatinWordInfo, Form,
 };
 
 use crate::utils::tricks::{evaluate_roman_numeral, is_roman_number, switch_first_i_or_j};
@@ -106,7 +106,7 @@ pub fn translate_to_english(latin_word: &str) -> Vec<LatinTranslationInfo> {
                     orth: latin_word.to_string(),
                     senses: [numeral_evaluation.to_string()].to_vec(),
                     pos: "NUM".to_string(),
-                    form: "NUM".to_string(),
+                    form: Form::StrForm("NUM".to_string()),
                     n:  Vec::new(),
                     info: None,
                 }),
@@ -410,7 +410,7 @@ fn split_enclitic(latin_word: &str) -> (String, Vec<LatinTranslationInfo>) {
                         orth: tackon.orth.clone(),
                         senses: tackon.senses,
                         pos: tackon.pos,
-                        form: tackon.orth.clone(),
+                        form: Form::StrForm(tackon.orth.clone()),
                         n: Vec::new(),
                         info: None,
                     }),
@@ -432,7 +432,7 @@ fn split_enclitic(latin_word: &str) -> (String, Vec<LatinTranslationInfo>) {
                                 orth: packon.orth.clone(),
                                 senses: packon.senses,
                                 pos: packon.pos,
-                                form: "".to_string(),
+                                form: Form::StrForm("".to_string()),
                                 n: Vec::new(),
                                 info: None,
                             }),
@@ -454,7 +454,7 @@ fn split_enclitic(latin_word: &str) -> (String, Vec<LatinTranslationInfo>) {
                                 orth: not_packon.orth.clone(),
                                 senses: not_packon.senses,
                                 pos: not_packon.pos,
-                                form: "".to_string(),
+                                form: Form::StrForm("".to_string()),
                                 n: Vec::new(),
                                 info: None,
                             }),

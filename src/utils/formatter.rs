@@ -4,7 +4,7 @@ use crate::utils::data::Stem;
 use crate::utils::key_translator::translate_part_of_speech;
 use crate::{latin_to_english::Word, Language, Translation, TranslationType};
 
-use super::data::{EnglishWordInfo, Inflection, LatinWordInfo, LongForm, WordInfo};
+use super::data::{EnglishWordInfo, Inflection, LatinWordInfo, LongForm, WordInfo, Form};
 use super::key_translator::{
     translate_age, translate_area, translate_declension, translate_frequency, translate_gender,
     translate_mood, translate_number, translate_pronoun, translate_source, translate_tense,
@@ -76,15 +76,21 @@ fn format_latin_word_info(latin_word_info: LatinWordInfo) -> LatinWordInfo {
     clean_latin_word_info.pos =
         translate_part_of_speech(&clean_latin_word_info.pos[..]).to_string();
     clean_latin_word_info.info = format_word_info(clean_latin_word_info.info);
-    clean_latin_word_info.form = translate_latin_word_info_form(
-        clean_latin_word_info.form.clone(),
+    clean_latin_word_info.form = Form::StrForm(translate_latin_word_info_form(
+        match clean_latin_word_info.form.clone() {
+            Form::LongForm(_form) => "".to_string(),
+            Form::StrForm(form) => form,
+        },
         clean_latin_word_info.pos.clone(),
-    );
+    ));
 
     if clean_latin_word_info.pos == "noun" {
         clean_latin_word_info.parts = generate_for_nouns(
             clean_latin_word_info.n.clone(),
-            clean_latin_word_info.form.clone(),
+            match clean_latin_word_info.form.clone() {
+                Form::LongForm(_form) => "".to_string(),
+                Form::StrForm(form) => form,
+            },
             clean_latin_word_info.parts,
         )
     } else if clean_latin_word_info.pos == "adjective" {
@@ -153,20 +159,15 @@ fn format_latin_inflections(
 
         clean_inflection.pos = translate_part_of_speech(&clean_inflection.pos[..]).to_string();
         clean_inflection.ending = clean_inflection.ending.trim().to_string();
-        clean_inflection.long_form = Some(format_form(
-            clean_inflection
-                .form
-                .clone()
-                .or(Some("".to_string()))
-                .unwrap(),
+        clean_inflection.form = Form::LongForm(format_form(
+            match clean_inflection.form.clone() {
+                Form::LongForm(_form) => "".to_string(),
+                Form::StrForm(form) => form,
+            },
             clean_inflection.pos.clone(),
             clean,
         ));
-
-        if clean {
-            clean_inflection.form = None;
-        }
-
+        
         if clean {
             clean_inflection.note = clean_inflection.note.filter(|note| !note.is_empty());
         }
@@ -211,7 +212,10 @@ fn remove_vague_inflections(inflections: Vec<Inflection>) -> Vec<Inflection> {
     let mut clean_inflections: Vec<Inflection> = Vec::new();
 
     for inflection in inflections {
-        let long_form = inflection.long_form.clone().unwrap_or(LongForm::new());
+        let long_form: LongForm = match inflection.form.clone() {
+            Form::LongForm(long_form) => long_form,
+            Form::StrForm(_) => LongForm::new(),
+        };
         if long_form.gender.as_deref() != Some(&"unknown".to_string()) {
             clean_inflections.push(inflection);
         }

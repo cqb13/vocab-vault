@@ -1,4 +1,4 @@
-use serde::{Deserialize, Serialize};
+use serde::{Deserialize, Serialize, Deserializer};
 use std::include_bytes;
 
 #[derive(Serialize, Deserialize, Debug)]
@@ -7,7 +7,7 @@ pub struct LatinWordInfo {
     pub n: Vec<NValue>,
     pub parts: Vec<String>,
     pub senses: Vec<String>,
-    pub form: String,
+    pub form: Form,
     pub info: WordInfo,
     pub orth: String,
     pub id: i32,
@@ -35,7 +35,7 @@ impl LatinWordInfo {
             n: Vec::new(),
             parts: Vec::new(),
             senses: Vec::new(),
-            form: "".to_string(),
+            form: Form::new_str(),
             info: WordInfo::new(),
             orth: "".to_string(),
             id: 0,
@@ -48,7 +48,7 @@ pub struct UniqueLatinWordInfo {
     pub orth: String,
     pub senses: Vec<String>,
     pub pos: String,
-    pub form: String,
+    pub form: Form,
     pub n: Vec<NValue>,
     pub info: Option<WordInfo>,
 }
@@ -59,7 +59,7 @@ impl UniqueLatinWordInfo {
             orth: "".to_string(),
             senses: Vec::new(),
             pos: "".to_string(),
-            form: "".to_string(),
+            form: Form::new_str(),
             n: Vec::new(),
             info: None,
         }
@@ -119,9 +119,7 @@ pub struct Inflection {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub note: Option<String>,
     pub n: Vec<NValue>,
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub form: Option<String>,
-    pub long_form: Option<LongForm>,
+    pub form: Form,
 }
 
 impl Clone for Inflection {
@@ -132,7 +130,6 @@ impl Clone for Inflection {
             note: self.note.clone(),
             n: self.n.clone(),
             form: self.form.clone(),
-            long_form: self.long_form.clone(),
         }
     }
 }
@@ -186,7 +183,7 @@ impl Clone for LongForm {
 #[derive(Serialize, Deserialize, Debug)]
 pub struct Stem {
     pub pos: String,
-    pub form: String,
+    pub form: Form,
     pub orth: String,
     pub n: Vec<NValue>,
     pub wid: i32,
@@ -196,7 +193,7 @@ impl Stem {
     pub fn new() -> Stem {
         Stem {
             pos: "".to_string(),
-            form: "".to_string(),
+            form: Form::new_str(),
             orth: "".to_string(),
             n: Vec::new(),
             wid: 0,
@@ -225,7 +222,7 @@ impl Clone for Stem {
 #[derive(Serialize, Deserialize, Debug)]
 pub struct Modifier {
     pub pos: String,
-    pub form: String,
+    pub form: Form,
     pub senses: Vec<String>,
     pub orth: String,
 }
@@ -328,6 +325,55 @@ impl PartialEq for NValue {
             (NValue::Integer(i1), NValue::Integer(i2)) => i1 == i2,
             (NValue::String(s1), NValue::String(s2)) => s1 == s2,
             _ => false,
+        }
+    }
+}
+
+#[derive(Serialize, Debug)]
+#[serde(untagged)]
+pub enum Form {
+    StrForm(String),
+    LongForm(LongForm),
+}
+
+impl Form {
+    pub fn new_str() -> Form {
+        Form::StrForm("".to_string())
+    }
+
+    pub fn new_long() -> Form {
+        Form::LongForm(LongForm::new())
+    }
+}
+
+impl PartialEq for Form {
+    fn eq(&self, other: &Self) -> bool {
+        match (self, other) {
+            (Form::StrForm(s1), Form::StrForm(s2)) => s1 == s2,
+            _ => false,
+        }
+    }
+}
+
+impl Clone for Form {
+    fn clone(&self) -> Form {
+        match self {
+            Form::StrForm(s) => Form::StrForm(s.clone()),
+            Form::LongForm(lf) => Form::LongForm(lf.clone()),
+        }
+    }
+}
+
+impl<'de> Deserialize<'de> for Form {
+    fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
+    where
+        D: Deserializer<'de>,
+    {
+        let s = String::deserialize(deserializer)?;
+        if let Ok(long_form) = serde_json::from_str::<LongForm>(&s) {
+            Ok(Form::LongForm(long_form))
+        } else {
+            Ok(Form::StrForm(s))
         }
     }
 }
