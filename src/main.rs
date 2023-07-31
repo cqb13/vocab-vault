@@ -14,7 +14,7 @@ pub mod utils {
     pub mod tricks;
 }
 
-use utils::formatter::{sanitize_word, format_output};
+use utils::formatter::{format_output, sanitize_word};
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct Translation {

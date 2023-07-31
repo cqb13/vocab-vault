@@ -3,7 +3,7 @@ use serde::{Deserialize, Serialize, Serializer};
 use crate::utils::data::{
     get_latin_dictionary, get_latin_inflections, get_latin_not_packons, get_latin_packons,
     get_latin_prefixes, get_latin_stems, get_latin_suffixes, get_latin_tackons,
-    get_unique_latin_words, Attachment, Inflection, LatinWordInfo, Stem, UniqueLatinWordInfo, Form,
+    get_unique_latin_words, Attachment, Form, Inflection, LatinWordInfo, Stem, UniqueLatinWordInfo,
 };
 
 use crate::utils::tricks::{evaluate_roman_numeral, is_roman_number, switch_first_i_or_j};
@@ -107,7 +107,7 @@ pub fn translate_to_english(latin_word: &str) -> Vec<LatinTranslationInfo> {
                     senses: [numeral_evaluation.to_string()].to_vec(),
                     pos: "NUM".to_string(),
                     form: Form::StrForm("NUM".to_string()),
-                    n:  Vec::new(),
+                    n: Vec::new(),
                     info: None,
                 }),
                 stem: Stem::new(),
@@ -274,7 +274,6 @@ fn lookup_stems(stems: Vec<Stem>, inflections: Vec<Inflection>) -> Vec<LatinTran
                 if let Some(matching_word) = matching_word {
                     add_stem_to_word(stem, Some(matching_word));
                 }
-
             } else {
                 let new_inflections: Vec<Inflection>;
                 if latin_word.pos == "V" {

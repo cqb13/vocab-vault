@@ -1,4 +1,4 @@
-use serde::{Deserialize, Serialize, Deserializer};
+use serde::{Deserialize, Deserializer, Serialize};
 use std::include_bytes;
 
 #[derive(Serialize, Deserialize, Debug)]
