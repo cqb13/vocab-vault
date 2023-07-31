@@ -83,7 +83,7 @@ def write_to_json(entries, json_file_path):
         json.dump(entries, json_file, separators=(',', ':'))
 
 if __name__ == "__main__":
-    input_file_path = "DICTLINE.GEN"
-    output_json_file_path = "latin_dictionary.json"
+    input_file_path = "../DICTLINE.GEN"
+    output_json_file_path = "new_data/latin_dictionary.json"
     data_entries = read_data_file(input_file_path)
     write_to_json(data_entries, output_json_file_path)

@@ -62,7 +62,7 @@ def write_to_json(entries, json_file_path):
         json.dump(entries, json_file, separators=(',', ':'))
 
 if __name__ == "__main__":
-    input_file_path = "UNIQUES.LAT"
-    output_json_file_path = "unique_latin_words.json"
+    input_file_path = "../UNIQUES.LAT"
+    output_json_file_path = "new_data/unique_latin_words.json"
     data_entries = read_data_file(input_file_path)
     write_to_json(data_entries, output_json_file_path)
