@@ -21,7 +21,7 @@ pub fn format_output(
         if language == Language::English {
             if let TranslationType::English(info) = &mut translation.definitions {
                 for english_word_info in info.iter_mut() {
-                    *english_word_info = format_english_word(english_word_info.clone());
+                    *english_word_info = format_english_word(english_word_info.clone(), clean);
                 }
             } else {
                 panic!("Invalid TranslationType for English language.");
@@ -30,7 +30,7 @@ pub fn format_output(
             if let TranslationType::Latin(info) = &mut translation.definitions {
                 for latin_word_info in info.iter_mut() {
                     if let Word::LatinWordInfo(latin_word_info) = &mut latin_word_info.word {
-                        *latin_word_info = format_latin_word_info(latin_word_info.clone());
+                        *latin_word_info = format_latin_word_info(latin_word_info.clone(), clean);
                     } else if let Word::UniqueLatinWordInfo(unique_latin_word_info) =
                         &mut latin_word_info.word
                     {
@@ -40,7 +40,7 @@ pub fn format_output(
                     } else {
                         panic!("Invalid Word type for Latin language.");
                     }
-                    latin_word_info.stem = format_latin_stem(latin_word_info.stem.clone());
+                    latin_word_info.stem = format_latin_stem(latin_word_info.stem.clone(), clean);
                     let pos = latin_word_info.stem.pos.clone();
                     latin_word_info.inflections =
                         format_latin_inflections(latin_word_info.inflections.clone(), pos, clean);
@@ -56,7 +56,7 @@ pub fn format_output(
     translation_output
 }
 
-fn format_english_word(english_word: EnglishWordInfo) -> EnglishWordInfo {
+fn format_english_word(english_word: EnglishWordInfo, clean: bool) -> EnglishWordInfo {
     let mut clean_english_word: EnglishWordInfo = english_word;
 
     clean_english_word.pos = translate_part_of_speech(&clean_english_word.pos[..]).to_string();
@@ -65,12 +65,12 @@ fn format_english_word(english_word: EnglishWordInfo) -> EnglishWordInfo {
     clean_english_word.latin_entry = clean_english_word
         .latin_entry
         .as_ref()
-        .and_then(|latin_word_info| Some(format_latin_word_info(latin_word_info.clone())));
+        .and_then(|latin_word_info| Some(format_latin_word_info(latin_word_info.clone(), clean)));
 
     clean_english_word
 }
 
-fn format_latin_word_info(latin_word_info: LatinWordInfo) -> LatinWordInfo {
+fn format_latin_word_info(latin_word_info: LatinWordInfo, clean: bool) -> LatinWordInfo {
     let mut clean_latin_word_info: LatinWordInfo = latin_word_info;
 
     clean_latin_word_info.pos =
@@ -82,6 +82,7 @@ fn format_latin_word_info(latin_word_info: LatinWordInfo) -> LatinWordInfo {
             Form::StrForm(form) => form,
         },
         clean_latin_word_info.pos.clone(),
+        clean,
     ));
 
     if clean_latin_word_info.pos == "noun" {
@@ -103,7 +104,7 @@ fn format_latin_word_info(latin_word_info: LatinWordInfo) -> LatinWordInfo {
     clean_latin_word_info
 }
 
-fn translate_latin_word_info_form(form: String, pos: String) -> LongForm {
+fn translate_latin_word_info_form(form: String, pos: String, clean: bool) -> LongForm {
     let form_array = form.split_whitespace().collect::<Vec<&str>>();
     let mut clean_form: LongForm = LongForm::new();
 
@@ -123,6 +124,10 @@ fn translate_latin_word_info_form(form: String, pos: String) -> LongForm {
         clean_form.voice = Some(translate_pronoun(&word_type[..]).to_string());
     }
 
+    if !clean {
+        clean_form = fill_in_form_blank(clean_form);
+    }
+
     return clean_form;
 }
 
@@ -138,11 +143,18 @@ fn format_word_info(word_info: WordInfo) -> WordInfo {
     clean_word_info
 }
 
-fn format_latin_stem(latin_stem: Stem) -> Stem {
+fn format_latin_stem(latin_stem: Stem, clean: bool) -> Stem {
     let mut clean_latin_stem: Stem = latin_stem;
 
     clean_latin_stem.pos = translate_part_of_speech(&clean_latin_stem.pos[..]).to_string();
-    //TODO: format the stem form
+    clean_latin_stem.form = Form::LongForm(translate_latin_word_info_form(
+        match clean_latin_stem.form.clone() {
+            Form::LongForm(_form) => "".to_string(),
+            Form::StrForm(form) => form,
+        },
+        clean_latin_stem.pos.clone(),
+        clean,
+    ));
 
     clean_latin_stem
 }
@@ -225,7 +237,7 @@ fn remove_vague_inflections(inflections: Vec<Inflection>) -> Vec<Inflection> {
     clean_inflections
 }
 
-pub fn format_form(form: String, pos: String, clean: bool) -> LongForm {
+fn format_form(form: String, pos: String, clean: bool) -> LongForm {
     let mut clean_form = LongForm::new();
     let form_array = form.split_whitespace().collect::<Vec<&str>>();
 
@@ -257,15 +269,22 @@ pub fn format_form(form: String, pos: String, clean: bool) -> LongForm {
     }
 
     if !clean {
-        clean_form.declension.get_or_insert("".to_string());
-        clean_form.number.get_or_insert("".to_string());
-        clean_form.gender.get_or_insert("".to_string());
-        clean_form.tense.get_or_insert("".to_string());
-        clean_form.voice.get_or_insert("".to_string());
-        clean_form.mood.get_or_insert("".to_string());
-        clean_form.person.get_or_insert(0);
+        clean_form = fill_in_form_blank(clean_form);
     }
 
+    clean_form
+}
+
+fn fill_in_form_blank(mut clean_form: LongForm) -> LongForm {
+    clean_form.declension.get_or_insert("".to_string());
+    clean_form.number.get_or_insert("".to_string());
+    clean_form.gender.get_or_insert("".to_string());
+    clean_form.tense.get_or_insert("".to_string());
+    clean_form.voice.get_or_insert("".to_string());
+    clean_form.mood.get_or_insert("".to_string());
+    clean_form.verb.get_or_insert("".to_string());
+    clean_form.kind.get_or_insert("".to_string());
+    clean_form.person.get_or_insert(0);
     clean_form
 }
 
