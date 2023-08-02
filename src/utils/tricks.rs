@@ -1,3 +1,5 @@
+//TODO: add word mod, if word ends in e, try ae
+
 pub fn is_vowel(c: char) -> bool {
     match c {
         'a' | 'e' | 'i' | 'o' | 'u' => true,

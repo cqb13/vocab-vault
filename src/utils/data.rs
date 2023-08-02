@@ -3,26 +3,29 @@ use std::include_bytes;
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct LatinWordInfo {
-    pub pos: String,
-    pub n: Vec<NValue>,
+    pub orth: String,
     pub parts: Vec<String>,
     pub senses: Vec<String>,
+    pub pos: String,
     pub form: Form,
     pub info: WordInfo,
-    pub orth: String,
+    pub n: Vec<NValue>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub modifiers: Option<Vec<UniqueLatinWordInfo>>,
     pub id: i32,
 }
 
 impl Clone for LatinWordInfo {
     fn clone(&self) -> LatinWordInfo {
         LatinWordInfo {
-            pos: self.pos.clone(),
-            n: self.n.clone(),
+            orth: self.orth.clone(),
             parts: self.parts.clone(),
             senses: self.senses.clone(),
+            pos: self.pos.clone(),
             form: self.form.clone(),
             info: self.info.clone(),
-            orth: self.orth.clone(),
+            n: self.n.clone(),
+            modifiers: self.modifiers.clone(),
             id: self.id.clone(),
         }
     }
@@ -31,15 +34,20 @@ impl Clone for LatinWordInfo {
 impl LatinWordInfo {
     pub fn new() -> LatinWordInfo {
         LatinWordInfo {
-            pos: "".to_string(),
-            n: Vec::new(),
+            orth: "".to_string(),
             parts: Vec::new(),
             senses: Vec::new(),
+            pos: "".to_string(),
             form: Form::new_str(),
             info: WordInfo::new(),
-            orth: "".to_string(),
+            n: Vec::new(),
+            modifiers: None,
             id: 0,
         }
+    }
+
+    pub fn set_modifiers(&mut self, modifiers: Vec<UniqueLatinWordInfo>) {
+        self.modifiers = Some(modifiers);
     }
 }
 
@@ -50,7 +58,7 @@ pub struct UniqueLatinWordInfo {
     pub pos: String,
     pub form: Form,
     pub n: Vec<NValue>,
-    pub info: Option<WordInfo>,
+    pub info: WordInfo,
 }
 
 impl UniqueLatinWordInfo {
@@ -61,7 +69,7 @@ impl UniqueLatinWordInfo {
             pos: "".to_string(),
             form: Form::new_str(),
             n: Vec::new(),
-            info: None,
+            info: WordInfo::new(),
         }
     }
 }
@@ -96,6 +104,22 @@ impl WordInfo {
             geo: "".to_string(),
             freq: "".to_string(),
             source: "".to_string(),
+        }
+    }
+
+    pub fn new_set(
+        age: String,
+        area: String,
+        geo: String,
+        freq: String,
+        source: String,
+    ) -> WordInfo {
+        WordInfo {
+            age,
+            area,
+            geo,
+            freq,
+            source,
         }
     }
 }

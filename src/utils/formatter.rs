@@ -4,7 +4,7 @@ use crate::utils::data::Stem;
 use crate::utils::key_translator::translate_part_of_speech;
 use crate::{latin_to_english::Word, Language, Translation, TranslationType};
 
-use super::data::{EnglishWordInfo, Form, Inflection, LatinWordInfo, LongForm, WordInfo};
+use super::data::{EnglishWordInfo, Form, Inflection, LatinWordInfo, LongForm, WordInfo, UniqueLatinWordInfo};
 use super::key_translator::{
     translate_age, translate_area, translate_declension, translate_frequency, translate_gender,
     translate_mood, translate_noun, translate_number, translate_pronoun, translate_source,
@@ -34,9 +34,7 @@ pub fn format_output(
                     } else if let Word::UniqueLatinWordInfo(unique_latin_word_info) =
                         &mut latin_word_info.word
                     {
-                        //TODO add unique word formatting
-                        //*unique_latin_word_info = format_latin_word_info(unique_latin_word_info.clone());
-                        println!("unique_latin_word_info: {:?}", unique_latin_word_info);
+                        *unique_latin_word_info = format_unique_latin_word_info(unique_latin_word_info.clone(), clean);
                     } else {
                         panic!("Invalid Word type for Latin language.");
                     }
@@ -104,9 +102,37 @@ fn format_latin_word_info(latin_word_info: LatinWordInfo, clean: bool) -> LatinW
     clean_latin_word_info
 }
 
+fn format_unique_latin_word_info(unique_latin_word_info: UniqueLatinWordInfo, clean: bool) -> UniqueLatinWordInfo {
+    let mut clean_unique_latin_word_info: UniqueLatinWordInfo = unique_latin_word_info;
+
+    clean_unique_latin_word_info.pos =
+        translate_part_of_speech(&clean_unique_latin_word_info.pos[..]).to_string();
+    clean_unique_latin_word_info.info = format_word_info(clean_unique_latin_word_info.info);
+    clean_unique_latin_word_info.form = Form::LongForm(translate_latin_word_info_form(
+        match clean_unique_latin_word_info.form.clone() {
+            Form::LongForm(_form) => "".to_string(),
+            Form::StrForm(form) => form,
+        },
+        clean_unique_latin_word_info.pos.clone(),
+        clean,
+    ));
+
+    clean_unique_latin_word_info
+}
+
+
 fn translate_latin_word_info_form(form: String, pos: String, clean: bool) -> LongForm {
     let form_array = form.split_whitespace().collect::<Vec<&str>>();
     let mut clean_form: LongForm = LongForm::new();
+
+    if pos == "unknown" {
+        return clean_form;
+    }
+
+    if pos == "numeral" {
+        clean_form.kind = Some("numeral".to_string());
+        return clean_form;
+    }
 
     if form_array.len() < 2 {
         clean_form.kind = Some("part of speech".to_string());

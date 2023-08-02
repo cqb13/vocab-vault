@@ -56,7 +56,7 @@ where
         TranslationType::English(info) => info.serialize(serializer),
     }
 }
-
+//TODO: move principle part logic out of formatter
 fn main() {
     let matches = App::new("Translator CLI")
         .version("0.1.0")
@@ -180,6 +180,7 @@ fn translate_to_latin(english_text: &str, formatted_output: bool, clean: bool) {
     if formatted_output {
         translations = format_output(translations, Language::English, clean);
     }
+
     let json_output = serde_json::to_string_pretty(&translations).unwrap();
     println!("{}", json_output);
 }
