@@ -20,8 +20,17 @@ jobs:
       run: cargo build --release
     - name: Get binary
       run: cp target/release/latin_words ${{ github.workspace }}
-    - name: Publish
+    - name: Publish Artifact
       uses: actions/upload-artifact@v2
       with:
         name: latin_words
         path: latin_words
+    - name: Publish Release
+      uses: softprops/action-gh-release@v1
+      with:
+        files: latin_words
+        tag_name: ${{ github.sha }}
+        body: |
+          Latin Words
+          ===========
+          Parser of Whitaker Words dictionary
