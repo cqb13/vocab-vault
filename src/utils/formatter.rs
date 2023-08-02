@@ -99,6 +99,8 @@ fn format_latin_word_info(latin_word_info: LatinWordInfo, clean: bool) -> LatinW
             generate_for_verbs(clean_latin_word_info.n.clone(), clean_latin_word_info.parts)
     }
 
+    clean_latin_word_info.orth = clean_latin_word_info.parts[0].clone();
+
     clean_latin_word_info
 }
 
