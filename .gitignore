@@ -16,7 +16,6 @@ Cargo.lock
 Cargo.toml.orig
 
 # Exclude hidden files and directories
-.*
 !.gitignore
 !.gitattributes
 
