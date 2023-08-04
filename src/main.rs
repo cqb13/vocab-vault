@@ -11,7 +11,11 @@ pub mod utils {
     pub mod formatter;
     pub mod key_translator;
     pub mod principle_part_generator;
-    pub mod tricks;
+    pub mod tricks {
+        pub mod trick_list;
+        pub mod tricks;
+        pub mod word_mods;
+    }
 }
 
 use utils::formatter::{format_output, sanitize_word};

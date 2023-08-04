@@ -7,7 +7,8 @@ use crate::utils::data::{
     WordInfo,
 };
 
-use crate::utils::tricks::{evaluate_roman_numeral, is_roman_number, switch_first_i_or_j};
+use crate::utils::tricks::tricks::{is_roman_number, evaluate_roman_numeral};
+use crate::utils::tricks::word_mods::switch_first_i_or_j;
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct LatinTranslationInfo {
