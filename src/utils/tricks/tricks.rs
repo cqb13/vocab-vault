@@ -1,23 +1,12 @@
 //TODO: add word mod, if word ends in e, try ae
 use crate::utils::tricks::word_mods::{flip, flip_flop};
+use crate::utils::tricks::trick_list::{Trick};
 
 pub enum Operation {
     FlipFlop,
     Flip,
     Internal,
     Slur,
-}
-
-pub struct Trick {
-    pub max_attempts: i32,
-    pub operation: Operation,
-    pub flip_flop1: &'static str,
-    pub flip_flop2: &'static str,
-    pub flip_flip3: &'static str,
-    pub flip_flip4: &'static str,
-    pub internal1: &'static str,
-    pub internal2: &'static str,
-    pub slur1: &'static str,
 }
 
 pub fn is_vowel(c: char) -> bool {
@@ -69,6 +58,7 @@ pub fn evaluate_roman_numeral(roman_numeral: &str) -> u32 {
 pub fn iterate_over_tricks(trick_list: &[Trick], max_attempts: i32, word: &str) -> bool {
     let mut is_finished = false;
 
+    // word should be modified after each operation is applied.
     for trick in trick_list.iter() {
         match trick.operation {
             Operation::FlipFlop => flip_flop(trick.flip_flop1, trick.flip_flop2, word),

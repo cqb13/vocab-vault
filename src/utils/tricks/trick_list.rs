@@ -37,6 +37,19 @@ pub fn get_tricks_list(first_char_of_word: char) -> Vec<Trick> {
     }
 }
 
+pub fn get_slur_trick_list(first_chart_of_word: char) -> Vec<Trick> {
+    match first_chart_of_word {
+        'a' => return get_a_slur_tricks(),
+        'c' => return get_c_slur_tricks(),
+        'i' => return get_i_slur_tricks(),
+        'n' => return get_n_slur_tricks(),
+        'o' => return get_o_slur_tricks(),
+        'q' => return get_q_slur_tricks(),
+        's' => return get_s_slur_tricks(),
+        _ => panic!("Invalid first char of word: {}", first_chart_of_word),
+    }
+}
+
 fn get_a_tricks() -> Vec<Trick> {
     let a_trick_list: Vec<Trick> = vec![
         Trick {
@@ -787,4 +800,259 @@ fn get_z_tricks() -> Vec<Trick> {
     }];
 
     z_trick_list
+}
+
+fn get_a_slur_tricks() -> Vec<Trick> {
+    let a_slur_trick_list = vec![
+        Trick {
+            max_attempts: 0,
+            operation: Operation::FlipFlop,
+            flip_flop1: "abs",
+            flip_flop2: "aps",
+            flip_flip3: "",
+            flip_flip4: "",
+            internal1: "",
+            internal2: "",
+            slur1: "",
+        },
+        Trick {
+            max_attempts: 0,
+            operation: Operation::FlipFlop,
+            flip_flop1: "acq",
+            flip_flop2: "adq",
+            flip_flip3: "",
+            flip_flip4: "",
+            internal1: "",
+            internal2: "",
+            slur1: "",
+        },
+        Trick {
+            max_attempts: 0,
+            operation: Operation::FlipFlop,
+            flip_flop1: "ante",
+            flip_flop2: "anti",
+            flip_flip3: "",
+            flip_flip4: "",
+            internal1: "",
+            internal2: "",
+            slur1: "",
+        },
+        Trick {
+            max_attempts: 0,
+            operation: Operation::FlipFlop,
+            flip_flop1: "auri",
+            flip_flop2: "aure",
+            flip_flip3: "",
+            flip_flip4: "",
+            internal1: "",
+            internal2: "",
+            slur1: "",
+        },
+        Trick {
+            max_attempts: 0,
+            operation: Operation::FlipFlop,
+            flip_flop1: "auri",
+            flip_flop2: "auru",
+            flip_flip3: "",
+            flip_flip4: "",
+            internal1: "",
+            internal2: "",
+            slur1: "",
+        },
+        Trick {
+            max_attempts: 0,
+            operation: Operation::Slur,
+            flip_flop1: "",
+            flip_flop2: "",
+            flip_flip3: "",
+            flip_flip4: "",
+            internal1: "",
+            internal2: "",
+            slur1: "ad",
+        },
+    ];
+
+    a_slur_trick_list
+}
+
+fn get_c_slur_tricks() -> Vec<Trick> {
+    let c_slur_trick_list = vec![
+        Trick {
+            max_attempts: 0,
+            operation: Operation::Flip,
+            flip_flop1: "",
+            flip_flop2: "",
+            flip_flip3: "circum",
+            flip_flip4: "circun",
+            internal1: "",
+            internal2: "",
+            slur1: "",
+        },
+        Trick {
+            max_attempts: 0,
+            operation: Operation::FlipFlop,
+            flip_flop1: "con",
+            flip_flop2: "com",
+            flip_flip3: "",
+            flip_flip4: "",
+            internal1: "",
+            internal2: "",
+            slur1: "",
+        },
+        Trick {
+            max_attempts: 0,
+            operation: Operation::Flip,
+            flip_flop1: "",
+            flip_flop2: "",
+            flip_flip3: "co",
+            flip_flip4: "com",
+            internal1: "",
+            internal2: "",
+            slur1: "",
+        },
+        Trick {
+            max_attempts: 0,
+            operation: Operation::Flip,
+            flip_flop1: "",
+            flip_flop2: "",
+            flip_flip3: "co",
+            flip_flip4: "con",
+            internal1: "",
+            internal2: "",
+            slur1: "",
+        },
+        Trick {
+            max_attempts: 0,
+            operation: Operation::FlipFlop,
+            flip_flop1: "conl",
+            flip_flop2: "coll",
+            flip_flip3: "",
+            flip_flip4: "",
+            internal1: "",
+            internal2: "",
+            slur1: "",
+        },
+    ];
+
+    c_slur_trick_list
+}
+
+// for some forms of eo the "i" stem grates with an "is .. ." ending
+fn get_i_slur_tricks() -> Vec<Trick> {
+    let i_slur_trick_list = vec![
+        Trick {
+            max_attempts: 1,
+            operation: Operation::Slur,
+            flip_flop1: "",
+            flip_flop2: "",
+            flip_flip3: "",
+            flip_flip4: "",
+            internal1: "",
+            internal2: "",
+            slur1: "in",
+        },
+        Trick {
+            max_attempts: 1,
+            operation: Operation::FlipFlop,
+            flip_flop1: "inb",
+            flip_flop2: "imb",
+            flip_flip3: "",
+            flip_flip4: "",
+            internal1: "",
+            internal2: "",
+            slur1: "",
+        },
+        Trick {
+            max_attempts: 1,
+            operation: Operation::FlipFlop,
+            flip_flop1: "inp",
+            flip_flop2: "imp",
+            flip_flip3: "",
+            flip_flip4: "",
+            internal1: "",
+            internal2: "",
+            slur1: "",
+        },
+    ];
+
+    i_slur_trick_list
+}
+
+fn get_n_slur_tricks() -> Vec<Trick> {
+    let n_slur_trick_list = vec![Trick {
+        max_attempts: 0,
+        operation: Operation::Flip,
+        flip_flop1: "",
+        flip_flop2: "",
+        flip_flip3: "non",
+        flip_flip4: "nun",
+        internal1: "",
+        internal2: "",
+        slur1: "",
+    }];
+
+    n_slur_trick_list
+}
+
+fn get_o_slur_tricks() -> Vec<Trick> {
+    let o_slur_trick_list = vec![Trick {
+        max_attempts: 0,
+        operation: Operation::Slur,
+        flip_flop1: "",
+        flip_flop2: "",
+        flip_flip3: "",
+        flip_flip4: "",
+        internal1: "",
+        internal2: "",
+        slur1: "ob",
+    }];
+
+    o_slur_trick_list
+}
+
+fn get_q_slur_tricks() -> Vec<Trick> {
+    let q_slur_trick_list = vec![Trick {
+        max_attempts: 0,
+        operation: Operation::FlipFlop,
+        flip_flop1: "quadri",
+        flip_flop2: "quadru",
+        flip_flip3: "",
+        flip_flip4: "",
+        internal1: "",
+        internal2: "",
+        slur1: "",
+    }];
+
+    q_slur_trick_list
+}
+
+fn get_s_slur_tricks() -> Vec<Trick> {
+    let s_slur_trick_list = vec![
+        // Latham
+        Trick {
+            max_attempts: 0,
+            operation: Operation::Flip,
+            flip_flop1: "",
+            flip_flop2: "",
+            flip_flip3: "se",
+            flip_flip4: "ce",
+            internal1: "",
+            internal2: "",
+            slur1: "",
+        },
+        // From Oxford Latin Dictionary p.1835 "sub-"
+        Trick {
+            max_attempts: 0,
+            operation: Operation::Slur,
+            flip_flop1: "",
+            flip_flop2: "",
+            flip_flip3: "",
+            flip_flip4: "",
+            internal1: "",
+            internal2: "",
+            slur1: "sub",
+        },
+    ];
+
+    s_slur_trick_list
 }
