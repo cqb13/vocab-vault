@@ -65,23 +65,30 @@ pub fn evaluate_roman_numeral(roman_numeral: &str) -> u32 {
     result
 }
 
-pub fn try_tricks(mut word: String) -> String {
+pub fn try_tricks(word: String) -> String {
     let trick_chars = [
         'a', 'd', 'e', 'f', 'g', 'h', 'k', 'l', 'm', 'n', 'o', 'p', 's', 't', 'u', 'y', 'z',
     ];
-    let _slur_trick_chars = ['a', 'c', 'i', 'n', 'o', 'q', 's'];
+    let slur_trick_chars = ['a', 'c', 'i', 'n', 'o', 'q', 's'];
+
+    let mut new_word = word.clone();
 
     let first_char = word.chars().next().unwrap();
     if trick_chars.contains(&first_char) {
         let trick_list = get_trick_lists(word.to_string());
         let mut max_attempts = 0;
         while max_attempts < 2 {
-            word = iterate_over_tricks(trick_list.clone(), word.to_string());
+            new_word = iterate_over_tricks(trick_list.clone(), new_word.to_string());
             max_attempts += 1;
         }
     }
 
-    word
+    if new_word == word && slur_trick_chars.contains(&first_char) {
+        let trick_list = get_trick_lists(word.to_string());
+        new_word = iterate_over_tricks(trick_list.clone(), new_word.to_string());
+    }
+
+    new_word
 }
 
 fn get_trick_lists(word: String) -> Vec<Trick> {
@@ -96,8 +103,8 @@ fn iterate_over_tricks(trick_list: Vec<Trick>, mut word: String) -> String {
     // word should be modified after each operation is applied.
     for trick in trick_list.iter() {
         word = match trick.operation {
-            Operation::FlipFlop => flip_flop(trick.flip_flop1, trick.flip_flop2, &word),
-            Operation::Flip => flip(trick.flip_flip3, trick.flip_flip4,& word),
+            Operation::FlipFlop => flip_flop(trick.str_1, trick.str_2, &word),
+            Operation::Flip => flip(trick.str_1, trick.str_2, &word),
             Operation::Internal => return word, //internal(trick.internal1, trick.internal2),
             Operation::Slur => return word,     // Assuming Slur causes an exception
         };

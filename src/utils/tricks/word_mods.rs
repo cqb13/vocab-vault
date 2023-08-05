@@ -12,12 +12,14 @@ pub fn switch_first_i_or_j(word: &str) -> String {
 
 // replace the beginning part of a word with another string
 pub fn flip(str_to_replace: &str, replacement_str: &str, word: &str) -> String {
-    //let explanation = format!("{} was replaced by {}", str_to_replace, replacement_str);
+    let explanation = format!("{} was replaced by {}", str_to_replace, replacement_str);
 
     let mut new_word = word.to_string();
     if let Some(replaced) = new_word.strip_prefix(str_to_replace) {
         new_word = format!("{}{}", replacement_str, replaced);
     }
+
+    println!("{}", explanation);
 
     new_word
 }
