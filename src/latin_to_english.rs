@@ -7,7 +7,7 @@ use crate::utils::data::{
     WordInfo,
 };
 
-use crate::utils::tricks::tricks::{is_roman_number, evaluate_roman_numeral, try_tricks};
+use crate::utils::tricks::tricks::{evaluate_roman_numeral, is_roman_number, try_tricks};
 use crate::utils::tricks::word_mods::switch_first_i_or_j;
 
 #[derive(Serialize, Deserialize, Debug)]
@@ -50,33 +50,22 @@ where
 }
 
 pub fn translate_to_english(mut latin_word: String, tricks: bool) -> Vec<LatinTranslationInfo> {
-    let mut output: Vec<LatinTranslationInfo> = Vec::new();
+    let mut output = parse(&latin_word, false);
 
-    if tricks {
+    if output.len() == 0 && tricks {
         latin_word = try_tricks(latin_word);
+        output = parse(&latin_word, false);
     }
 
-    let (unique_latin_word, found) = parse_unique_latin_words(&latin_word);
-
-    if found {
-        output.push(LatinTranslationInfo {
-            word: Word::UniqueLatinWordInfo(unique_latin_word),
-            stem: Stem::new(),
-            inflections: Vec::new(),
-            addon: "unique".to_string(),
-        });
-    }
-
-    if output.len() == 0 {
-        output = find_form(&latin_word, false);
-    }
+    // most words should be found by now
 
     //instead of updating actual word, a copy is created that is switched, to not break splitEnclitic parsing.
     // Some words that start with i can also start with j
     // ex: iecit -> jecit
     // checking if return is word, because if word does not start with I or J, original word is returned, making the parsing not needed.
     if output.len() == 0 && switch_first_i_or_j(&latin_word) != latin_word {
-        output = find_form(&switch_first_i_or_j(&latin_word), false);
+        let switched_word = switch_first_i_or_j(&latin_word);
+        output = parse(&switched_word, false);
     }
 
     // If nothing is found, try removing enclitics and try again
@@ -89,22 +78,7 @@ pub fn translate_to_english(mut latin_word: String, tricks: bool) -> Vec<LatinTr
                 latin_word_info.modifiers = Some(modifier.clone());
             }
         }
-
-        let (unique_latin_word, found) = parse_unique_latin_words(&split_word);
-        if found {
-            output.push(LatinTranslationInfo {
-                word: Word::UniqueLatinWordInfo(unique_latin_word),
-                stem: Stem::new(),
-                inflections: Vec::new(),
-                addon: "enclitic".to_string(),
-            });
-        } else {
-            output.append(&mut find_form(&split_word, false));
-
-            if output.len() == 0 && switch_first_i_or_j(&split_word) != split_word {
-                output.append(&mut find_form(&switch_first_i_or_j(&split_word), false));
-            }
-        }
+        output = parse(&split_word, false);
     }
 
     if is_roman_number(&latin_word) {
@@ -133,7 +107,27 @@ pub fn translate_to_english(mut latin_word: String, tricks: bool) -> Vec<LatinTr
         }
     }
 
-    //TODO: before returning, order words by frequency in word_info. if more than 1 word, remove any words with lesser or less.
+    output
+}
+
+fn parse(latin_word: &str, reduced: bool) -> Vec<LatinTranslationInfo> {
+    let mut output: Vec<LatinTranslationInfo> = Vec::new();
+
+    let (unique_latin_word, found) = parse_unique_latin_words(&latin_word);
+
+    if found {
+        output.push(LatinTranslationInfo {
+            word: Word::UniqueLatinWordInfo(unique_latin_word),
+            stem: Stem::new(),
+            inflections: Vec::new(),
+            addon: "unique".to_string(),
+        });
+    }
+
+    if output.len() == 0 {
+        output = find_form(&latin_word, reduced);
+    }
+
     output
 }
 
