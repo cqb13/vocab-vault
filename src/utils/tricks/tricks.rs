@@ -1,6 +1,8 @@
+use std::char;
+
 //TODO: add word mod, if word ends in e, try ae
-use crate::utils::tricks::trick_list::match_tricks_list;
 use crate::utils::tricks::trick_list::Trick;
+use crate::utils::tricks::trick_list::{match_slur_trick_list, match_tricks_list};
 use crate::utils::tricks::word_mods::{flip, flip_flop};
 
 #[derive(Debug, Clone)]
@@ -70,12 +72,11 @@ pub fn try_tricks(word: String) -> String {
         'a', 'd', 'e', 'f', 'g', 'h', 'k', 'l', 'm', 'n', 'o', 'p', 's', 't', 'u', 'y', 'z',
     ];
     let slur_trick_chars = ['a', 'c', 'i', 'n', 'o', 'q', 's'];
-
     let mut new_word = word.clone();
-
     let first_char = word.chars().next().unwrap();
+
     if trick_chars.contains(&first_char) {
-        let trick_list = get_trick_lists(word.to_string());
+        let trick_list = get_trick_lists(first_char);
         let mut max_attempts = 0;
         while max_attempts < 2 {
             new_word = iterate_over_tricks(trick_list.clone(), new_word.to_string());
@@ -84,17 +85,16 @@ pub fn try_tricks(word: String) -> String {
     }
 
     if new_word == word && slur_trick_chars.contains(&first_char) {
-        let trick_list = get_trick_lists(word.to_string());
+        let trick_list = match_slur_trick_list(first_char);
         new_word = iterate_over_tricks(trick_list.clone(), new_word.to_string());
     }
 
+    println!("{} -> {}", word, new_word);
     new_word
 }
 
-fn get_trick_lists(word: String) -> Vec<Trick> {
-    let first_char = word.chars().next().unwrap();
-
-    let trick_list = match_tricks_list(first_char);
+fn get_trick_lists(character: char) -> Vec<Trick> {
+    let trick_list = match_tricks_list(character);
 
     trick_list
 }
