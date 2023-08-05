@@ -1,7 +1,9 @@
 //TODO: add word mod, if word ends in e, try ae
+use crate::utils::tricks::trick_list::match_tricks_list;
+use crate::utils::tricks::trick_list::Trick;
 use crate::utils::tricks::word_mods::{flip, flip_flop};
-use crate::utils::tricks::trick_list::{Trick};
 
+#[derive(Debug, Clone)]
 pub enum Operation {
     FlipFlop,
     Flip,
@@ -25,6 +27,14 @@ pub fn is_roman_digit(c: char) -> bool {
 
 pub fn is_roman_number(possible_roman_number: &str) -> bool {
     possible_roman_number.chars().all(is_roman_digit)
+}
+
+pub fn is_common_prefix(prefix: String) -> bool {
+    let constant_prefixes = [
+        "dis", "ex", "in", "per", "prae", "pro", "re", "si", "sub", "super", "trans",
+    ];
+
+    constant_prefixes.contains(&prefix.as_str())
 }
 
 pub fn translate_roman_digit_to_number(c: char) -> u32 {
@@ -55,31 +65,43 @@ pub fn evaluate_roman_numeral(roman_numeral: &str) -> u32 {
     result
 }
 
-pub fn iterate_over_tricks(trick_list: &[Trick], max_attempts: i32, word: &str) -> bool {
-    let mut is_finished = false;
+pub fn try_tricks(mut word: String) -> String {
+    let trick_chars = [
+        'a', 'd', 'e', 'f', 'g', 'h', 'k', 'l', 'm', 'n', 'o', 'p', 's', 't', 'u', 'y', 'z',
+    ];
+    let _slur_trick_chars = ['a', 'c', 'i', 'n', 'o', 'q', 's'];
 
-    // word should be modified after each operation is applied.
-    for trick in trick_list.iter() {
-        match trick.operation {
-            Operation::FlipFlop => flip_flop(trick.flip_flop1, trick.flip_flop2, word),
-            Operation::Flip => flip(trick.flip_flip3, trick.flip_flip4, word),
-            Operation::Internal => return true, //internal(trick.internal1, trick.internal2),
-            Operation::Slur => return true, // Assuming Slur causes an exception
-        };
-
-        if max_attempts > trick.max_attempts {
-            is_finished = true;
-            return is_finished;
+    let first_char = word.chars().next().unwrap();
+    if trick_chars.contains(&first_char) {
+        let trick_list = get_trick_lists(word.to_string());
+        let mut max_attempts = 0;
+        while max_attempts < 2 {
+            word = iterate_over_tricks(trick_list.clone(), word.to_string());
+            max_attempts += 1;
         }
     }
 
-    is_finished
+    word
 }
 
-pub fn is_common_prefix(prefix: String) -> bool {
-    let constant_prefixes = [
-        "dis", "ex", "in", "per", "prae", "pro", "re", "si", "sub", "super", "trans",
-    ];
+fn get_trick_lists(word: String) -> Vec<Trick> {
+    let first_char = word.chars().next().unwrap();
 
-    constant_prefixes.contains(&prefix.as_str())
+    let trick_list = match_tricks_list(first_char);
+
+    trick_list
+}
+
+fn iterate_over_tricks(trick_list: Vec<Trick>, mut word: String) -> String {
+    // word should be modified after each operation is applied.
+    for trick in trick_list.iter() {
+        word = match trick.operation {
+            Operation::FlipFlop => flip_flop(trick.flip_flop1, trick.flip_flop2, &word),
+            Operation::Flip => flip(trick.flip_flip3, trick.flip_flip4,& word),
+            Operation::Internal => return word, //internal(trick.internal1, trick.internal2),
+            Operation::Slur => return word,     // Assuming Slur causes an exception
+        };
+    }
+
+    word
 }

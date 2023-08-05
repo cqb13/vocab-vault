@@ -7,7 +7,7 @@ use crate::utils::data::{
     WordInfo,
 };
 
-use crate::utils::tricks::tricks::{is_roman_number, evaluate_roman_numeral};
+use crate::utils::tricks::tricks::{is_roman_number, evaluate_roman_numeral, try_tricks};
 use crate::utils::tricks::word_mods::switch_first_i_or_j;
 
 #[derive(Serialize, Deserialize, Debug)]
@@ -49,10 +49,14 @@ where
     }
 }
 
-pub fn translate_to_english(latin_word: &str) -> Vec<LatinTranslationInfo> {
+pub fn translate_to_english(mut latin_word: String, tricks: bool) -> Vec<LatinTranslationInfo> {
     let mut output: Vec<LatinTranslationInfo> = Vec::new();
 
-    let (unique_latin_word, found) = parse_unique_latin_words(latin_word);
+    if tricks {
+        latin_word = try_tricks(latin_word);
+    }
+
+    let (unique_latin_word, found) = parse_unique_latin_words(&latin_word);
 
     if found {
         output.push(LatinTranslationInfo {
@@ -64,22 +68,22 @@ pub fn translate_to_english(latin_word: &str) -> Vec<LatinTranslationInfo> {
     }
 
     if output.len() == 0 {
-        output = find_form(latin_word, false);
+        output = find_form(&latin_word, false);
     }
 
     //instead of updating actual word, a copy is created that is switched, to not break splitEnclitic parsing.
     // Some words that start with i can also start with j
     // ex: iecit -> jecit
     // checking if return is word, because if word does not start with I or J, original word is returned, making the parsing not needed.
-    if output.len() == 0 && switch_first_i_or_j(latin_word) != latin_word {
-        output = find_form(&switch_first_i_or_j(latin_word), false);
+    if output.len() == 0 && switch_first_i_or_j(&latin_word) != latin_word {
+        output = find_form(&switch_first_i_or_j(&latin_word), false);
     }
 
     // If nothing is found, try removing enclitics and try again
     // ex: clamaverunt -> clamare
     // doing this here instead of earlier should fix words like salve having the "ve" removed and returning wrong def
     if output.len() == 0 {
-        let (split_word, modifier) = split_enclitic(latin_word);
+        let (split_word, modifier) = split_enclitic(&latin_word);
         for word in &mut output {
             if let Word::LatinWordInfo(latin_word_info) = &mut word.word {
                 latin_word_info.modifiers = Some(modifier.clone());
@@ -103,8 +107,8 @@ pub fn translate_to_english(latin_word: &str) -> Vec<LatinTranslationInfo> {
         }
     }
 
-    if is_roman_number(latin_word) {
-        let numeral_evaluation = evaluate_roman_numeral(latin_word);
+    if is_roman_number(&latin_word) {
+        let numeral_evaluation = evaluate_roman_numeral(&latin_word);
 
         if numeral_evaluation > 0 {
             output.push(LatinTranslationInfo {

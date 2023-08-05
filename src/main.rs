@@ -105,6 +105,13 @@ fn main() {
                         .required(true),
                 )
                 .arg(
+                    Arg::with_name("tricks")
+                        .short('t')
+                        .long("tricks")
+                        .help("Will attempt to use various tricks on words to get a better result.")
+                        .takes_value(false),
+                )
+                .arg(
                     Arg::with_name("formatted")
                         .short('f')
                         .long("formatted")
@@ -137,20 +144,21 @@ fn main() {
         }
         Some(("transLat", trans_lat_matches)) => {
             let text = trans_lat_matches.value_of("text").unwrap();
+            let tricks = trans_lat_matches.is_present("tricks");
             let formatted_output = trans_lat_matches.is_present("formatted");
             let clean = trans_lat_matches.is_present("clean");
-            translate_to_english(text, formatted_output, clean);
+            translate_to_english(text, tricks, formatted_output, clean);
         }
         _ => println!("Please provide a valid command: transEng or transLat"),
     }
 }
 
-fn translate_to_english(latin_text: &str, formatted_output: bool, clean: bool) {
+fn translate_to_english(latin_text: &str, tricks: bool, formatted_output: bool, clean: bool) {
     let latin_words: Vec<&str> = latin_text.split(" ").collect();
     let mut translations: Vec<Translation> = Vec::new();
 
     for latin_word in latin_words {
-        let output = latin_to_english::translate_to_english(&sanitize_word(latin_word));
+        let output = latin_to_english::translate_to_english(sanitize_word(latin_word), tricks);
         if output.len() > 0 {
             translations.push(Translation {
                 word: latin_word.to_string(),

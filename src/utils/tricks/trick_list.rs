@@ -3,7 +3,7 @@ use std::vec;
 use crate::utils::tricks::tricks::Operation;
 
 pub struct Trick {
-    pub max_attempts: i32,
+    pub max_attempts: i8,
     pub operation: Operation,
     pub flip_flop1: &'static str,
     pub flip_flop2: &'static str,
@@ -14,7 +14,23 @@ pub struct Trick {
     pub slur1: &'static str,
 }
 
-pub fn get_tricks_list(first_char_of_word: char) -> Vec<Trick> {
+impl Clone for Trick {
+    fn clone(&self) -> Trick {
+        Trick {
+            max_attempts: self.max_attempts,
+            operation: self.operation.clone(),
+            flip_flop1: self.flip_flop1,
+            flip_flop2: self.flip_flop2,
+            flip_flip3: self.flip_flip3,
+            flip_flip4: self.flip_flip4,
+            internal1: self.internal1,
+            internal2: self.internal2,
+            slur1: self.slur1,
+        }
+    }
+}
+
+pub fn match_tricks_list(first_char_of_word: char) -> Vec<Trick> {
     match first_char_of_word {
         'a' => return get_a_tricks(),
         'd' => return get_d_tricks(),
@@ -37,7 +53,7 @@ pub fn get_tricks_list(first_char_of_word: char) -> Vec<Trick> {
     }
 }
 
-pub fn get_slur_trick_list(first_chart_of_word: char) -> Vec<Trick> {
+pub fn match_slur_trick_list(first_chart_of_word: char) -> Vec<Trick> {
     match first_chart_of_word {
         'a' => return get_a_slur_tricks(),
         'c' => return get_c_slur_tricks(),
