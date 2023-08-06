@@ -6,9 +6,6 @@ use serde_json;
 
 mod english_to_latin;
 mod latin_to_english;
-pub mod utils {
-    pub mod macron_generator;
-}
 
 pub mod data {
     pub mod data;
@@ -96,13 +93,6 @@ fn main() {
                         .help("Cleans the output, by removing objects with vague values, such as 'unknown'.")
                         .takes_value(false),
                 )
-                .arg(
-                    Arg::with_name("predict macrons")
-                        .short('m')
-                        .long("predict macrons")
-                        .help("Tries to predict where macrons should be in the word")
-                        .takes_value(false),
-                ),
         )
         .subcommand(
             App::new("transLat")
@@ -133,13 +123,6 @@ fn main() {
                         .help("Cleans the output, by removing objects with vague values, such as 'unknown'.")
                         .takes_value(false),
                 )
-                .arg(
-                    Arg::with_name("predict macrons")
-                        .short('m')
-                        .long("predict macrons")
-                        .help("Tries to predict where macrons should be in the word")
-                        .takes_value(false),
-                ),
         )
         .get_matches();
 
