@@ -76,7 +76,7 @@ fn main() {
                 .about("Translate English to Latin")
                 .arg(
                     Arg::with_name("text")
-                        .help("The Latin text to translate to English")
+                        .help("The English text to translate to Latin")
                         .required(true),
                 )
                 .arg(
@@ -99,7 +99,7 @@ fn main() {
                 .about("Translate Latin to English")
                 .arg(
                     Arg::with_name("text")
-                        .help("The English text to translate to Latin")
+                        .help("The Latin text to translate to English")
                         .required(true),
                 )
                 .arg(
