@@ -1,3 +1,5 @@
+//TODO: explanations for word mods should be available
+
 pub fn switch_first_i_or_j(word: &str) -> String {
     let mut chars: Vec<char> = word.chars().collect();
     if let Some(first_char) = chars.first_mut() {

@@ -1,4 +1,4 @@
-use super::data::NValue;
+use crate::data::data::NValue;
 
 pub fn generate_for_nouns(
     number_types: Vec<NValue>,

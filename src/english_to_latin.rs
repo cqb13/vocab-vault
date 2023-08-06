@@ -1,4 +1,4 @@
-use crate::utils::data::{get_english_words, get_latin_dictionary, EnglishWordInfo, LatinWordInfo};
+use crate::data::data::{get_english_words, get_latin_dictionary, EnglishWordInfo, LatinWordInfo};
 
 pub fn translate_to_latin(english_word: &str) -> Vec<EnglishWordInfo> {
     const MAX_RESPONSE_ITEMS: usize = 6;

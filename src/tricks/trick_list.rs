@@ -1,6 +1,6 @@
 use std::vec;
 
-use crate::utils::tricks::tricks::Operation;
+use crate::tricks::tricks::Operation;
 
 pub struct Trick {
     pub operation: Operation,

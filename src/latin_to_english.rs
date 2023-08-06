@@ -1,14 +1,14 @@
 use serde::{Deserialize, Serialize, Serializer};
 
-use crate::utils::data::{
+use crate::data::data::{
     get_latin_dictionary, get_latin_inflections, get_latin_not_packons, get_latin_packons,
     get_latin_prefixes, get_latin_stems, get_latin_suffixes, get_latin_tackons,
     get_unique_latin_words, Attachment, Form, Inflection, LatinWordInfo, Stem, UniqueLatinWordInfo,
     WordInfo,
 };
 
-use crate::utils::tricks::tricks::{evaluate_roman_numeral, is_roman_number, try_tricks};
-use crate::utils::tricks::word_mods::switch_first_i_or_j;
+use crate::tricks::tricks::{evaluate_roman_numeral, is_roman_number, try_tricks};
+use crate::tricks::word_mods::switch_first_i_or_j;
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct LatinTranslationInfo {

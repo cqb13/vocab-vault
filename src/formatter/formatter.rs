@@ -1,10 +1,10 @@
 use regex::Regex;
 
-use crate::utils::data::Stem;
-use crate::utils::key_translator::translate_part_of_speech;
+use crate::data::data::Stem;
+use crate::formatter::key_translator::translate_part_of_speech;
 use crate::{latin_to_english::Word, Language, Translation, TranslationType};
 
-use super::data::{EnglishWordInfo, Form, Inflection, LatinWordInfo, LongForm, WordInfo, UniqueLatinWordInfo};
+use crate::data::data::{EnglishWordInfo, Form, Inflection, LatinWordInfo, LongForm, WordInfo, UniqueLatinWordInfo};
 use super::key_translator::{
     translate_age, translate_area, translate_declension, translate_frequency, translate_gender,
     translate_mood, translate_noun, translate_number, translate_pronoun, translate_source,

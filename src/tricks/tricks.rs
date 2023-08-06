@@ -1,9 +1,9 @@
 use std::char;
 
 //TODO: add word mod, if word ends in e, try ae
-use crate::utils::tricks::trick_list::Trick;
-use crate::utils::tricks::trick_list::{match_slur_trick_list, match_tricks_list};
-use crate::utils::tricks::word_mods::{flip, flip_flop};
+use crate::tricks::trick_list::Trick;
+use crate::tricks::trick_list::{match_slur_trick_list, match_tricks_list};
+use crate::tricks::word_mods::{flip, flip_flop};
 
 #[derive(Debug, Clone)]
 pub enum Operation {

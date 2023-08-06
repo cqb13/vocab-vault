@@ -1,24 +1,32 @@
 use clap::{App, Arg};
+use data::data::EnglishWordInfo;
 use latin_to_english::LatinTranslationInfo;
 use serde::{Deserialize, Serialize, Serializer};
 use serde_json;
-use utils::data::EnglishWordInfo;
 
 mod english_to_latin;
 mod latin_to_english;
 pub mod utils {
+    pub mod macron_generator;
+}
+
+pub mod data {
     pub mod data;
+}
+
+pub mod formatter {
     pub mod formatter;
     pub mod key_translator;
     pub mod principle_part_generator;
-    pub mod tricks {
-        pub mod trick_list;
-        pub mod tricks;
-        pub mod word_mods;
-    }
 }
 
-use utils::formatter::{format_output, sanitize_word};
+pub mod tricks {
+    pub mod trick_list;
+    pub mod tricks;
+    pub mod word_mods;
+}
+
+use crate::formatter::formatter::{format_output, sanitize_word};
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct Translation {
