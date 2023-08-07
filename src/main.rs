@@ -89,6 +89,36 @@ where
 }
 //TODO: move principle part logic out of formatter
 fn main() {
+    let global_args = vec![
+        Arg::with_name("formatted")
+            .short('f')
+            .long("formatted")
+            .help("Determines if the output should be formatted")
+            .takes_value(false),
+        Arg::with_name("clean")
+            .short('c')
+            .long("clean")
+            .help("Removes objects with vague values, such as 'unknown'.")
+            .takes_value(false)
+            .requires("formatted"),
+        Arg::with_name("sort")
+            .short('s')
+            .long("sort")
+            .help("Will sort the output by frequency.")
+            .takes_value(false),
+        Arg::with_name("strict sort")
+            .short('S')
+            .long("strict-sort")
+            .help("Will remove uncommon words while sorting.")
+            .takes_value(false)
+            .requires("sort"),
+        Arg::with_name("pretty")
+            .short('p')
+            .long("pretty")
+            .help("Will show a pretty version of the output.")
+            .takes_value(false)
+    ];
+
     let matches = App::new("Translator CLI")
         .version("0.1.0")
         .author("cqb13")
@@ -101,20 +131,7 @@ fn main() {
                         .help("The English text to translate to Latin")
                         .required(true),
                 )
-                .arg(
-                    Arg::with_name("formatted")
-                        .short('f')
-                        .long("formatted")
-                        .help("Determines if the output should be formatted")
-                        .takes_value(false),
-                )
-                .arg(
-                    Arg::with_name("clean")
-                        .short('c')
-                        .long("clean")
-                        .help("Cleans the output, by removing objects with vague values, such as 'unknown'.")
-                        .takes_value(false),
-                )
+                .args(&global_args),
         )
         .subcommand(
             App::new("transLat")
@@ -131,20 +148,7 @@ fn main() {
                         .help("Will attempt to use various tricks on words to get a better result.")
                         .takes_value(false),
                 )
-                .arg(
-                    Arg::with_name("formatted")
-                        .short('f')
-                        .long("formatted")
-                        .help("Determines if the output should be formatted")
-                        .takes_value(false),
-                )
-                .arg(
-                    Arg::with_name("clean")
-                        .short('c')
-                        .long("clean")
-                        .help("Cleans the output, by removing objects with vague values, such as 'unknown'.")
-                        .takes_value(false),
-                )
+                .args(&global_args),
         )
         .get_matches();
 
