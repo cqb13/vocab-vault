@@ -238,8 +238,8 @@ pub struct EnglishWordInfo {
     pub frequency: i16,
     pub compound: i16,
     pub semi: i16,
-    pub latin_entry: Option<LatinWordInfo>,
 }
+
 impl Clone for EnglishWordInfo {
     fn clone(&self) -> EnglishWordInfo {
         EnglishWordInfo {
@@ -251,7 +251,6 @@ impl Clone for EnglishWordInfo {
             frequency: self.frequency.clone(),
             compound: self.compound.clone(),
             semi: self.semi.clone(),
-            latin_entry: self.latin_entry.clone(),
         }
     }
 }

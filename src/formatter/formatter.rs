@@ -1,16 +1,16 @@
 use regex::Regex;
 
 use crate::data::data::Stem;
+use crate::english_to_latin::EnglishTranslationInfo;
 use crate::formatter::key_translator::translate_part_of_speech;
 use crate::{latin_to_english::Word, Language, Translation, TranslationType};
 
-use crate::data::data::{EnglishWordInfo, Form, Inflection, LatinWordInfo, LongForm, WordInfo, UniqueLatinWordInfo};
+use crate::data::data::{Form, Inflection, LatinWordInfo, LongForm, WordInfo, UniqueLatinWordInfo};
 use super::key_translator::{
     translate_age, translate_area, translate_declension, translate_frequency, translate_gender,
     translate_mood, translate_noun, translate_number, translate_pronoun, translate_source,
     translate_tense, translate_verb, translate_voice,
 };
-use super::principle_part_generator::{generate_for_nouns, generate_for_verbs};
 
 pub fn format_output(
     mut translation_output: Vec<Translation>,
@@ -54,16 +54,13 @@ pub fn format_output(
     translation_output
 }
 
-fn format_english_word(english_word: EnglishWordInfo, clean: bool) -> EnglishWordInfo {
-    let mut clean_english_word: EnglishWordInfo = english_word;
+fn format_english_word(english_word: EnglishTranslationInfo, clean: bool) -> EnglishTranslationInfo {
+    let mut clean_english_word: EnglishTranslationInfo = english_word;
 
-    clean_english_word.pos = translate_part_of_speech(&clean_english_word.pos[..]).to_string();
-    clean_english_word.frequency_type =
-        translate_frequency(&clean_english_word.frequency_type[..]).to_string();
-    clean_english_word.latin_entry = clean_english_word
-        .latin_entry
-        .as_ref()
-        .and_then(|latin_word_info| Some(format_latin_word_info(latin_word_info.clone(), clean)));
+    clean_english_word.word.pos = translate_part_of_speech(&clean_english_word.word.pos[..]).to_string();
+    clean_english_word.word.frequency_type =
+        translate_frequency(&clean_english_word.word.frequency_type[..]).to_string();
+    clean_english_word.translation = format_latin_word_info(clean_english_word.translation, clean);
 
     clean_english_word
 }
@@ -82,24 +79,6 @@ fn format_latin_word_info(latin_word_info: LatinWordInfo, clean: bool) -> LatinW
         clean_latin_word_info.pos.clone(),
         clean,
     ));
-
-    if clean_latin_word_info.pos == "noun" {
-        clean_latin_word_info.parts = generate_for_nouns(
-            clean_latin_word_info.n.clone(),
-            match clean_latin_word_info.form.clone() {
-                Form::LongForm(_form) => "".to_string(),
-                Form::StrForm(form) => form,
-            },
-            clean_latin_word_info.parts,
-        )
-    } else if clean_latin_word_info.pos == "adjective" {
-        println!("that")
-    } else if clean_latin_word_info.pos == "verb" || clean_latin_word_info.pos == "participle" {
-        clean_latin_word_info.parts =
-            generate_for_verbs(clean_latin_word_info.n.clone(), clean_latin_word_info.parts)
-    }
-
-    clean_latin_word_info.orth = clean_latin_word_info.parts[0].clone();
 
     clean_latin_word_info
 }

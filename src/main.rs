@@ -1,11 +1,15 @@
 use clap::{App, Arg};
-use data::data::EnglishWordInfo;
+use english_to_latin::EnglishTranslationInfo;
 use latin_to_english::LatinTranslationInfo;
 use serde::{Deserialize, Serialize, Serializer};
-use serde_json;
 
 mod english_to_latin;
 mod latin_to_english;
+
+pub mod utils {
+    pub mod post_processing;
+    pub mod principle_part_generator;
+}
 
 pub mod data {
     pub mod data;
@@ -14,7 +18,6 @@ pub mod data {
 pub mod formatter {
     pub mod formatter;
     pub mod key_translator;
-    pub mod principle_part_generator;
 }
 
 pub mod tricks {
@@ -23,7 +26,8 @@ pub mod tricks {
     pub mod word_mods;
 }
 
-use crate::formatter::formatter::{format_output, sanitize_word};
+use crate::formatter::formatter::sanitize_word;
+use crate::utils::post_processing::post_process;
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct Translation {
@@ -32,13 +36,31 @@ pub struct Translation {
     pub definitions: TranslationType,
 }
 
+impl Clone for Translation {
+    fn clone(&self) -> Self {
+        Translation {
+            word: self.word.clone(),
+            definitions: self.definitions.clone(),
+        }
+    }
+}
+
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(tag = "type")]
 pub enum TranslationType {
     #[serde(rename = "Latin")]
     Latin(Vec<LatinTranslationInfo>),
     #[serde(rename = "English")]
-    English(Vec<EnglishWordInfo>),
+    English(Vec<EnglishTranslationInfo>),
+}
+
+impl Clone for TranslationType {
+    fn clone(&self) -> Self {
+        match self {
+            TranslationType::Latin(info) => TranslationType::Latin(info.clone()),
+            TranslationType::English(info) => TranslationType::English(info.clone()),
+        }
+    }
 }
 
 pub enum Language {
@@ -158,12 +180,7 @@ fn translate_to_english(latin_text: &str, tricks: bool, formatted_output: bool, 
         }
     }
 
-    if formatted_output {
-        translations = format_output(translations, Language::Latin, clean);
-    }
-
-    let json_output = serde_json::to_string_pretty(&translations).unwrap();
-    println!("{}", json_output);
+    post_process(translations, Language::Latin, formatted_output, clean);
 }
 
 fn translate_to_latin(english_text: &str, formatted_output: bool, clean: bool) {
@@ -180,10 +197,5 @@ fn translate_to_latin(english_text: &str, formatted_output: bool, clean: bool) {
         }
     }
 
-    if formatted_output {
-        translations = format_output(translations, Language::English, clean);
-    }
-
-    let json_output = serde_json::to_string_pretty(&translations).unwrap();
-    println!("{}", json_output);
+    post_process(translations, Language::English, formatted_output, clean);
 }

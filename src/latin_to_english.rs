@@ -19,6 +19,17 @@ pub struct LatinTranslationInfo {
     pub addon: String,
 }
 
+impl Clone for LatinTranslationInfo {
+    fn clone(&self) -> Self {
+        LatinTranslationInfo {
+            word: self.word.clone(),
+            stem: self.stem.clone(),
+            inflections: self.inflections.clone(),
+            addon: self.addon.clone(),
+        }
+    }
+}
+
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(tag = "type")]
 pub enum Word {
