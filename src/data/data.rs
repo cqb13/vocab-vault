@@ -391,7 +391,34 @@ impl LongForm {
             person: None,
         }
     }
+
+    pub fn long_form_to_string(form: LongForm) -> String {
+        let mut form_parts = Vec::new();
+
+        macro_rules! add_part {
+            ($part:expr) => {
+                if let Some(part) = $part {
+                    form_parts.push(part);
+                }
+            };
+        }
+
+        add_part!(form.declension);
+        add_part!(form.number);
+        add_part!(form.gender);
+        add_part!(form.tense);
+        add_part!(form.voice);
+        add_part!(form.mood);
+        add_part!(form.verb);
+        add_part!(form.kind);
+        if let Some(person) = form.person {
+            form_parts.push(person.to_string());
+        }
+
+        form_parts.join(" ")
+    }
 }
+
 
 impl Clone for LongForm {
     fn clone(&self) -> LongForm {

@@ -1,5 +1,6 @@
 use crate::data::data::{Form, LatinWordInfo};
 use crate::formatter::formatter::format_output;
+use crate::formatter::prettify_output::{prettify_output, PrettifiedOutput};
 use crate::latin_to_english::Word;
 use crate::utils::principle_part_generator::{generate_for_nouns, generate_for_verbs};
 use crate::{Language, Translation, TranslationType};
@@ -11,6 +12,7 @@ pub fn post_process(
     language: Language,
     formatted_output: bool,
     clean: bool,
+    pretty_output: bool,
 ) {
     let translations = match language {
         Language::Latin => {
@@ -21,7 +23,11 @@ pub fn post_process(
         }
     };
 
-    print_output(translations);
+    if pretty_output {
+        print_pretty_output(translations);
+    } else {
+        print_output(translations);
+    }
 }
 
 fn latin_translation_output_post_processing(
@@ -107,6 +113,26 @@ fn print_output(translations: Vec<Translation>) {
     println!("{}", json_output);
 }
 
-fn print_formatted_output() {
-    println!("formatted output");
+fn print_pretty_output(translations: Vec<Translation>) {
+    let pretty_output: Vec<PrettifiedOutput> = translations
+        .into_iter()
+        .map(|t| prettify_output(t.clone(), t.word.clone()))
+        .collect();
+
+    for output in &pretty_output {
+        println!("{}\n", output.searched_word);
+        for definition in &output.definitions {
+            println!("{}", definition.orth_info);
+            println!("{}", definition.form_info);
+
+            if !definition.inflections.is_empty() {
+                for inflection in &definition.inflections {
+                    println!("{}", inflection);
+                }
+            }
+
+            println!("{}", definition.senses);
+            println!("---------------------------------");
+        }
+    }
 }

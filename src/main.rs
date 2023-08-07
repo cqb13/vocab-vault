@@ -18,6 +18,7 @@ pub mod data {
 pub mod formatter {
     pub mod formatter;
     pub mod key_translator;
+    pub mod prettify_output;
 }
 
 pub mod tricks {
@@ -87,7 +88,7 @@ where
         TranslationType::English(info) => info.serialize(serializer),
     }
 }
-//TODO: move principle part logic out of formatter
+
 fn main() {
     let global_args = vec![
         Arg::with_name("formatted")
@@ -116,7 +117,13 @@ fn main() {
             .short('p')
             .long("pretty")
             .help("Will show a pretty version of the output.")
+            .takes_value(false),
+        Arg::with_name("detailed")
+            .short('d')
+            .long("detailed")
+            .help("Will add more information to prettified output.")
             .takes_value(false)
+            .requires("pretty"),
     ];
 
     let matches = App::new("Translator CLI")
@@ -157,20 +164,28 @@ fn main() {
             let text = trans_eng_matches.value_of("text").unwrap();
             let formatted_output = trans_eng_matches.is_present("formatted");
             let clean = trans_eng_matches.is_present("clean");
-            translate_to_latin(text, formatted_output, clean);
+            let pretty_output = trans_eng_matches.is_present("pretty");
+            translate_to_latin(text, formatted_output, clean, pretty_output);
         }
         Some(("transLat", trans_lat_matches)) => {
             let text = trans_lat_matches.value_of("text").unwrap();
             let tricks = trans_lat_matches.is_present("tricks");
             let formatted_output = trans_lat_matches.is_present("formatted");
             let clean = trans_lat_matches.is_present("clean");
-            translate_to_english(text, tricks, formatted_output, clean);
+            let pretty_output = trans_lat_matches.is_present("pretty");
+            translate_to_english(text, tricks, formatted_output, clean, pretty_output);
         }
         _ => println!("Please provide a valid command: transEng or transLat"),
     }
 }
 
-fn translate_to_english(latin_text: &str, tricks: bool, formatted_output: bool, clean: bool) {
+fn translate_to_english(
+    latin_text: &str,
+    tricks: bool,
+    formatted_output: bool,
+    clean: bool,
+    pretty_output: bool,
+) {
     let latin_words: Vec<&str> = latin_text.split(" ").collect();
     let mut translations: Vec<Translation> = Vec::new();
 
@@ -184,10 +199,21 @@ fn translate_to_english(latin_text: &str, tricks: bool, formatted_output: bool, 
         }
     }
 
-    post_process(translations, Language::Latin, formatted_output, clean);
+    post_process(
+        translations,
+        Language::Latin,
+        formatted_output,
+        clean,
+        pretty_output,
+    );
 }
 
-fn translate_to_latin(english_text: &str, formatted_output: bool, clean: bool) {
+fn translate_to_latin(
+    english_text: &str,
+    formatted_output: bool,
+    clean: bool,
+    pretty_output: bool,
+) {
     let english_words: Vec<&str> = english_text.split(" ").collect();
     let mut translations: Vec<Translation> = Vec::new();
 
@@ -201,5 +227,11 @@ fn translate_to_latin(english_text: &str, formatted_output: bool, clean: bool) {
         }
     }
 
-    post_process(translations, Language::English, formatted_output, clean);
+    post_process(
+        translations,
+        Language::English,
+        formatted_output,
+        clean,
+        pretty_output,
+    );
 }
