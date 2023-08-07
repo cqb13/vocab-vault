@@ -80,7 +80,7 @@ fn set_principle_parts(
     }
 
     for (i, part) in parts.iter().enumerate() {
-        if part == "" || endings[i] == "zzz" {
+        if part == "" || part == "zzz" {
             principle_parts.push("---".to_string());
         } else {
             principle_parts.push(part.clone() + endings[i]);
