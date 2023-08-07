@@ -1,5 +1,5 @@
 use crate::{Translation, TranslationType};
-use crate::data::data::{Form, LongForm, Stem, Inflection, LatinWordInfo};
+use crate::data::data::{Form, LongForm, Stem, Inflection, LatinWordInfo, WordInfo};
 use crate::latin_to_english::{Word, LatinTranslationInfo};
 
 pub struct PrettifiedOutput {
@@ -20,8 +20,12 @@ pub struct PrettifiedDefinition {
     pub orth_info: String,
     pub form_info: String,
     pub inflections: Vec<String>,
+    pub details: String,
     pub senses: String,
 }
+
+//TODO: add modifier support for LatinWordInfo
+//TODO: add word mod display when added
 
 pub fn prettify_output(translation: Translation, search_word: String) -> PrettifiedOutput {
     let mut prettified_output = PrettifiedOutput::new(search_word, vec![]);
@@ -49,6 +53,7 @@ fn create_pretty_english_definition(latin_word_info: LatinWordInfo) -> Prettifie
         orth_info: "".to_string(),
         form_info: "".to_string(),
         inflections: vec![],
+        details: "".to_string(),
         senses: "".to_string(),
     };
 
@@ -57,6 +62,7 @@ fn create_pretty_english_definition(latin_word_info: LatinWordInfo) -> Prettifie
 
     output.orth_info = parts_info;
     output.form_info = convert_form_to_string(latin_word_info.form);
+    output.details = WordInfo::info_to_string(latin_word_info.info);
     output.senses = senses_info;
 
     output
@@ -67,6 +73,7 @@ fn create_pretty_latin_definition(latin_translation_info: LatinTranslationInfo) 
         orth_info: "".to_string(),
         form_info: "".to_string(),
         inflections: vec![],
+        details: "".to_string(),
         senses: "".to_string(),
     };
 
@@ -79,11 +86,13 @@ fn create_pretty_latin_definition(latin_translation_info: LatinTranslationInfo) 
     
             output.orth_info = parts_info;
             output.form_info = convert_form_to_string(latin_word_info.form);
+            output.details = WordInfo::info_to_string(latin_word_info.info);
             output.senses = senses_info;
         }
         Word::UniqueLatinWordInfo(unique_latin_word_info) => {
             output.orth_info = unique_latin_word_info.orth;
             output.form_info = convert_form_to_string(unique_latin_word_info.form);
+            output.details = WordInfo::info_to_string(unique_latin_word_info.info);
             output.senses = unique_latin_word_info.senses.iter().map(ToString::to_string).collect::<Vec<String>>().join(" | ");
         }
     }

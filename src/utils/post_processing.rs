@@ -13,6 +13,7 @@ pub fn post_process(
     formatted_output: bool,
     clean: bool,
     pretty_output: bool,
+    detailed_pretty_output: bool,
 ) {
     let translations = match language {
         Language::Latin => {
@@ -24,7 +25,7 @@ pub fn post_process(
     };
 
     if pretty_output {
-        print_pretty_output(translations);
+        print_pretty_output(translations, detailed_pretty_output);
     } else {
         print_output(translations);
     }
@@ -113,7 +114,7 @@ fn print_output(translations: Vec<Translation>) {
     println!("{}", json_output);
 }
 
-fn print_pretty_output(translations: Vec<Translation>) {
+fn print_pretty_output(translations: Vec<Translation>, detailed_pretty_output: bool) {
     let pretty_output: Vec<PrettifiedOutput> = translations
         .into_iter()
         .map(|t| prettify_output(t.clone(), t.word.clone()))
@@ -129,6 +130,10 @@ fn print_pretty_output(translations: Vec<Translation>) {
                 for inflection in &definition.inflections {
                     println!("{}", inflection);
                 }
+            }
+
+            if detailed_pretty_output {
+                println!("{}", definition.details);
             }
 
             println!("{}", definition.senses);

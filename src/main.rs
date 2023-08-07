@@ -165,7 +165,8 @@ fn main() {
             let formatted_output = trans_eng_matches.is_present("formatted");
             let clean = trans_eng_matches.is_present("clean");
             let pretty_output = trans_eng_matches.is_present("pretty");
-            translate_to_latin(text, formatted_output, clean, pretty_output);
+            let detailed_pretty_output = trans_eng_matches.is_present("detailed");
+            translate_to_latin(text, formatted_output, clean, pretty_output, detailed_pretty_output);
         }
         Some(("transLat", trans_lat_matches)) => {
             let text = trans_lat_matches.value_of("text").unwrap();
@@ -173,7 +174,8 @@ fn main() {
             let formatted_output = trans_lat_matches.is_present("formatted");
             let clean = trans_lat_matches.is_present("clean");
             let pretty_output = trans_lat_matches.is_present("pretty");
-            translate_to_english(text, tricks, formatted_output, clean, pretty_output);
+            let detailed_pretty_output = trans_lat_matches.is_present("detailed");
+            translate_to_english(text, tricks, formatted_output, clean, pretty_output, detailed_pretty_output);
         }
         _ => println!("Please provide a valid command: transEng or transLat"),
     }
@@ -185,6 +187,7 @@ fn translate_to_english(
     formatted_output: bool,
     clean: bool,
     pretty_output: bool,
+    detailed_pretty_output: bool,
 ) {
     let latin_words: Vec<&str> = latin_text.split(" ").collect();
     let mut translations: Vec<Translation> = Vec::new();
@@ -205,6 +208,7 @@ fn translate_to_english(
         formatted_output,
         clean,
         pretty_output,
+        detailed_pretty_output,
     );
 }
 
@@ -213,6 +217,7 @@ fn translate_to_latin(
     formatted_output: bool,
     clean: bool,
     pretty_output: bool,
+    detailed_pretty_output: bool,
 ) {
     let english_words: Vec<&str> = english_text.split(" ").collect();
     let mut translations: Vec<Translation> = Vec::new();
@@ -233,5 +238,6 @@ fn translate_to_latin(
         formatted_output,
         clean,
         pretty_output,
+        detailed_pretty_output,
     );
 }

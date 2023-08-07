@@ -122,6 +122,25 @@ impl WordInfo {
             source,
         }
     }
+
+    pub fn info_to_string(info: WordInfo) -> String {
+        let mut info_parts: Vec<String> = Vec::new();
+
+        macro_rules! add_info {
+            ($info:expr) => {
+                let info = $info;
+                info_parts.push(info);
+            };
+        }
+
+        add_info!("age: ".to_owned() + &info.age);
+        add_info!("area: ".to_owned() + &info.area);
+        add_info!("geo: ".to_owned() + &info.geo);
+        add_info!("freq: ".to_owned() + &info.freq);
+        add_info!("source: ".to_owned() + &info.source);
+
+        info_parts.join(" | ")
+    }
 }
 
 impl Clone for WordInfo {
