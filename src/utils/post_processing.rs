@@ -44,18 +44,23 @@ fn latin_translation_output_post_processing(
 
                 for definition in definitions.iter_mut() {
                     if let Word::LatinWordInfo(latin_word_info) = &mut definition.word {
-                        if !entry_has_unknown_parts(latin_word_info.clone()) {
-                            let pos = latin_word_info.pos.clone();
-                            let word_with_parts = add_principle_parts(latin_word_info.clone());
-                            definition.word = Word::LatinWordInfo(word_with_parts);
+                        let vague =  entry_has_unknown_parts(latin_word_info.clone());
+                        let pos = latin_word_info.pos.clone();
+                        let word_with_parts = add_principle_parts(latin_word_info.clone());
+                        definition.word = Word::LatinWordInfo(word_with_parts);
 
-                            let inflections = &definition.inflections;
-                            let filtered_inflections =
-                                filter_inflections(inflections.clone(), pos, clean);
-                            definition.inflections = filtered_inflections;
+                        let inflections = &definition.inflections;
+                        let filtered_inflections =
+                            filter_inflections(inflections.clone(), pos, clean);
 
+                        definition.inflections = filtered_inflections;
+
+                        if clean && !vague {
+                            modified_definitions.push(definition.clone());
+                        } else if !clean {
                             modified_definitions.push(definition.clone());
                         }
+                        
                     } else {
                         // Unique words
                         modified_definitions.push(definition.clone());
