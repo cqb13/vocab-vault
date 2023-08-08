@@ -76,8 +76,9 @@ pub fn try_tricks(word: String) -> String {
     let first_char = word.chars().next().unwrap();
 
     if trick_chars.contains(&first_char) {
-        let trick_list = get_trick_lists(first_char);
+        let trick_list = match_tricks_list(first_char);
         let mut max_attempts = 0;
+        // 2 is random, could prob get away with 1 attempt
         while max_attempts < 2 {
             new_word = iterate_over_tricks(trick_list.clone(), new_word.to_string());
             max_attempts += 1;
@@ -91,12 +92,6 @@ pub fn try_tricks(word: String) -> String {
 
     println!("{} -> {}", word, new_word);
     new_word
-}
-
-fn get_trick_lists(character: char) -> Vec<Trick> {
-    let trick_list = match_tricks_list(character);
-
-    trick_list
 }
 
 fn iterate_over_tricks(trick_list: Vec<Trick>, mut word: String) -> String {

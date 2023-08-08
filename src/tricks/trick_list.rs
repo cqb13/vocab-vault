@@ -598,3 +598,219 @@ fn get_s_slur_tricks() -> Vec<Trick> {
 
     s_slur_trick_list
 }
+
+pub fn get_any_tricks() -> Vec<Trick> {
+    let any_trick_list = vec![
+        Trick {
+            operation: Operation::Internal,
+            str_1: "ae",
+            str_2: "e",
+        },
+        Trick {
+            operation: Operation::Internal,
+            str_1: "bul",
+            str_2: "bol",
+        },
+        Trick {
+            operation: Operation::Internal,
+            str_1: "bol",
+            str_2: "bul",
+        },
+        Trick {
+            operation: Operation::Internal,
+            str_1: "cl",
+            str_2: "cul",
+        },
+        Trick {
+            operation: Operation::Internal,
+            str_1: "cu",
+            str_2: "quu",
+        },
+        Trick {
+            operation: Operation::Internal,
+            str_1: "f",
+            str_2: "ph",
+        },
+        Trick {
+            operation: Operation::Internal,
+            str_1: "ph",
+            str_2: "f",
+        },
+        Trick {
+            operation: Operation::Internal,
+            str_1: "h",
+            str_2: "",
+        },
+        Trick {
+            operation: Operation::Internal,
+            str_1: "oe",
+            str_2: "e",
+        },
+        Trick {
+            operation: Operation::Internal,
+            str_1: "vul",
+            str_2: "vol",
+        },
+        Trick {
+            operation: Operation::Internal,
+            str_1: "vol",
+            str_2: "vul",
+        },
+        Trick {
+            operation: Operation::Internal,
+            str_1: "uol",
+            str_2: "vul",
+        },
+    ];
+
+    any_trick_list
+}
+
+pub fn get_medieval_tricks() -> Vec<Trick> {
+    let medieval_trick_list = vec![
+        // Harrington/Elliott    1.1.1
+        Trick {
+            operation: Operation::Internal,
+            str_1: "col",
+            str_2: "caul",
+        },
+        // Harrington/Elliott    1.3
+        Trick {
+            operation: Operation::Internal,
+            str_1: "e",
+            str_2: "ae",
+        },
+        Trick {
+            operation: Operation::Internal,
+            str_1: "o",
+            str_2: "u",
+        },
+        Trick {
+            operation: Operation::Internal,
+            str_1: "i",
+            str_2: "y",
+        },
+        // Harrington/Elliott    1.3.1
+        Trick {
+            operation: Operation::Internal,
+            str_1: "ism",
+            str_2: "sm",
+        },
+        Trick {
+            operation: Operation::Internal,
+            str_1: "isp",
+            str_2: "sp",
+        },
+        Trick {
+            operation: Operation::Internal,
+            str_1: "ist",
+            str_2: "st",
+        },
+        Trick {
+            operation: Operation::Internal,
+            str_1: "iz",
+            str_2: "z",
+        },
+        Trick {
+            operation: Operation::Internal,
+            str_1: "esm",
+            str_2: "sm",
+        },
+        Trick {
+            operation: Operation::Internal,
+            str_1: "esp",
+            str_2: "sp",
+        },
+        Trick {
+            operation: Operation::Internal,
+            str_1: "est",
+            str_2: "st",
+        },
+        Trick {
+            operation: Operation::Internal,
+            str_1: "ez",
+            str_2: "z",
+        },
+        // Harrington/Elliott    1.4
+        Trick {
+            operation: Operation::Internal,
+            str_1: "di",
+            str_2: "z",
+        },
+        Trick {
+            operation: Operation::Internal,
+            str_1: "f",
+            str_2: "ph",
+        },
+        Trick {
+            operation: Operation::Internal,
+            str_1: "is",
+            str_2: "ix",
+        },
+        Trick {
+            operation: Operation::Internal,
+            str_1: "b",
+            str_2: "p",
+        },
+        Trick {
+            operation: Operation::Internal,
+            str_1: "d",
+            str_2: "t",
+        },
+        Trick {
+            operation: Operation::Internal,
+            str_1: "v",
+            str_2: "b",
+        },
+        Trick {
+            operation: Operation::Internal,
+            str_1: "v",
+            str_2: "f",
+        },
+        Trick {
+            operation: Operation::Internal,
+            str_1: "s",
+            str_2: "x",
+        },
+        // Harrington/Elliott    1.4.1
+        Trick {
+            operation: Operation::Internal,
+            str_1: "ci",
+            str_2: "ti",
+        },
+        // Harrington/Elliott    1.4.2
+        Trick {
+            operation: Operation::Internal,
+            str_1: "nt",
+            str_2: "nct",
+        },
+        Trick {
+            operation: Operation::Internal,
+            str_1: "s",
+            str_2: "ns",
+        },
+        // Other
+        Trick {
+            operation: Operation::Internal,
+            str_1: "ch",
+            str_2: "c",
+        },
+        Trick {
+            operation: Operation::Internal,
+            str_1: "c",
+            str_2: "ch",
+        },
+        Trick {
+            operation: Operation::Internal,
+            str_1: "th",
+            str_2: "t",
+        },
+        Trick {
+            operation: Operation::Internal,
+            str_1: "t",
+            str_2: "th",
+        },
+    ];
+
+    medieval_trick_list
+}
