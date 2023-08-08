@@ -5,12 +5,12 @@ use crate::english_to_latin::EnglishTranslationInfo;
 use crate::formatter::key_translator::translate_part_of_speech;
 use crate::{latin_to_english::Word, Language, Translation, TranslationType};
 
-use crate::data::data::{Form, Inflection, LatinWordInfo, LongForm, WordInfo, UniqueLatinWordInfo};
 use super::key_translator::{
     translate_age, translate_area, translate_declension, translate_frequency, translate_gender,
     translate_mood, translate_noun, translate_number, translate_pronoun, translate_source,
     translate_tense, translate_verb, translate_voice,
 };
+use crate::data::data::{Form, Inflection, LatinWordInfo, LongForm, UniqueLatinWordInfo, WordInfo};
 
 pub fn format_output(
     mut translation_output: Vec<Translation>,
@@ -34,7 +34,8 @@ pub fn format_output(
                     } else if let Word::UniqueLatinWordInfo(unique_latin_word_info) =
                         &mut latin_word_info.word
                     {
-                        *unique_latin_word_info = format_unique_latin_word_info(unique_latin_word_info.clone(), clean);
+                        *unique_latin_word_info =
+                            format_unique_latin_word_info(unique_latin_word_info.clone(), clean);
                     } else {
                         panic!("Invalid Word type for Latin language.");
                     }
@@ -53,10 +54,14 @@ pub fn format_output(
     translation_output
 }
 
-fn format_english_word(english_word: EnglishTranslationInfo, clean: bool) -> EnglishTranslationInfo {
+fn format_english_word(
+    english_word: EnglishTranslationInfo,
+    clean: bool,
+) -> EnglishTranslationInfo {
     let mut clean_english_word: EnglishTranslationInfo = english_word;
 
-    clean_english_word.word.pos = translate_part_of_speech(&clean_english_word.word.pos[..]).to_string();
+    clean_english_word.word.pos =
+        translate_part_of_speech(&clean_english_word.word.pos[..]).to_string();
     clean_english_word.word.frequency_type =
         translate_frequency(&clean_english_word.word.frequency_type[..]).to_string();
     clean_english_word.translation = format_latin_word_info(clean_english_word.translation, clean);
@@ -82,7 +87,10 @@ fn format_latin_word_info(latin_word_info: LatinWordInfo, clean: bool) -> LatinW
     clean_latin_word_info
 }
 
-fn format_unique_latin_word_info(unique_latin_word_info: UniqueLatinWordInfo, clean: bool) -> UniqueLatinWordInfo {
+fn format_unique_latin_word_info(
+    unique_latin_word_info: UniqueLatinWordInfo,
+    clean: bool,
+) -> UniqueLatinWordInfo {
     let mut clean_unique_latin_word_info: UniqueLatinWordInfo = unique_latin_word_info;
 
     clean_unique_latin_word_info.pos =
@@ -99,7 +107,6 @@ fn format_unique_latin_word_info(unique_latin_word_info: UniqueLatinWordInfo, cl
 
     clean_unique_latin_word_info
 }
-
 
 fn translate_latin_word_info_form(form: String, pos: String, clean: bool) -> LongForm {
     let form_array = form.split_whitespace().collect::<Vec<&str>>();
@@ -166,10 +173,7 @@ fn format_latin_stem(latin_stem: Stem, clean: bool) -> Stem {
     clean_latin_stem
 }
 
-fn format_latin_inflections(
-    inflections: Vec<Inflection>,
-    clean: bool,
-) -> Vec<Inflection> {
+fn format_latin_inflections(inflections: Vec<Inflection>, clean: bool) -> Vec<Inflection> {
     let mut clean_inflections: Vec<Inflection> = Vec::new();
 
     for inflection in inflections {

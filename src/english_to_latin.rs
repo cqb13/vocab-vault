@@ -27,7 +27,11 @@ pub fn translate_to_latin(english_word: &str) -> Vec<EnglishTranslationInfo> {
                 word: word.clone(),
                 translation: LatinWordInfo::new(),
             };
-            english_word_info.word.true_frequency = Some(calculate_true_frequency(word.frequency, word.compound, word.semi));
+            english_word_info.word.true_frequency = Some(calculate_true_frequency(
+                word.frequency,
+                word.compound,
+                word.semi,
+            ));
             output.push(english_word_info);
         }
     }

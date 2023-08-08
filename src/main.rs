@@ -7,9 +7,9 @@ mod english_to_latin;
 mod latin_to_english;
 
 pub mod utils {
+    pub mod filter;
     pub mod post_processing;
     pub mod principle_part_generator;
-    pub mod filter;
 }
 
 pub mod data {
@@ -167,7 +167,13 @@ fn main() {
             let clean = trans_eng_matches.is_present("clean");
             let pretty_output = trans_eng_matches.is_present("pretty");
             let detailed_pretty_output = trans_eng_matches.is_present("detailed");
-            translate_to_latin(text, formatted_output, clean, pretty_output, detailed_pretty_output);
+            translate_to_latin(
+                text,
+                formatted_output,
+                clean,
+                pretty_output,
+                detailed_pretty_output,
+            );
         }
         Some(("transLat", trans_lat_matches)) => {
             let text = trans_lat_matches.value_of("text").unwrap();
@@ -176,7 +182,14 @@ fn main() {
             let clean = trans_lat_matches.is_present("clean");
             let pretty_output = trans_lat_matches.is_present("pretty");
             let detailed_pretty_output = trans_lat_matches.is_present("detailed");
-            translate_to_english(text, tricks, formatted_output, clean, pretty_output, detailed_pretty_output);
+            translate_to_english(
+                text,
+                tricks,
+                formatted_output,
+                clean,
+                pretty_output,
+                detailed_pretty_output,
+            );
         }
         _ => println!("Please provide a valid command: transEng or transLat"),
     }

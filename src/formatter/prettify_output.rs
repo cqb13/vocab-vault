@@ -1,6 +1,6 @@
+use crate::data::data::{Form, Inflection, LatinWordInfo, LongForm, Stem, WordInfo};
+use crate::latin_to_english::{LatinTranslationInfo, Word};
 use crate::{Translation, TranslationType};
-use crate::data::data::{Form, LongForm, Stem, Inflection, LatinWordInfo, WordInfo};
-use crate::latin_to_english::{Word, LatinTranslationInfo};
 
 pub struct PrettifiedOutput {
     pub searched_word: String,
@@ -39,7 +39,8 @@ pub fn prettify_output(translation: Translation, search_word: String) -> Prettif
         }
         TranslationType::English(definitions) => {
             for definition in definitions {
-                let prettified_definition = create_pretty_english_definition(definition.translation);
+                let prettified_definition =
+                    create_pretty_english_definition(definition.translation);
                 prettified_output.definitions.push(prettified_definition);
             }
         }
@@ -57,8 +58,18 @@ fn create_pretty_english_definition(latin_word_info: LatinWordInfo) -> Prettifie
         senses: "".to_string(),
     };
 
-    let parts_info = latin_word_info.parts.iter().map(ToString::to_string).collect::<Vec<String>>().join(" ");
-    let senses_info = latin_word_info.senses.iter().map(ToString::to_string).collect::<Vec<String>>().join(" | ");
+    let parts_info = latin_word_info
+        .parts
+        .iter()
+        .map(ToString::to_string)
+        .collect::<Vec<String>>()
+        .join(" ");
+    let senses_info = latin_word_info
+        .senses
+        .iter()
+        .map(ToString::to_string)
+        .collect::<Vec<String>>()
+        .join(" | ");
 
     output.orth_info = parts_info;
     output.form_info = convert_form_to_string(latin_word_info.form);
@@ -68,7 +79,9 @@ fn create_pretty_english_definition(latin_word_info: LatinWordInfo) -> Prettifie
     output
 }
 
-fn create_pretty_latin_definition(latin_translation_info: LatinTranslationInfo) -> PrettifiedDefinition {
+fn create_pretty_latin_definition(
+    latin_translation_info: LatinTranslationInfo,
+) -> PrettifiedDefinition {
     let mut output = PrettifiedDefinition {
         orth_info: "".to_string(),
         form_info: "".to_string(),
@@ -81,9 +94,19 @@ fn create_pretty_latin_definition(latin_translation_info: LatinTranslationInfo) 
 
     match latin_word_info {
         Word::LatinWordInfo(latin_word_info) => {
-            let parts_info = latin_word_info.parts.iter().map(ToString::to_string).collect::<Vec<String>>().join(" ");
-            let senses_info = latin_word_info.senses.iter().map(ToString::to_string).collect::<Vec<String>>().join(" | ");
-    
+            let parts_info = latin_word_info
+                .parts
+                .iter()
+                .map(ToString::to_string)
+                .collect::<Vec<String>>()
+                .join(" ");
+            let senses_info = latin_word_info
+                .senses
+                .iter()
+                .map(ToString::to_string)
+                .collect::<Vec<String>>()
+                .join(" | ");
+
             output.orth_info = parts_info;
             output.form_info = convert_form_to_string(latin_word_info.form);
             output.details = WordInfo::info_to_string(latin_word_info.info);
@@ -93,12 +116,19 @@ fn create_pretty_latin_definition(latin_translation_info: LatinTranslationInfo) 
             output.orth_info = unique_latin_word_info.orth;
             output.form_info = convert_form_to_string(unique_latin_word_info.form);
             output.details = WordInfo::info_to_string(unique_latin_word_info.info);
-            output.senses = unique_latin_word_info.senses.iter().map(ToString::to_string).collect::<Vec<String>>().join(" | ");
+            output.senses = unique_latin_word_info
+                .senses
+                .iter()
+                .map(ToString::to_string)
+                .collect::<Vec<String>>()
+                .join(" | ");
         }
     }
-    
 
-    output.inflections = make_inflection_string(latin_translation_info.stem, latin_translation_info.inflections);
+    output.inflections = make_inflection_string(
+        latin_translation_info.stem,
+        latin_translation_info.inflections,
+    );
 
     output
 }
@@ -116,7 +146,8 @@ fn make_inflection_string(stem: Stem, inflections: Vec<Inflection>) -> Vec<Strin
 
     for inflection in inflections {
         let mut inflection_string = stem.clone() + "." + inflection.ending.as_str();
-        inflection_string = inflection_string + " | " + convert_form_to_string(inflection.form).as_str();
+        inflection_string =
+            inflection_string + " | " + convert_form_to_string(inflection.form).as_str();
         inflection_string = inflection_string + " | " + inflection.pos.as_str();
         string_inflection.push(inflection_string);
     }
