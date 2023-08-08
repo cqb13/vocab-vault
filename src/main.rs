@@ -103,17 +103,16 @@ fn main() {
             .help("Removes objects with vague values, such as 'unknown'.")
             .takes_value(false)
             .requires("formatted"),
+        Arg::with_name("filter uncommon")
+            .short('u')
+            .long("uncommon")
+            .help("Will remove uncommon words.")
+            .takes_value(false),
         Arg::with_name("sort")
             .short('s')
             .long("sort")
             .help("Will sort the output by frequency.")
             .takes_value(false),
-        Arg::with_name("strict sort")
-            .short('S')
-            .long("strict-sort")
-            .help("Will remove uncommon words while sorting.")
-            .takes_value(false)
-            .requires("sort"),
         Arg::with_name("pretty")
             .short('p')
             .long("pretty")
