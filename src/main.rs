@@ -9,6 +9,7 @@ mod latin_to_english;
 pub mod utils {
     pub mod post_processing;
     pub mod principle_part_generator;
+    pub mod filter;
 }
 
 pub mod data {

@@ -39,9 +39,8 @@ pub fn format_output(
                         panic!("Invalid Word type for Latin language.");
                     }
                     latin_word_info.stem = format_latin_stem(latin_word_info.stem.clone(), clean);
-                    let pos = latin_word_info.stem.pos.clone();
                     latin_word_info.inflections =
-                        format_latin_inflections(latin_word_info.inflections.clone(), pos, clean);
+                        format_latin_inflections(latin_word_info.inflections.clone(), clean);
                 }
             } else {
                 panic!("Invalid TranslationType for Latin language.");
@@ -169,13 +168,11 @@ fn format_latin_stem(latin_stem: Stem, clean: bool) -> Stem {
 
 fn format_latin_inflections(
     inflections: Vec<Inflection>,
-    pos: String,
     clean: bool,
 ) -> Vec<Inflection> {
     let mut clean_inflections: Vec<Inflection> = Vec::new();
-    let cleaned_inflections = remove_inflections_without_endings(inflections);
 
-    for inflection in &cleaned_inflections {
+    for inflection in inflections {
         let mut clean_inflection: Inflection = inflection.clone();
 
         clean_inflection.pos = translate_part_of_speech(&clean_inflection.pos[..]).to_string();
@@ -194,52 +191,6 @@ fn format_latin_inflections(
         }
 
         clean_inflections.push(clean_inflection);
-    }
-
-    clean_inflections = remove_inflections_with_wrong_pos(clean_inflections, pos);
-
-    if clean {
-        clean_inflections = remove_vague_inflections(clean_inflections);
-    }
-
-    clean_inflections
-}
-fn remove_inflections_without_endings(inflections: Vec<Inflection>) -> Vec<Inflection> {
-    let mut clean_inflections: Vec<Inflection> = Vec::new();
-
-    for inflection in inflections {
-        if inflection.ending != "" {
-            clean_inflections.push(inflection);
-        }
-    }
-
-    clean_inflections
-}
-
-// Canis generates with a pos of "verb", but is a noun. This removes those.
-fn remove_inflections_with_wrong_pos(inflections: Vec<Inflection>, pos: String) -> Vec<Inflection> {
-    let mut clean_inflections: Vec<Inflection> = Vec::new();
-
-    for inflection in inflections {
-        if inflection.pos == pos {
-            clean_inflections.push(inflection);
-        }
-    }
-
-    clean_inflections
-}
-
-fn remove_vague_inflections(inflections: Vec<Inflection>) -> Vec<Inflection> {
-    let mut clean_inflections: Vec<Inflection> = Vec::new();
-
-    for inflection in inflections {
-        let clean_form: LongForm = match inflection.form.clone() {
-            Form::LongForm(clean_form) => clean_form,
-            Form::StrForm(_) => LongForm::new(),
-        };
-        if clean_form.gender.as_deref() != Some(&"unknown".to_string()) {
-            clean_inflections.push(inflection);
-        }
     }
 
     clean_inflections

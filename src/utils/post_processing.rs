@@ -2,6 +2,7 @@ use crate::data::data::{Form, LatinWordInfo};
 use crate::formatter::formatter::format_output;
 use crate::formatter::prettify_output::{prettify_output, PrettifiedOutput};
 use crate::latin_to_english::Word;
+use crate::utils::filter::{entry_has_unknown_parts, filter_inflections};
 use crate::utils::principle_part_generator::{generate_for_nouns, generate_for_verbs};
 use crate::{Language, Translation, TranslationType};
 
@@ -15,14 +16,14 @@ pub fn post_process(
     pretty_output: bool,
     detailed_pretty_output: bool,
 ) {
-    let translations = match language {
-        Language::Latin => {
-            latin_translation_output_post_processing(translations, formatted_output, clean)
-        }
-        Language::English => {
-            english_translation_output_post_processing(translations, formatted_output, clean)
-        }
+    let mut translations = match language {
+        Language::Latin => latin_translation_output_post_processing(translations, clean),
+        Language::English => english_translation_output_post_processing(translations),
     };
+
+    if formatted_output {
+        translations = format_output(translations, language, clean);
+    }
 
     if pretty_output {
         print_pretty_output(translations, detailed_pretty_output);
@@ -33,31 +34,49 @@ pub fn post_process(
 
 fn latin_translation_output_post_processing(
     mut translations: Vec<Translation>,
-    formatted_output: bool,
     clean: bool,
 ) -> Vec<Translation> {
-    for translation in translations.iter_mut() {
-        if let TranslationType::Latin(definitions) = &mut translation.definitions {
-            for definition in definitions.iter_mut() {
-                if let Word::LatinWordInfo(latin_word_info) = &mut definition.word {
-                    let word_with_parts = add_principle_parts(latin_word_info.clone());
-                    definition.word = Word::LatinWordInfo(word_with_parts);
+    translations
+        .iter_mut()
+        .filter_map(|translation| {
+            if let TranslationType::Latin(definitions) = &mut translation.definitions {
+                let mut modified_definitions = Vec::new();
+
+                for definition in definitions.iter_mut() {
+                    if let Word::LatinWordInfo(latin_word_info) = &mut definition.word {
+                        if !entry_has_unknown_parts(latin_word_info.clone()) {
+                            let pos = latin_word_info.pos.clone();
+                            let word_with_parts = add_principle_parts(latin_word_info.clone());
+                            definition.word = Word::LatinWordInfo(word_with_parts);
+
+                            let inflections = &definition.inflections;
+                            let filtered_inflections =
+                                filter_inflections(inflections.clone(), pos, clean);
+                            definition.inflections = filtered_inflections;
+
+                            modified_definitions.push(definition.clone());
+                        }
+                    } else {
+                        // Unique words
+                        modified_definitions.push(definition.clone());
+                    }
+                }
+
+                if !modified_definitions.is_empty() {
+                    return Some(Translation {
+                        definitions: TranslationType::Latin(modified_definitions),
+                        ..translation.clone()
+                    });
                 }
             }
-        }
-    }
 
-    if formatted_output {
-        translations = format_output(translations, Language::Latin, clean);
-    }
-
-    translations
+            None
+        })
+        .collect()
 }
 
 fn english_translation_output_post_processing(
     mut translations: Vec<Translation>,
-    formatted_output: bool,
-    clean: bool,
 ) -> Vec<Translation> {
     for translation in translations.iter_mut() {
         if let TranslationType::English(definitions) = &mut translation.definitions {
@@ -67,10 +86,6 @@ fn english_translation_output_post_processing(
                 definition.translation = word_with_parts;
             }
         }
-    }
-
-    if formatted_output {
-        translations = format_output(translations, Language::English, clean);
     }
 
     translations
@@ -137,7 +152,8 @@ fn print_pretty_output(translations: Vec<Translation>, detailed_pretty_output: b
             }
 
             println!("{}", definition.senses);
-            println!("---------------------------------");
+            println!();
         }
+        println!("---------------------------------");
     }
 }

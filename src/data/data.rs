@@ -49,6 +49,10 @@ impl LatinWordInfo {
     pub fn set_modifiers(&mut self, modifiers: Vec<UniqueLatinWordInfo>) {
         self.modifiers = Some(modifiers);
     }
+
+    pub fn get_pos(&self) -> String {
+        self.pos.clone()
+    }
 }
 
 #[derive(Serialize, Deserialize, Debug)]
