@@ -1,19 +1,26 @@
-//TODO: explanations for word mods should be available
-
-pub fn switch_first_i_or_j(word: &str) -> String {
+pub fn switch_first_i_or_j(word: &str) -> (String, Option<Vec<String>>) {
     let mut chars: Vec<char> = word.chars().collect();
+    let mut explanation: Option<Vec<String>> = None;
     if let Some(first_char) = chars.first_mut() {
         if *first_char == 'i' {
             *first_char = 'j';
+            explanation = Some(vec![String::from(
+                "An initial 'i' may be rendered by 'j'",
+            )]);
         } else if *first_char == 'j' {
             *first_char = 'i';
+            explanation = Some(vec![String::from(
+                "An initial 'j' may be rendered by 'i'",
+            )]);
         }
     }
-    chars.into_iter().collect()
+    
+    (chars.into_iter().collect(), explanation)
 }
 
-pub fn flip(str_to_replace: &str, replacement_str: &str, word: &str) -> String {
+pub fn flip(str_to_replace: &str, replacement_str: &str, word: &str) -> (String, String) {
     let mut new_word = String::from(word);
+    let mut explanation = String::from("");
 
     if new_word.len() >= str_to_replace.len() + 2
         && new_word.starts_with(str_to_replace)
@@ -24,7 +31,7 @@ pub fn flip(str_to_replace: &str, replacement_str: &str, word: &str) -> String {
         if new_word.len() >= replacement_str.len() + 2 && new_word.starts_with(replacement_str) {
             let canned_explanation = "' may have replaced usual '";
 
-            let explanation = if !canned_explanation.is_empty() {
+            explanation = if !canned_explanation.is_empty() {
                 format!(
                     "An initial '{}'{}{}'",
                     str_to_replace, canned_explanation, replacement_str
@@ -33,18 +40,18 @@ pub fn flip(str_to_replace: &str, replacement_str: &str, word: &str) -> String {
                 String::from("")
             };
 
-            println!("{}", explanation);
-
-            return new_word;
+            return (new_word, explanation);
         }
     }
 
-    new_word
+    (new_word, explanation)
 }
 
 // at the beginning of Input word, replaces str_to_replace by replacement_str - then replacement_str by str_to_replace
 // only used when both str_to_replace and replacement_str start with the same letter
-pub fn flip_flop(str_to_replace: &str, replacement_str: &str, word: &str) -> String {
+pub fn flip_flop(str_to_replace: &str, replacement_str: &str, word: &str) -> (String, String) {
+    let explanation = String::from("");
+
     if word.len() >= str_to_replace.len() + 2 && word.starts_with(str_to_replace) {
         let mut new_word = String::new();
         new_word.push_str(replacement_str);
@@ -56,12 +63,11 @@ pub fn flip_flop(str_to_replace: &str, replacement_str: &str, word: &str) -> Str
                 str_to_replace, replacement_str
             );
 
-            println!("{}", explanation);
-
-            return new_word;
+            return (new_word, explanation);
         }
     }
-    word.to_string()
+    
+    (word.to_string(), explanation)
 }
 
 pub fn slur(str_to_slur: &str, word: &str) -> String {

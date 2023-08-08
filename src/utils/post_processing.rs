@@ -142,6 +142,13 @@ fn print_pretty_output(translations: Vec<Translation>, detailed_pretty_output: b
     for output in &pretty_output {
         println!("{}\n", output.searched_word);
         for definition in &output.definitions {
+            if detailed_pretty_output {
+                for trick in &definition.tricks {
+                    println!("{}", trick[0]);
+                    println!();
+                }
+            }
+
             println!("{}", definition.orth_info);
             println!("{}", definition.form_info);
 

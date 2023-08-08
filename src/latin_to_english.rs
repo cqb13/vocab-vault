@@ -12,6 +12,7 @@ use crate::tricks::word_mods::switch_first_i_or_j;
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct LatinTranslationInfo {
+    pub tricks: Option<Vec<String>>,
     #[serde(serialize_with = "serialize_word")]
     pub word: Word,
     pub stem: Stem,
@@ -22,6 +23,7 @@ pub struct LatinTranslationInfo {
 impl Clone for LatinTranslationInfo {
     fn clone(&self) -> Self {
         LatinTranslationInfo {
+            tricks: self.tricks.clone(),
             word: self.word.clone(),
             stem: self.stem.clone(),
             inflections: self.inflections.clone(),
@@ -60,12 +62,17 @@ where
     }
 }
 
-pub fn translate_to_english(mut latin_word: String, tricks: bool) -> Vec<LatinTranslationInfo> {
+pub fn translate_to_english(latin_word: String, tricks: bool) -> Vec<LatinTranslationInfo> {
     let mut output = parse(&latin_word, false);
 
     if output.len() == 0 && tricks {
-        latin_word = try_tricks(latin_word);
-        output = parse(&latin_word, false);
+        let (modified_latin_word, trick_explanations) = try_tricks(latin_word.clone());
+        output = parse(&modified_latin_word, false);
+        if output.len() > 0 {
+            for entry in &mut output {
+                entry.tricks = trick_explanations.clone();
+            }
+        }
     }
 
     // most words should be found by now
@@ -74,9 +81,16 @@ pub fn translate_to_english(mut latin_word: String, tricks: bool) -> Vec<LatinTr
     // Some words that start with i can also start with j
     // ex: iecit -> jecit
     // checking if return is word, because if word does not start with I or J, original word is returned, making the parsing not needed.
-    if output.len() == 0 && switch_first_i_or_j(&latin_word) != latin_word {
-        let switched_word = switch_first_i_or_j(&latin_word);
-        output = parse(&switched_word, false);
+    if output.len() == 0 {
+        let (switched_word, trick_explanation) = switch_first_i_or_j(&latin_word);
+        if switched_word != latin_word {
+            output = parse(&switched_word, false);
+            if output.len() > 0 {
+                for entry in &mut output {
+                    entry.tricks = trick_explanation.clone();
+                }
+            }
+        }
     }
 
     // If nothing is found, try removing enclitics and try again
@@ -97,6 +111,7 @@ pub fn translate_to_english(mut latin_word: String, tricks: bool) -> Vec<LatinTr
 
         if numeral_evaluation > 0 {
             output.push(LatinTranslationInfo {
+                tricks: None,
                 word: Word::UniqueLatinWordInfo(UniqueLatinWordInfo {
                     orth: latin_word.to_string(),
                     senses: [numeral_evaluation.to_string()].to_vec(),
@@ -128,6 +143,7 @@ fn parse(latin_word: &str, reduced: bool) -> Vec<LatinTranslationInfo> {
 
     if found {
         output.push(LatinTranslationInfo {
+            tricks: None,
             word: Word::UniqueLatinWordInfo(unique_latin_word),
             stem: Stem::new(),
             inflections: Vec::new(),
@@ -312,6 +328,7 @@ fn lookup_stems(stems: Vec<Stem>, inflections: Vec<Inflection>) -> Vec<LatinTran
                 let new_word = Word::LatinWordInfo((*latin_word).clone());
 
                 output.push(LatinTranslationInfo {
+                    tricks: None,
                     word: new_word,
                     stem,
                     inflections: new_inflections,

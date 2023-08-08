@@ -17,6 +17,7 @@ impl PrettifiedOutput {
 }
 
 pub struct PrettifiedDefinition {
+    pub tricks: Option<Vec<String>>,
     pub orth_info: String,
     pub form_info: String,
     pub inflections: Vec<String>,
@@ -25,7 +26,6 @@ pub struct PrettifiedDefinition {
 }
 
 //TODO: add modifier support for LatinWordInfo
-//TODO: add word mod display when added
 
 pub fn prettify_output(translation: Translation, search_word: String) -> PrettifiedOutput {
     let mut prettified_output = PrettifiedOutput::new(search_word, vec![]);
@@ -33,7 +33,10 @@ pub fn prettify_output(translation: Translation, search_word: String) -> Prettif
     match translation.definitions {
         TranslationType::Latin(definitions) => {
             for definition in definitions {
-                let prettified_definition = create_pretty_latin_definition(definition);
+                let copied_definition = definition.clone();
+                let mut prettified_definition = create_pretty_latin_definition(definition);
+                let tricks = copied_definition.tricks;
+                prettified_definition.tricks = tricks;
                 prettified_output.definitions.push(prettified_definition);
             }
         }
@@ -51,6 +54,7 @@ pub fn prettify_output(translation: Translation, search_word: String) -> Prettif
 
 fn create_pretty_english_definition(latin_word_info: LatinWordInfo) -> PrettifiedDefinition {
     let mut output = PrettifiedDefinition {
+        tricks: None,
         orth_info: "".to_string(),
         form_info: "".to_string(),
         inflections: vec![],
@@ -83,6 +87,7 @@ fn create_pretty_latin_definition(
     latin_translation_info: LatinTranslationInfo,
 ) -> PrettifiedDefinition {
     let mut output = PrettifiedDefinition {
+        tricks: None,
         orth_info: "".to_string(),
         form_info: "".to_string(),
         inflections: vec![],

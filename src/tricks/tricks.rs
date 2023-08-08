@@ -1,8 +1,7 @@
 use std::char;
 
-//TODO: add word mod, if word ends in e, try ae
 use crate::tricks::trick_list::Trick;
-use crate::tricks::trick_list::{match_slur_trick_list, match_tricks_list};
+use crate::tricks::trick_list::{get_any_tricks, match_slur_trick_list, match_tricks_list};
 use crate::tricks::word_mods::{flip, flip_flop};
 
 #[derive(Debug, Clone)]
@@ -67,43 +66,74 @@ pub fn evaluate_roman_numeral(roman_numeral: &str) -> u32 {
     result
 }
 
-pub fn try_tricks(word: String) -> String {
+pub fn try_tricks(word: String) -> (String, Option<Vec<String>>) {
     let trick_chars = [
         'a', 'd', 'e', 'f', 'g', 'h', 'k', 'l', 'm', 'n', 'o', 'p', 's', 't', 'u', 'y', 'z',
     ];
     let slur_trick_chars = ['a', 'c', 'i', 'n', 'o', 'q', 's'];
+    let mut applied_tricks: Option<Vec<String>> = None;
     let mut new_word = word.clone();
     let first_char = word.chars().next().unwrap();
+    let mut explanations = vec![];
 
     if trick_chars.contains(&first_char) {
         let trick_list = match_tricks_list(first_char);
-        let mut max_attempts = 0;
-        // 2 is random, could prob get away with 1 attempt
-        while max_attempts < 2 {
-            new_word = iterate_over_tricks(trick_list.clone(), new_word.to_string());
-            max_attempts += 1;
-        }
+        let any_tricks = get_any_tricks();
+        let (updated_new_word, updated_explanations) =
+            iterate_over_tricks(trick_list.clone(), new_word.to_string());
+        new_word = updated_new_word;
+        explanations.extend(updated_explanations);
+
+        applied_tricks = Some(explanations.clone());
+
+        let (updated_new_word, updated_explanations) =
+            iterate_over_tricks(any_tricks.clone(), new_word.to_string());
+        new_word = updated_new_word;
+
+        //TODO: change the way tricks are implemented. they should be called in the parsing process after some info about the word is known. so medieval tricks can be called on medieval words.
+
+        applied_tricks
+            .as_mut()
+            .unwrap()
+            .extend(updated_explanations);
     }
 
     if new_word == word && slur_trick_chars.contains(&first_char) {
         let trick_list = match_slur_trick_list(first_char);
-        new_word = iterate_over_tricks(trick_list.clone(), new_word.to_string());
+        let (updated_new_word, updated_explanations) =
+            iterate_over_tricks(trick_list.clone(), new_word.to_string());
+        new_word = updated_new_word;
+        applied_tricks
+            .as_mut()
+            .unwrap_or(&mut explanations)
+            .extend(updated_explanations);
     }
 
-    println!("{} -> {}", word, new_word);
-    new_word
+    if new_word == word {
+        (word, None)
+    } else {
+        (new_word, applied_tricks)
+    }
 }
 
-fn iterate_over_tricks(trick_list: Vec<Trick>, mut word: String) -> String {
+fn iterate_over_tricks(trick_list: Vec<Trick>, mut word: String) -> (String, Vec<String>) {
     // word should be modified after each operation is applied.
+    let mut explanations = Vec::new();
+
     for trick in trick_list.iter() {
-        word = match trick.operation {
+        let (new_word, new_explanation) = match trick.operation {
             Operation::FlipFlop => flip_flop(trick.str_1, trick.str_2, &word),
             Operation::Flip => flip(trick.str_1, trick.str_2, &word),
-            Operation::Internal => return word, //internal(trick.internal1, trick.internal2),
-            Operation::Slur => return word,     // Assuming Slur causes an exception
+            Operation::Internal => (word.clone(), String::new()), //internal(trick.internal1, trick.internal2),
+            Operation::Slur => (word.clone(), String::new()), // Assuming Slur causes an exception
         };
+
+        word = new_word;
+
+        if !new_explanation.is_empty() {
+            explanations.push(new_explanation);
+        }
     }
 
-    word
+    (word, explanations)
 }
