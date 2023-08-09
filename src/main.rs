@@ -8,7 +8,7 @@ mod latin_to_english;
 
 pub mod utils {
     pub mod filter;
-    pub mod post_processing;
+    pub mod post_processor;
     pub mod principle_part_generator;
     pub mod sorter;
 }
@@ -30,7 +30,7 @@ pub mod tricks {
 }
 
 use crate::formatter::formatter::sanitize_word;
-use crate::utils::post_processing::post_process;
+use crate::utils::post_processor::post_process;
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct Translation {
