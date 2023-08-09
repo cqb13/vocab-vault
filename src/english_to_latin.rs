@@ -16,8 +16,7 @@ impl Clone for EnglishTranslationInfo {
     }
 }
 
-pub fn translate_to_latin(english_word: &str) -> Vec<EnglishTranslationInfo> {
-    const MAX_RESPONSE_ITEMS: usize = 6;
+pub fn translate_to_latin(english_word: &str, max: usize, sort: bool) -> Vec<EnglishTranslationInfo> {
     let mut output: Vec<EnglishTranslationInfo> = Vec::new();
 
     let english_words = get_english_words();
@@ -36,13 +35,15 @@ pub fn translate_to_latin(english_word: &str) -> Vec<EnglishTranslationInfo> {
         }
     }
 
-    output = weigh_words(output);
+    if sort {
+        output = weigh_words(output);
+    }
 
     output = remove_duplicates(output);
 
     // other words are probably rare/irrelevant or wrong
-    if output.len() > MAX_RESPONSE_ITEMS {
-        output.truncate(MAX_RESPONSE_ITEMS);
+    if output.len() > max {
+        output.truncate(max);
     }
 
     find_definition(&mut output);

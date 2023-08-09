@@ -134,6 +134,15 @@ fn main() {
                         .help("The English text to translate to Latin")
                         .required(true),
                 )
+                .arg(
+                    Arg::with_name("max_entries")
+                        .short('m')
+                        .long("max-entries")
+                        .value_name("MAX_ENTRIES")
+                        .help("The maximum number of entries")
+                        .takes_value(true)
+                        .default_value("6"),
+                )
                 .args(&global_args),
         )
         .subcommand(
@@ -165,14 +174,22 @@ fn main() {
     match matches.subcommand() {
         Some(("transEng", trans_eng_matches)) => {
             let text = trans_eng_matches.value_of("text").unwrap();
+            let max = trans_eng_matches
+                .value_of("max_entries")
+                .unwrap()
+                .parse::<usize>()
+                .unwrap();
             let formatted_output = trans_eng_matches.is_present("formatted");
             let clean = trans_eng_matches.is_present("clean");
+            let sort = trans_eng_matches.is_present("sort");
             let pretty_output = trans_eng_matches.is_present("pretty");
             let detailed_pretty_output = trans_eng_matches.is_present("detailed");
             translate_to_latin(
                 text,
+                max,
                 formatted_output,
                 clean,
+                sort,
                 pretty_output,
                 detailed_pretty_output,
             );
@@ -234,8 +251,10 @@ fn translate_to_english(
 
 fn translate_to_latin(
     english_text: &str,
+    max: usize,
     formatted_output: bool,
     clean: bool,
+    sort: bool,
     pretty_output: bool,
     detailed_pretty_output: bool,
 ) {
@@ -243,7 +262,7 @@ fn translate_to_latin(
     let mut translations: Vec<Translation> = Vec::new();
 
     for word in english_words {
-        let output = english_to_latin::translate_to_latin(&sanitize_word(word));
+        let output = english_to_latin::translate_to_latin(&sanitize_word(word), max, sort);
         if output.len() > 0 {
             translations.push(Translation {
                 word: word.to_string(),

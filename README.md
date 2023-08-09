@@ -48,6 +48,7 @@ $ latin_words transEng "English text to translate" [-f]
 ```
 
 - `"English text to translate"`: The English text you want to translate
+- `-m <MAX_ENTRIES>` or `--max-entries <MAX_ENTRIES>`: The maximum number of entries to return (default: 6)
 - Additional global arguments (see below)
 
 #### `transLat` Command (Translate Latin to English)
@@ -78,11 +79,11 @@ These arguments are applicable to both translation commands (`transEng` and `tra
 Translate English to Latin with formatted output and cleaning:
 
 ```bash
-$ latin_words transEng "Hello world" -f -c
+$ latin_words transEng "why" -m 2 -f -c -s
 ```
 
 Translate Latin to English with tricks and detailed, pretty, and formatted output:
 
 ```bash
-$ latin_words transLat "Salve mundi" -t -d -p -f
+$ latin_words transLat "cur" -f -c -t -p
 ```
