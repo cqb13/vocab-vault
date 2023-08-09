@@ -60,6 +60,7 @@ $ latin_words transLat "Latin text to translate" [-t] [-f]
 
 - `"Latin text to translate"`: The Latin text you want to translate
 - `-t` or `--tricks`: Attempt to use various tricks on words for better results
+- `-u` or `--filter-uncommon`: Removes uncommon words
 - Additional global arguments (see below)
 
 ### Global Arguments
@@ -69,7 +70,6 @@ These arguments are applicable to both translation commands (`transEng` and `tra
 - `-f` or `--formatted`: Format the output
 - `-c` or `--clean`: Remove objects with vague values, such as 'unknown' (requires `-f`)
 - `-s` or `--sort`: Sort the output by frequency
-- `-S` or `--strict-sort`: Remove uncommon words while sorting (requires `-s`)
 - `-p` or `--pretty`: Display a pretty version of the output (requires `-f`)
 - `-d` or `--detailed`: Add more information to prettified output (requires `-p`)
 

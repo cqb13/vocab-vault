@@ -10,6 +10,7 @@ pub mod utils {
     pub mod filter;
     pub mod post_processing;
     pub mod principle_part_generator;
+    pub mod sorter;
 }
 
 pub mod data {
@@ -103,11 +104,6 @@ fn main() {
             .help("Removes objects with vague values, such as 'unknown'.")
             .takes_value(false)
             .requires("formatted"),
-        Arg::with_name("filter uncommon")
-            .short('u')
-            .long("uncommon")
-            .help("Will remove uncommon words.")
-            .takes_value(false),
         Arg::with_name("sort")
             .short('s')
             .long("sort")
@@ -155,6 +151,13 @@ fn main() {
                         .help("Will attempt to use various tricks on words to get a better result.")
                         .takes_value(false),
                 )
+                .arg(
+                    Arg::with_name("filter uncommon")
+                        .short('u')
+                        .long("uncommon")
+                        .help("Will remove uncommon words.")
+                        .takes_value(false),
+                )
                 .args(&global_args),
         )
         .get_matches();
@@ -179,6 +182,7 @@ fn main() {
             let tricks = trans_lat_matches.is_present("tricks");
             let formatted_output = trans_lat_matches.is_present("formatted");
             let clean = trans_lat_matches.is_present("clean");
+            let filter_uncommon = trans_lat_matches.is_present("filter uncommon");
             let pretty_output = trans_lat_matches.is_present("pretty");
             let detailed_pretty_output = trans_lat_matches.is_present("detailed");
             translate_to_english(
@@ -186,6 +190,7 @@ fn main() {
                 tricks,
                 formatted_output,
                 clean,
+                filter_uncommon,
                 pretty_output,
                 detailed_pretty_output,
             );
@@ -199,6 +204,7 @@ fn translate_to_english(
     tricks: bool,
     formatted_output: bool,
     clean: bool,
+    filter_uncommon: bool,
     pretty_output: bool,
     detailed_pretty_output: bool,
 ) {
@@ -220,6 +226,7 @@ fn translate_to_english(
         Language::Latin,
         formatted_output,
         clean,
+        filter_uncommon,
         pretty_output,
         detailed_pretty_output,
     );
@@ -250,6 +257,7 @@ fn translate_to_latin(
         Language::English,
         formatted_output,
         clean,
+        false, // filter_uncommon, does not apply to english, bc we know what each word means
         pretty_output,
         detailed_pretty_output,
     );

@@ -1,9 +1,41 @@
 use crate::data::data::{Form, Inflection, LatinWordInfo};
 
-pub fn entry_has_unknown_parts(latin_word_info: LatinWordInfo) -> bool {
+const UNCOMMON_FREQUENCIES: [&str; 6] = ["E", "F", "I", "M", "N", "X"];
+
+pub fn entry_is_vague(latin_word_info: LatinWordInfo, clean: bool, filter_uncommon: bool) -> bool {
+    let vague: bool = if clean {
+        entry_has_unknown_parts(latin_word_info.clone())
+    } else {
+        false
+    };
+
+    let uncommon: bool = if filter_uncommon {
+        entry_is_uncommon(latin_word_info.clone())
+    } else {
+        false
+    };
+
+    if vague || uncommon {
+        return true;
+    }
+
+    false
+}
+
+fn entry_has_unknown_parts(latin_word_info: LatinWordInfo) -> bool {
     let parts = latin_word_info.parts;
 
     if parts.contains(&"---".to_string()) || parts.contains(&"zzz".to_string()) {
+        return true;
+    }
+
+    false
+}
+
+fn entry_is_uncommon(latin_word_info: LatinWordInfo) -> bool {
+    let frequency = latin_word_info.info.freq;
+
+    if UNCOMMON_FREQUENCIES.contains(&&*frequency) {
         return true;
     }
 

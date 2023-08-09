@@ -2,7 +2,7 @@ use crate::data::data::{Form, LatinWordInfo};
 use crate::formatter::formatter::format_output;
 use crate::formatter::prettify_output::{prettify_output, PrettifiedOutput};
 use crate::latin_to_english::Word;
-use crate::utils::filter::{entry_has_unknown_parts, filter_inflections};
+use crate::utils::filter::{entry_is_vague, filter_inflections};
 use crate::utils::principle_part_generator::{generate_for_nouns, generate_for_verbs};
 use crate::{Language, Translation, TranslationType};
 
@@ -13,11 +13,14 @@ pub fn post_process(
     language: Language,
     formatted_output: bool,
     clean: bool,
+    filter_uncommon: bool,
     pretty_output: bool,
     detailed_pretty_output: bool,
 ) {
     let mut translations = match language {
-        Language::Latin => latin_translation_output_post_processing(translations, clean),
+        Language::Latin => {
+            latin_translation_output_post_processing(translations, clean, filter_uncommon)
+        }
         Language::English => english_translation_output_post_processing(translations),
     };
 
@@ -35,6 +38,7 @@ pub fn post_process(
 fn latin_translation_output_post_processing(
     mut translations: Vec<Translation>,
     clean: bool,
+    filter_uncommon: bool,
 ) -> Vec<Translation> {
     translations
         .iter_mut()
@@ -44,7 +48,7 @@ fn latin_translation_output_post_processing(
 
                 for definition in definitions.iter_mut() {
                     if let Word::LatinWordInfo(latin_word_info) = &mut definition.word {
-                        let vague = entry_has_unknown_parts(latin_word_info.clone());
+                        let vague = entry_is_vague(latin_word_info.clone(), clean, filter_uncommon);
                         let pos = latin_word_info.pos.clone();
                         let word_with_parts = add_principle_parts(latin_word_info.clone());
                         definition.word = Word::LatinWordInfo(word_with_parts);
@@ -55,9 +59,9 @@ fn latin_translation_output_post_processing(
 
                         definition.inflections = filtered_inflections;
 
-                        if clean && !vague {
+                        if clean || filter_uncommon && !vague {
                             modified_definitions.push(definition.clone());
-                        } else if !clean {
+                        } else if !clean && !filter_uncommon {
                             modified_definitions.push(definition.clone());
                         }
                     } else {
