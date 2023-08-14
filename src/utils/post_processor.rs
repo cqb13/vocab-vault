@@ -6,20 +6,27 @@ use crate::utils::filter::{entry_is_vague, filter_inflections};
 use crate::utils::principle_part_generator::{generate_for_nouns, generate_for_verbs};
 use crate::{Language, Translation, TranslationType};
 
-//TODO: add sorting by freq here
+use super::sorter::sort_output;
 
 pub fn post_process(
     translations: Vec<Translation>,
     language: Language,
     formatted_output: bool,
     clean: bool,
+    sort: bool,
     filter_uncommon: bool,
     pretty_output: bool,
     detailed_pretty_output: bool,
 ) {
     let mut translations = match language {
         Language::Latin => {
-            latin_translation_output_post_processing(translations, clean, filter_uncommon)
+            let sorted_translations = if sort {
+                sort_output(translations)
+            } else {
+                translations
+            };
+
+            latin_translation_output_post_processing(sorted_translations, clean, filter_uncommon)
         }
         Language::English => english_translation_output_post_processing(translations),
     };
