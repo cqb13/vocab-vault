@@ -59,9 +59,9 @@ fn latin_translation_output_post_processing(
 
                         definition.inflections = filtered_inflections;
 
-                        if clean || filter_uncommon && !vague {
-                            modified_definitions.push(definition.clone());
-                        } else if !clean && !filter_uncommon {
+                        if vague && (clean || filter_uncommon) {
+                            continue;
+                        } else {
                             modified_definitions.push(definition.clone());
                         }
                     } else {
