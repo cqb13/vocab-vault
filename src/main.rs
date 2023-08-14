@@ -90,7 +90,7 @@ where
         TranslationType::English(info) => info.serialize(serializer),
     }
 }
-
+//TODO: add max to latin_to_english
 fn main() {
     let global_args = vec![
         Arg::with_name("formatted")
@@ -199,6 +199,7 @@ fn main() {
             let tricks = trans_lat_matches.is_present("tricks");
             let formatted_output = trans_lat_matches.is_present("formatted");
             let clean = trans_lat_matches.is_present("clean");
+            let sort = trans_lat_matches.is_present("sort");
             let filter_uncommon = trans_lat_matches.is_present("filter uncommon");
             let pretty_output = trans_lat_matches.is_present("pretty");
             let detailed_pretty_output = trans_lat_matches.is_present("detailed");
@@ -207,6 +208,7 @@ fn main() {
                 tricks,
                 formatted_output,
                 clean,
+                sort,
                 filter_uncommon,
                 pretty_output,
                 detailed_pretty_output,
@@ -221,6 +223,7 @@ fn translate_to_english(
     tricks: bool,
     formatted_output: bool,
     clean: bool,
+    sort: bool,
     filter_uncommon: bool,
     pretty_output: bool,
     detailed_pretty_output: bool,
@@ -243,6 +246,7 @@ fn translate_to_english(
         Language::Latin,
         formatted_output,
         clean,
+        sort,
         filter_uncommon,
         pretty_output,
         detailed_pretty_output,
@@ -276,6 +280,7 @@ fn translate_to_latin(
         Language::English,
         formatted_output,
         clean,
+        false, // already sorted in english_to_latin
         false, // filter_uncommon, does not apply to english, bc we know what each word means
         pretty_output,
         detailed_pretty_output,
