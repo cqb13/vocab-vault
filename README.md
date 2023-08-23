@@ -48,7 +48,6 @@ $ latin_words transEng "English text to translate" [-f]
 ```
 
 - `"English text to translate"`: The English text you want to translate
-- `-m <MAX_ENTRIES>` or `--max-entries <MAX_ENTRIES>`: The maximum number of entries to return (default: 6)
 - Additional global arguments (see below)
 
 #### `transLat` Command (Translate Latin to English)
@@ -68,6 +67,7 @@ $ latin_words transLat "Latin text to translate" [-t] [-f]
 
 These arguments are applicable to both translation commands (`transEng` and `transLat`):
 
+- `-m <MAX_ENTRIES>` or `--max-entries <MAX_ENTRIES>`: The maximum number of entries to return (default: 6)
 - `-f` or `--formatted`: Format the output
 - `-c` or `--clean`: Remove objects with vague values, such as 'unknown' (requires `-f`)
 - `-s` or `--sort`: Sort the output by frequency

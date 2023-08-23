@@ -11,6 +11,7 @@ use super::sorter::sort_output;
 pub fn post_process(
     translations: Vec<Translation>,
     language: Language,
+    max: usize,
     formatted_output: bool,
     clean: bool,
     sort: bool,
@@ -26,7 +27,7 @@ pub fn post_process(
                 translations
             };
 
-            latin_translation_output_post_processing(sorted_translations, clean, filter_uncommon)
+            latin_translation_output_post_processing(sorted_translations, clean, filter_uncommon, max)
         }
         Language::English => english_translation_output_post_processing(translations),
     };
@@ -46,12 +47,17 @@ fn latin_translation_output_post_processing(
     mut translations: Vec<Translation>,
     clean: bool,
     filter_uncommon: bool,
+    max: usize,
 ) -> Vec<Translation> {
     translations
         .iter_mut()
         .filter_map(|translation| {
             if let TranslationType::Latin(definitions) = &mut translation.definitions {
                 let mut modified_definitions = Vec::new();
+
+                if max > 0 && definitions.len() > max {
+                    definitions.truncate(max);
+                }
 
                 for definition in definitions.iter_mut() {
                     if let Word::LatinWordInfo(latin_word_info) = &mut definition.word {

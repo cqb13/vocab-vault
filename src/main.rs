@@ -90,9 +90,16 @@ where
         TranslationType::English(info) => info.serialize(serializer),
     }
 }
-//TODO: add max to latin_to_english
+
 fn main() {
     let global_args = vec![
+        Arg::with_name("max_entries")
+            .short('m')
+            .long("max-entries")
+            .value_name("MAX_ENTRIES")
+            .help("The maximum number of entries")
+            .takes_value(true)
+            .default_value("6"),
         Arg::with_name("formatted")
             .short('f')
             .long("formatted")
@@ -133,15 +140,6 @@ fn main() {
                     Arg::with_name("text")
                         .help("The English text to translate to Latin")
                         .required(true),
-                )
-                .arg(
-                    Arg::with_name("max_entries")
-                        .short('m')
-                        .long("max-entries")
-                        .value_name("MAX_ENTRIES")
-                        .help("The maximum number of entries")
-                        .takes_value(true)
-                        .default_value("6"),
                 )
                 .args(&global_args),
         )
@@ -196,6 +194,11 @@ fn main() {
         }
         Some(("transLat", trans_lat_matches)) => {
             let text = trans_lat_matches.value_of("text").unwrap();
+            let max = trans_lat_matches
+                .value_of("max_entries")
+                .unwrap()
+                .parse::<usize>()
+                .unwrap();
             let tricks = trans_lat_matches.is_present("tricks");
             let formatted_output = trans_lat_matches.is_present("formatted");
             let clean = trans_lat_matches.is_present("clean");
@@ -205,6 +208,7 @@ fn main() {
             let detailed_pretty_output = trans_lat_matches.is_present("detailed");
             translate_to_english(
                 text,
+                max,
                 tricks,
                 formatted_output,
                 clean,
@@ -220,6 +224,7 @@ fn main() {
 
 fn translate_to_english(
     latin_text: &str,
+    max: usize,
     tricks: bool,
     formatted_output: bool,
     clean: bool,
@@ -244,6 +249,7 @@ fn translate_to_english(
     post_process(
         translations,
         Language::Latin,
+        max,
         formatted_output,
         clean,
         sort,
@@ -278,6 +284,7 @@ fn translate_to_latin(
     post_process(
         translations,
         Language::English,
+        max,
         formatted_output,
         clean,
         false, // already sorted in english_to_latin
