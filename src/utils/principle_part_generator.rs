@@ -1,6 +1,14 @@
+// based on: https://github.com/mk270/whitakers-words/blob/9b11477e53f4adfb17d6f6aa563669dc71e0a680/src/support_utils/support_utils-dictionary_form.adb
 use std::vec;
 
 use crate::data::data::NValue;
+
+pub enum Comparison {
+    POS,
+    COMP,
+    SUPER,
+    X,
+}
 
 pub fn generate_for_nouns(
     number_types: Vec<NValue>,
@@ -64,16 +72,78 @@ pub fn generate_for_pronouns(number_types: Vec<NValue>, parts: Vec<String>) -> V
         (6, 1) => set_principle_parts(parts, vec!["e", "a", "ud"], None),
         (6, 2) => set_principle_parts(parts, vec!["e", "a", "um"], None),
         // special
-        (9, 8) => set_principle_parts(parts, vec!["", ""], Some("abbreviation")),
-        (9, 9) => set_principle_parts(parts, vec!["", ""], Some("undeclined")),
+        (9, 8) => set_principle_parts(parts, vec!["", "", ""], Some("abbreviation")),
+        (9, 9) => set_principle_parts(parts, vec!["", "", ""], Some("undeclined")),
         _ => parts,
     }
 }
 
-//pub fn generate_for_adjectives(number_types: Vec<NValue>, parts: Vec<String>) -> Vec<String> {
-//
-//}
-//
+pub fn generate_for_adjectives(
+    number_types: Vec<NValue>,
+    parts: Vec<String>,
+    comparison: Comparison,
+) -> Vec<String> {
+    let (num_type_1, num_type_2) = translate_number_types(number_types);
+
+    match comparison {
+        Comparison::COMP => set_principle_parts(parts, vec!["or", "or", "us"], None),
+        Comparison::SUPER => set_principle_parts(parts, vec!["mus", "ma", "mum"], None),
+        Comparison::POS => {
+            match (num_type_1, num_type_2) {
+                // first declension
+                (1, 1) => set_principle_parts(parts, vec!["us", "a", "um"], None),
+                (1, 2) | (1, 4) => set_principle_parts(parts, vec!["", "a", "um"], None),
+                (1, 3) => set_principle_parts(parts, vec!["us", "a", "um (gen -ius)"], None),
+                (1, 5) => set_principle_parts(parts, vec!["us", "a", "ud"], None),
+                // second declension
+                (2, 1) => set_principle_parts(parts, vec!["", "e", ""], None),
+                (2, 2) => set_principle_parts(parts, vec!["", "a", ""], None),
+                (2, 3) => set_principle_parts(parts, vec!["es", "es", "es"], None),
+                (2, 6) => set_principle_parts(parts, vec!["os", "os", ""], None),
+                (2, 7) => set_principle_parts(parts, vec!["os", "", ""], None),
+                (2, 8) => set_principle_parts(parts, vec!["", "", "on"], None),
+                // third declension
+                (3, 1) => set_principle_parts(parts, vec!["", "", "is"], None),
+                (3, 2) => set_principle_parts(parts, vec!["is", "is", "e"], None),
+                (3, 3) => set_principle_parts(parts, vec!["", "is", "e"], None),
+                (3, 6) => set_principle_parts(parts, vec!["", "", "os"], None),
+                // special
+                (9, 8) => set_principle_parts(parts, vec!["", "", ""], Some("abbreviation")),
+                (9, 9) => set_principle_parts(parts, vec!["", "", ""], Some("undeclined")),
+                _ => parts,
+            }
+        }
+        Comparison::X => {
+            match (num_type_1, num_type_2) {
+                // unknown first declension
+                (1, 1) => set_principle_parts(
+                    parts,
+                    vec!["us", "a -um", "or -or -us", "mus -a -um"],
+                    None,
+                ),
+                (1, 2) => {
+                    set_principle_parts(parts, vec!["", "a -um", "or -or -us", "mus -a -um"], None)
+                }
+                // unknown third declension
+                (3, 1) => set_principle_parts(
+                    parts,
+                    vec!["", "is (gen .)", "or -or -us", "mus -a -um"],
+                    None,
+                ),
+                (3, 2) => {
+                    set_principle_parts(parts, vec!["is", "e", "or -or -us", "mus -a -um"], None)
+                }
+                (3, 3) => {
+                    set_principle_parts(parts, vec!["", "is -e", "or -or -us", "mus -a -um"], None)
+                }
+                // special
+                (9, 8) => set_principle_parts(parts, vec!["", "", ""], Some("abbreviation")),
+                (9, 9) => set_principle_parts(parts, vec!["", "", ""], Some("undeclined")),
+                _ => parts,
+            }
+        }
+    }
+}
 
 pub fn generate_for_verbs(number_types: Vec<NValue>, parts: Vec<String>) -> Vec<String> {
     let (num_type_1, num_type_2) = translate_number_types(number_types);
