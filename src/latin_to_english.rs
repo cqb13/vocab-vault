@@ -98,8 +98,8 @@ pub fn translate_to_english(latin_word: String, tricks: bool) -> Vec<LatinTransl
     // doing this here instead of earlier should fix words like salve having the "ve" removed and returning wrong def
     if output.len() == 0 {
         let (split_word, modifier) = split_enclitic(&latin_word);
-        for word in &mut output {
-            if let Word::LatinWordInfo(latin_word_info) = &mut word.word {
+        for entry in &mut output {
+            if let Word::LatinWordInfo(latin_word_info) = &mut entry.word {
                 latin_word_info.modifiers = Some(modifier.clone());
             }
         }
