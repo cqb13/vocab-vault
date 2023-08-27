@@ -49,6 +49,27 @@ pub fn generate_for_nouns(
     }
 }
 
+pub fn generate_for_pronouns(number_types: Vec<NValue>, parts: Vec<String>) -> Vec<String> {
+    let (num_type_1, num_type_2) = translate_number_types(number_types);
+
+    match (num_type_1, num_type_2) {
+        // proximal demonstrative pronouns (hic, haec hoc)
+        (3, 1) => set_principle_parts(parts, vec!["ic", "aec", "oc"], None),
+        (3, 2) => set_principle_parts(parts, vec!["ic", "aec", "uc"], None),
+
+        (4, 1) => set_principle_parts(parts, vec!["s", "a", "d"], None),
+        (4, 2) => set_principle_parts(parts, vec!["dem", "adem", "dem"], None),
+        // Distal (ille, illa, illud) and medial (iste, ista, istud)
+        // demonstrative pronouns
+        (6, 1) => set_principle_parts(parts, vec!["e", "a", "ud"], None),
+        (6, 2) => set_principle_parts(parts, vec!["e", "a", "um"], None),
+        // special
+        (9, 8) => set_principle_parts(parts, vec!["", ""], Some("abbreviation")),
+        (9, 9) => set_principle_parts(parts, vec!["", ""], Some("undeclined")),
+        _ => parts,
+    }
+}
+
 //pub fn generate_for_adjectives(number_types: Vec<NValue>, parts: Vec<String>) -> Vec<String> {
 //
 //}
