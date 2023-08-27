@@ -1,3 +1,5 @@
+use std::vec;
+
 use crate::data::data::NValue;
 
 pub fn generate_for_nouns(
@@ -6,10 +8,15 @@ pub fn generate_for_nouns(
     parts: Vec<String>,
 ) -> Vec<String> {
     let (num_type_1, num_type_2) = translate_number_types(number_types);
-    //TODO account for 0 in num2
 
     match (num_type_1, num_type_2) {
+        // first declension
         (1, 1) => set_principle_parts(parts, vec!["a", "ae"], None),
+        // greek nouns
+        (1, 6) => set_principle_parts(parts, vec!["e", "es"], None),
+        (1, 7) => set_principle_parts(parts, vec!["es", "ae"], None),
+        (1, 8) => set_principle_parts(parts, vec!["as", "ae"], None),
+        // second declension
         (2, 1) => set_principle_parts(parts, vec!["us", "i"], None),
         (2, 2) => set_principle_parts(parts, vec!["um", "i"], None),
         (2, 3) => set_principle_parts(parts, vec!["", "i"], None),
@@ -26,11 +33,16 @@ pub fn generate_for_nouns(
         (2, 6) | (2, 7) => set_principle_parts(parts, vec!["os", "i"], None),
         (2, 8) => set_principle_parts(parts, vec!["on", "i"], None),
         (2, 9) => set_principle_parts(parts, vec!["us", "i"], None),
+        // third declension
         (3, 1) | (3, 2) | (3, 3) | (3, 4) => set_principle_parts(parts, vec!["", "is"], None),
+        (3, 7) | (3, 9) => set_principle_parts(parts, vec!["", "os/is"], None),
+        // fourth declension
         (4, 1) => set_principle_parts(parts, vec!["us", "us"], None),
         (4, 2) => set_principle_parts(parts, vec!["u", "us"], None),
         (4, 3) => set_principle_parts(parts, vec!["us", "u"], None),
+        // fifth declension
         (5, 1) => set_principle_parts(parts, vec!["es", "ei"], None),
+        // special
         (9, 8) => set_principle_parts(parts, vec!["", ""], Some("abbreviation")),
         (9, 9) => set_principle_parts(parts, vec!["", ""], Some("undeclined")),
         _ => parts,
