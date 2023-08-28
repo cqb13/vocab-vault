@@ -129,7 +129,7 @@ fn main() {
             .requires("pretty"),
     ];
 
-    let matches = App::new("Translator CLI")
+    let matches = App::new("Vocab Vault")
         .version("0.1.0")
         .author("cqb13")
         .about("A CLI for interacting with the Whitaker's Words Dictionary")

@@ -1,5 +1,5 @@
 [package]
-name = "latin_words"
+name = "vocab_vault"
 version = "0.1.0"
 edition = "2021"
 
