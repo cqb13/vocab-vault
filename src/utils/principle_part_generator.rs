@@ -10,6 +10,17 @@ pub enum Comparison {
     UNKNOWN,
 }
 
+impl Comparison {
+    pub fn from_str(s: &str) -> Comparison {
+        match s {
+            "POS" => Comparison::POS,
+            "COMP" => Comparison::COMP,
+            "SUPER" => Comparison::SUPER,
+            _ => Comparison::UNKNOWN,
+        }
+    }
+}
+
 pub enum VerbType {
     DEP,
     PERFDEF,
@@ -42,11 +53,22 @@ impl PartialEq for VerbType {
     }
 }
 
-pub enum NumeralTypes {
+pub enum NumeralType {
     CARD,
     ORD,
     DIST,
     UNKNOWN,
+}
+
+impl NumeralType {
+    pub fn from_str(s: &str) -> NumeralType {
+        match s {
+            "CARD" => NumeralType::CARD,
+            "ORD" => NumeralType::ORD,
+            "DIST" => NumeralType::DIST,
+            _ => NumeralType::UNKNOWN,
+        }
+    }
 }
 
 pub fn generate_for_nouns(
@@ -335,11 +357,11 @@ pub fn generate_for_verbs(
     }
 }
 
-pub fn generate_for_numerals(number_types: Vec<NValue>, parts: Vec<String>, numeral_type: NumeralTypes) -> Vec<String> {
+pub fn generate_for_numerals(number_types: Vec<NValue>, parts: Vec<String>, numeral_type: NumeralType) -> Vec<String> {
     let (num_type_1, num_type_2) = translate_number_types(number_types);
 
     match numeral_type {
-        NumeralTypes::UNKNOWN => {
+        NumeralType::UNKNOWN => {
             match (num_type_1, num_type_2) {
                 (1, 1) => set_principle_parts(parts, vec!["us -a -um", "us -a -um", "i -ae -a", ""], None), 
                 (1, 2) => set_principle_parts(parts, vec!["o -ae o", "us -a -um", "i -ae -a", ""], None),
@@ -354,7 +376,7 @@ pub fn generate_for_numerals(number_types: Vec<NValue>, parts: Vec<String>, nume
                 }
             }
         }
-        NumeralTypes::CARD => {
+        NumeralType::CARD => {
             match (num_type_1, num_type_2) {
                 (1, 1) => set_principle_parts(parts, vec!["us", "a", "um"], None), 
                 (1, 2) => set_principle_parts(parts, vec!["o", "ae", "o"], None),
@@ -363,8 +385,8 @@ pub fn generate_for_numerals(number_types: Vec<NValue>, parts: Vec<String>, nume
                 _ => parts,
             }
         }
-        NumeralTypes::ORD => set_principle_parts(parts, vec!["us", "a", "um"] , None),
-        NumeralTypes::DIST => set_principle_parts(parts, vec!["i", "ae", "a"] , None),
+        NumeralType::ORD => set_principle_parts(parts, vec!["us", "a", "um"] , None),
+        NumeralType::DIST => set_principle_parts(parts, vec!["i", "ae", "a"] , None),
     }
 }
 

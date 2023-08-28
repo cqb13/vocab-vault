@@ -3,7 +3,7 @@ use crate::formatter::formatter::format_output;
 use crate::formatter::prettify_output::{prettify_output, PrettifiedOutput};
 use crate::latin_to_english::Word;
 use crate::utils::filter::{entry_is_vague, filter_inflections};
-use crate::utils::principle_part_generator::{generate_for_nouns, generate_for_verbs, VerbType};
+use crate::utils::principle_part_generator::{generate_for_nouns, generate_for_verbs, generate_for_adjectives, generate_for_pronouns, generate_for_numerals, VerbType, Comparison, NumeralType};
 use crate::{Language, Translation, TranslationType};
 
 use super::sorter::sort_output;
@@ -117,24 +117,25 @@ fn add_principle_parts(mut latin_word_info: LatinWordInfo) -> LatinWordInfo {
     let number_type = latin_word_info.n.clone();
     let principle_parts = latin_word_info.parts.clone();
     let gender = get_gender(latin_word_info.form.clone());
+    let form = latin_word_info.form.clone();
+    let word_type = match &form {
+        Form::LongForm(_form) => "cqb13",
+        Form::StrForm(form) => {
+            let form_array = form.split_whitespace().collect::<Vec<&str>>();
+            if form_array.len() < 2 {
+                "cqb13"
+            } else {
+                form_array[2]
+            }
+        },
+    };
 
     let principle_parts: Vec<String> = match pos.as_str() {
         "N" => generate_for_nouns(number_type, gender, principle_parts),
-        "V" => {
-            let form = latin_word_info.form.clone();
-            let verb_type = match &form {
-                Form::LongForm(_form) => "cqb13",
-                Form::StrForm(form) => {
-                    let form_array = form.split_whitespace().collect::<Vec<&str>>();
-                    if form_array.len() < 2 {
-                        "cqb13"
-                    } else {
-                        form_array[2]
-                    }
-                },
-            };
-            generate_for_verbs(number_type, principle_parts, VerbType::from_str(verb_type))
-        }
+        "V" => generate_for_verbs(number_type, principle_parts, VerbType::from_str(word_type)),
+        "ADJ" => generate_for_adjectives(number_type, principle_parts, Comparison::from_str(word_type)),
+        "PRON" => generate_for_pronouns(number_type, principle_parts),
+        "NUM" => generate_for_numerals(number_type, principle_parts, NumeralType::from_str(word_type)),
         _ => principle_parts,
     };
 
