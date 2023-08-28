@@ -15,23 +15,21 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v2
+    - name: Set up Rust
+      uses: actions/setup-rust@v2
+      with:
+        rust-version: stable
     - name: Build
       run: cargo build --release
     - name: Get binary
-      run: cp target/release/vocab_vault ${{ github.workspace }}
-    - name: Publish Artifact
-      uses: actions/upload-artifact@v2
-      with:
-        name: vocab_vault
-        path: vocab_vault
+      run: cp target/release/vocab_vault ${{ github.workspace }}/vocab_vault.exe
     - name: Publish Release
-      id: publish_release
-      uses: actions/create-release@v1
+      uses: softprops/action-gh-release@v1
+      with:
+        files: ${{ github.workspace }}/target/release/vocab_vault.exe
+        tag_name: "v1.0.0" 
+        title: "Release v1.0.0"  
+        body: "Release v1.0.0"  
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        tag_name: ${{ github.ref }}
-        release_name: Release ${{ github.ref }}
-        draft: false
-        prerelease: false
