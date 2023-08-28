@@ -7,7 +7,39 @@ pub enum Comparison {
     POS,
     COMP,
     SUPER,
-    X,
+    UNKNOWN,
+}
+
+pub enum VerbType {
+    DEP,
+    PERFDEF,
+    IMPERS,
+    SEMIDEP,
+    OTHER
+}
+
+impl VerbType {
+    pub fn from_str(s: &str) -> VerbType {
+        match s {
+            "DEP" => VerbType::DEP,
+            "PERFDEF" => VerbType::PERFDEF,
+            "IMPERS" => VerbType::IMPERS,
+            "SEMIDEP" => VerbType::SEMIDEP,
+            _ => VerbType::OTHER,
+        }
+    }
+}
+
+impl PartialEq for VerbType {
+    fn eq(&self, other: &Self) -> bool {
+        match (self, other) {
+            (VerbType::DEP, VerbType::DEP) => true,
+            (VerbType::PERFDEF, VerbType::PERFDEF) => true,
+            (VerbType::IMPERS, VerbType::IMPERS) => true,
+            (VerbType::SEMIDEP, VerbType::SEMIDEP) => true,
+            _ => false,
+        }
+    }
 }
 
 pub fn generate_for_nouns(
@@ -113,7 +145,7 @@ pub fn generate_for_adjectives(
                 _ => parts,
             }
         }
-        Comparison::X => {
+        Comparison::UNKNOWN => {
             match (num_type_1, num_type_2) {
                 // unknown first declension
                 (1, 1) => set_principle_parts(
@@ -145,29 +177,154 @@ pub fn generate_for_adjectives(
     }
 }
 
-pub fn generate_for_verbs(number_types: Vec<NValue>, parts: Vec<String>) -> Vec<String> {
+pub fn generate_for_verbs(
+    number_types: Vec<NValue>,
+    parts: Vec<String>,
+    verb_type: VerbType,
+) -> Vec<String> {
     let (num_type_1, num_type_2) = translate_number_types(number_types);
 
-    //TODO account for 0 in num2
+    if num_type_1 == 9 && num_type_2 == 8 {
+        return set_principle_parts(parts, vec!["", "", "", ""], Some("abbreviation"));
+    }
 
-    match (num_type_1, num_type_2) {
-        (1, 1) => set_principle_parts(parts, vec!["o", "are", "i", "us"], None),
-        (2, 1) => set_principle_parts(parts, vec!["eo", "ere", "i", "us"], None),
-        (3, 1) => set_principle_parts(parts, vec!["o", "ere", "i", "us"], None),
-        (3, 2) => set_principle_parts(parts, vec!["o", "re", "i", "us"], None),
-        (3, 3) => set_principle_parts(parts, vec!["o", "eri", "i", "us"], None),
-        (3, 4) => set_principle_parts(parts, vec!["o", "ire", "i", "us"], None),
-        (5, 2) => set_principle_parts(parts, vec!["um", "esse", "i", ""], None),
-        (6, 1) => set_principle_parts(parts, vec!["o", "re", "i", "us"], None),
-        (6, 2) => set_principle_parts(parts, vec!["o", "le", "i", ""], None),
-        (7, 1) => set_principle_parts(parts, vec!["o", "", "", ""], None),
-        (7, 2) => set_principle_parts(parts, vec!["am", "iam", "", ""], None),
-        (7, 3) => set_principle_parts(parts, vec!["o", "se", "", ""], None),
-        (8, 1) => set_principle_parts(parts, vec!["o", "are", "i", ""], None),
-        (8, 2) => set_principle_parts(parts, vec!["o", "ere", "", ""], None),
-        (8, 3) => set_principle_parts(parts, vec!["o", "ere", "i", ""], None),
-        (9, 9) => set_principle_parts(parts, vec!["", "", "", ""], Some("undeclined")),
-        _ => parts,
+    if num_type_1 == 9 && num_type_2 == 9 {
+        return set_principle_parts(parts, vec!["", "", "", ""], Some("undeclined"));
+    }
+
+    match verb_type {
+        VerbType::DEP => match num_type_1 {
+            1 => set_principle_parts(parts, vec!["or", "ari", "", "us sum"], None),
+            2 => set_principle_parts(parts, vec!["eor", "eri", "", "us sum"], None),
+            3 => {
+                if num_type_2 == 4 {
+                    set_principle_parts(parts, vec!["or", "iri", "", "us sum"], None)
+                } else {
+                    set_principle_parts(parts, vec!["or", "i", "", "us sum"], None)
+                }
+            }
+            _ => parts,
+        },
+        VerbType::PERFDEF => set_principle_parts(parts, vec!["i", "isse", "us", ""], None),
+        _ => {
+            if verb_type == VerbType::IMPERS && parts[0].trim() == "zzz" && parts[1].trim() == "zzz"
+            {
+                set_principle_parts(parts, vec!["it", "isse", "us est", ""], None)
+            } else if verb_type == VerbType::IMPERS {
+                match num_type_1 {
+                    1 => set_principle_parts(parts, vec!["at", "", "", ""], None),
+                    2 => set_principle_parts(parts, vec!["et", "", "", ""], None),
+                    3 => {
+                        if num_type_2 == 2 {
+                            set_principle_parts(parts, vec!["t", "", "", ""], None)
+                        } else {
+                            if parts[0].ends_with("i") {
+                                set_principle_parts(parts, vec!["t", "", "", ""], None)
+                            } else {
+                                set_principle_parts(parts, vec!["it", "", "", ""], None)
+                            }
+                        }
+                    }
+                    5 => {
+                        if num_type_2 == 1 {
+                            set_principle_parts(parts, vec!["est", "", "", ""], None)
+                        } else {
+                            parts
+                        }
+                    }
+                    7 => {
+                        if num_type_2 == 1 || num_type_2 == 2 {
+                            set_principle_parts(parts, vec!["t", "", "", ""], None)
+                        } else {
+                            parts
+                        }
+                    }
+                    _ => parts,
+                }
+            } else {
+                // building array instead of each case, because lots of options / overlap
+                let mut ending_array = vec![""; 4];
+
+                // first part ending
+                if num_type_1 == 2 {
+                    ending_array[0] = "eo";
+                } else if num_type_1 == 5 {
+                    ending_array[0] = "um";
+                } else if num_type_1 == 7 && num_type_2 == 2 {
+                    ending_array[0] = "am";
+                } else {
+                    ending_array[0] = "o";
+                }
+
+                // second part ending
+                match num_type_1 {
+                    1 => ending_array[1] = "are",
+                    2 => ending_array[1] = "ere",
+                    3 => {
+                        match num_type_2 {
+                            2 => ending_array[1] = "re",
+                            3 => {
+                                // special case for fio, fieri: it follows the usual
+                                // conjugation everywhere except for present infinitive
+                                if parts[1].trim() == "f" {
+                                    ending_array[1] = "ieri";
+                                } else {
+                                    ending_array[1] = "eie";
+                                }
+                            }
+                            4 => ending_array[1] = "ire",
+                            _ => ending_array[1] = "ere",
+                        }
+                    }
+                    5 => ending_array[1] = "esse", // simplified
+                    6 => {
+                        if num_type_2 == 1 {
+                            ending_array[1] = "ere";
+                        } else if num_type_2 == 2 {
+                            ending_array[1] = "le";
+                        }
+                    }
+                    7 => {
+                        if num_type_2 == 2 {
+                            ending_array[1] = "iam";
+                        } else if num_type_2 == 3 {
+                            ending_array[1] = "se";
+                        }
+                    }
+                    8 => {
+                        match num_type_2 {
+                            1 => ending_array[1] = "are",
+                            4 => ending_array[1] = "ire",
+                            _ => ending_array[1] = "ere", // 2 & 3 & everything else
+                        }
+                    }
+                    _ => ending_array[1] = "",
+                }
+
+                // third and fourth part endings
+                if verb_type == VerbType::IMPERS {
+                    // might be a 2 setting here, but it should be covered earlier
+                    ending_array[3] = "us est";
+                } else if verb_type == VerbType::SEMIDEP {
+                    ending_array[3] = "us sum";
+                } else if num_type_1 == 5 && num_type_2 == 1 {
+                    ending_array[2] = "i";
+                    ending_array[3] = "urus";   
+                } else if num_type_1 == 8 {
+                    // additional forms, undefined
+                } else {
+                    ending_array[2] = "i";
+                    ending_array[3] = "us";
+                }
+
+                // small correction
+                if num_type_1 == 6 && num_type_2 == 1 {
+                    ending_array[2] = "(ii)";
+                }
+
+                set_principle_parts(parts, ending_array, None)
+            }
+        }
     }
 }
 
