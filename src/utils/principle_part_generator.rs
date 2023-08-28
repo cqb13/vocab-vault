@@ -15,7 +15,7 @@ pub enum VerbType {
     PERFDEF,
     IMPERS,
     SEMIDEP,
-    OTHER
+    OTHER,
 }
 
 impl VerbType {
@@ -40,6 +40,13 @@ impl PartialEq for VerbType {
             _ => false,
         }
     }
+}
+
+pub enum NumeralTypes {
+    CARD,
+    ORD,
+    DIST,
+    UNKNOWN,
 }
 
 pub fn generate_for_nouns(
@@ -309,7 +316,7 @@ pub fn generate_for_verbs(
                     ending_array[3] = "us sum";
                 } else if num_type_1 == 5 && num_type_2 == 1 {
                     ending_array[2] = "i";
-                    ending_array[3] = "urus";   
+                    ending_array[3] = "urus";
                 } else if num_type_1 == 8 {
                     // additional forms, undefined
                 } else {
@@ -325,6 +332,39 @@ pub fn generate_for_verbs(
                 set_principle_parts(parts, ending_array, None)
             }
         }
+    }
+}
+
+pub fn generate_for_numerals(number_types: Vec<NValue>, parts: Vec<String>, numeral_type: NumeralTypes) -> Vec<String> {
+    let (num_type_1, num_type_2) = translate_number_types(number_types);
+
+    match numeral_type {
+        NumeralTypes::UNKNOWN => {
+            match (num_type_1, num_type_2) {
+                (1, 1) => set_principle_parts(parts, vec!["us -a -um", "us -a -um", "i -ae -a", ""], None), 
+                (1, 2) => set_principle_parts(parts, vec!["o -ae o", "us -a -um", "i -ae -a", ""], None),
+                (1, 3) => set_principle_parts(parts, vec!["es -es -ia", "us -a -um", "i -ae -a", ""], None),
+                (1, 4) => set_principle_parts(parts, vec!["i -ae -a", "us -a -um", "i -ae -a", "ie (n)s"], None),
+                _ => {
+                    if num_type_1 == 2 {
+                        set_principle_parts(parts, vec!["", "us -a -um", "i -ae -a", "ie (n)s"], None)
+                    } else {
+                        parts
+                    }
+                }
+            }
+        }
+        NumeralTypes::CARD => {
+            match (num_type_1, num_type_2) {
+                (1, 1) => set_principle_parts(parts, vec!["us", "a", "um"], None), 
+                (1, 2) => set_principle_parts(parts, vec!["o", "ae", "o"], None),
+                (1, 3) => set_principle_parts(parts, vec!["es", "es", "ia"], None),
+                (1, 4) => set_principle_parts(parts, vec!["i", "ae", "a"], None),
+                _ => parts,
+            }
+        }
+        NumeralTypes::ORD => set_principle_parts(parts, vec!["us", "a", "um"] , None),
+        NumeralTypes::DIST => set_principle_parts(parts, vec!["i", "ae", "a"] , None),
     }
 }
 
