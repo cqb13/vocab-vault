@@ -16,7 +16,11 @@ impl Clone for EnglishTranslationInfo {
     }
 }
 
-pub fn translate_to_latin(english_word: &str, max: usize, sort: bool) -> Vec<EnglishTranslationInfo> {
+pub fn translate_to_latin(
+    english_word: &str,
+    max: usize,
+    sort: bool,
+) -> Vec<EnglishTranslationInfo> {
     let mut output: Vec<EnglishTranslationInfo> = Vec::new();
 
     let english_words = get_english_words();

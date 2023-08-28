@@ -15,8 +15,8 @@ The CLI is designed to provide translation functionality between English and Lat
 To install and build from source, you must have [Rust](https://www.rust-lang.org/tools/install) installed. Then, run the following command:
 
 ```bash
-$ git clone https://github.com/cqb13/latin_words.git
-$ cd latin_words
+$ git clone https://github.com/cqb13/vocab-vault.git
+$ cd vocab-vault
 $ cargo install --path .
 $ cargo build --release
 $ cargo run --release -- [command] [arguments]
@@ -24,16 +24,18 @@ $ cargo run --release -- [command] [arguments]
 
 #### From Binary
 
-To install from a binary, download the latest release from the [releases page](https://github.com/cqb13/latin_words/releases)
+To install from a binary, download the latest release from the [releases page](https://github.com/cqb13/vocab-vault/releases)
 
 ```bash
 $ cd [download directory]
-$ latin_words [command] [arguments]
+$ vocab-vault [command] [arguments]
 ```
 
 #### Website
 
 You can also use the [website](https://learninglatin.net/translate) to translate text.
+
+**Note:** The website is currently using the original TypeScript code, not the Rust code.
 
 ### Command Line Arguments
 
@@ -44,7 +46,7 @@ You can also use the [website](https://learninglatin.net/translate) to translate
 Translate English text to Latin using the following command:
 
 ```bash
-$ latin_words transEng "English text to translate" [-f]
+$ vocab_vault transEng "English text to translate" [-f]
 ```
 
 - `"English text to translate"`: The English text you want to translate
@@ -55,7 +57,7 @@ $ latin_words transEng "English text to translate" [-f]
 Translate Latin text to English using the following command:
 
 ```bash
-$ latin_words transLat "Latin text to translate" [-t] [-f]
+$ vocab_vault transLat "Latin text to translate" [-t] [-f]
 ```
 
 - `"Latin text to translate"`: The Latin text you want to translate
@@ -79,11 +81,11 @@ These arguments are applicable to both translation commands (`transEng` and `tra
 Translate English to Latin with formatted output and cleaning:
 
 ```bash
-$ latin_words transEng "why" -m 2 -f -c -s
+$ vocab_vault transEng "why" -m 2 -f -c -s
 ```
 
 Translate Latin to English with tricks and detailed, pretty, and formatted output:
 
 ```bash
-$ latin_words transLat "cur" -f -c -t -p
+$ vocab_vault transLat "cur" -f -c -t -p
 ```

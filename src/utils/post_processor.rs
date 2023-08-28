@@ -3,7 +3,10 @@ use crate::formatter::formatter::format_output;
 use crate::formatter::prettify_output::{prettify_output, PrettifiedOutput};
 use crate::latin_to_english::Word;
 use crate::utils::filter::{entry_is_vague, filter_inflections};
-use crate::utils::principle_part_generator::{generate_for_nouns, generate_for_verbs, generate_for_adjectives, generate_for_pronouns, generate_for_numerals, VerbType, Comparison, NumeralType};
+use crate::utils::principle_part_generator::{
+    generate_for_adjectives, generate_for_nouns, generate_for_numerals, generate_for_pronouns,
+    generate_for_verbs, Comparison, NumeralType, VerbType,
+};
 use crate::{Language, Translation, TranslationType};
 
 use super::sorter::sort_output;
@@ -27,7 +30,12 @@ pub fn post_process(
                 translations
             };
 
-            latin_translation_output_post_processing(sorted_translations, clean, filter_uncommon, max)
+            latin_translation_output_post_processing(
+                sorted_translations,
+                clean,
+                filter_uncommon,
+                max,
+            )
         }
         Language::English => english_translation_output_post_processing(translations),
     };
@@ -127,15 +135,23 @@ fn add_principle_parts(mut latin_word_info: LatinWordInfo) -> LatinWordInfo {
             } else {
                 form_array[2]
             }
-        },
+        }
     };
 
     let principle_parts: Vec<String> = match pos.as_str() {
         "N" => generate_for_nouns(number_type, gender, principle_parts),
         "V" => generate_for_verbs(number_type, principle_parts, VerbType::from_str(word_type)),
-        "ADJ" => generate_for_adjectives(number_type, principle_parts, Comparison::from_str(word_type)),
+        "ADJ" => generate_for_adjectives(
+            number_type,
+            principle_parts,
+            Comparison::from_str(word_type),
+        ),
         "PRON" => generate_for_pronouns(number_type, principle_parts),
-        "NUM" => generate_for_numerals(number_type, principle_parts, NumeralType::from_str(word_type)),
+        "NUM" => generate_for_numerals(
+            number_type,
+            principle_parts,
+            NumeralType::from_str(word_type),
+        ),
         _ => principle_parts,
     };
 

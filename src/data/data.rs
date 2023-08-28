@@ -442,7 +442,6 @@ impl LongForm {
     }
 }
 
-
 impl Clone for LongForm {
     fn clone(&self) -> LongForm {
         LongForm {

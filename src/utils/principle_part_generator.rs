@@ -103,7 +103,9 @@ pub fn generate_for_nouns(
         (2, 8) => set_principle_parts(parts, vec![("on", 1), ("i", 2)], None),
         (2, 9) => set_principle_parts(parts, vec![("us", 1), ("i", 2)], None),
         // third declension
-        (3, 1) | (3, 2) | (3, 3) | (3, 4) => set_principle_parts(parts, vec![("", 1), ("is", 2)], None),
+        (3, 1) | (3, 2) | (3, 3) | (3, 4) => {
+            set_principle_parts(parts, vec![("", 1), ("is", 2)], None)
+        }
         (3, 7) | (3, 9) => set_principle_parts(parts, vec![("", 1), ("os/is", 2)], None),
         // fourth declension
         (4, 1) => set_principle_parts(parts, vec![("us", 1), ("us", 2)], None),
@@ -112,8 +114,8 @@ pub fn generate_for_nouns(
         // fifth declension
         (5, 1) => set_principle_parts(parts, vec![("es", 1), ("ei", 2)], None),
         // special
-        (9, 8) => set_principle_parts(parts, vec![("", 1), ("", 2)], Some("abbreviation")),
-        (9, 9) => set_principle_parts(parts, vec![("", 1), ("", 2)], Some("undeclined")),
+        (9, 8) => set_principle_parts(parts, vec![("", 0), ("", 0)], Some("abbreviation")),
+        (9, 9) => set_principle_parts(parts, vec![("", 0), ("", 0)], Some("undeclined")),
         _ => parts,
     }
 }
@@ -133,8 +135,8 @@ pub fn generate_for_pronouns(number_types: Vec<NValue>, parts: Vec<String>) -> V
         (6, 1) => set_principle_parts(parts, vec![("e", 1), ("a", 1), ("ud", 1)], None),
         (6, 2) => set_principle_parts(parts, vec![("e", 1), ("a", 1), ("um", 1)], None),
         // special
-        (9, 9) => set_principle_parts(parts, vec![("", 1), ("", 1), ("", 1)], Some("undeclined")),
-        (9, 8) => set_principle_parts(parts, vec![("", 1), ("", 1), ("", 1)], Some("abbreviation")),
+        (9, 8) => set_principle_parts(parts, vec![("", 0), ("", 0), ("", 0)], Some("abbreviation")),
+        (9, 9) => set_principle_parts(parts, vec![("", 0), ("", 0), ("", 0)], Some("undeclined")),
         _ => parts,
     }
 }
@@ -148,16 +150,24 @@ pub fn generate_for_adjectives(
 
     match comparison {
         Comparison::COMP => set_principle_parts(parts, vec![("or", 1), ("or", 1), ("us", 1)], None),
-        Comparison::SUPER => set_principle_parts(parts, vec![("mus", 1), ("ma", 1), ("mum", 1)], None),
+        Comparison::SUPER => {
+            set_principle_parts(parts, vec![("mus", 1), ("ma", 1), ("mum", 1)], None)
+        }
         Comparison::POS => {
             match (num_type_1, num_type_2) {
                 // first declension
                 (1, 1) => set_principle_parts(parts, vec![("us", 1), ("a", 2), ("um", 2)], None),
-                (1, 2) | (1, 4) => set_principle_parts(parts, vec![("", 1), ("a", 2), ("um", 2)], None),
-                (1, 3) => set_principle_parts(parts, vec![("us", 1), ("a", 2), ("um (gen -ius)", 2)], None),
+                (1, 2) | (1, 4) => {
+                    set_principle_parts(parts, vec![("", 1), ("a", 2), ("um", 2)], None)
+                }
+                (1, 3) => set_principle_parts(
+                    parts,
+                    vec![("us", 1), ("a", 2), ("um (gen -ius)", 2)],
+                    None,
+                ),
                 (1, 5) => set_principle_parts(parts, vec![("us", 1), ("a", 2), ("ud", 2)], None),
                 // second declension
-                (2, 1) => set_principle_parts(parts, vec![("", 0), ("e", 1), ("", 0)], None), 
+                (2, 1) => set_principle_parts(parts, vec![("", 0), ("e", 1), ("", 0)], None),
                 (2, 2) => set_principle_parts(parts, vec![("", 0), ("a", 0), ("", 0)], None),
                 (2, 3) => set_principle_parts(parts, vec![("es", 1), ("es", 1), ("es", 1)], None),
                 (2, 6) => set_principle_parts(parts, vec![("os", 1), ("os", 1), ("", 0)], None),
@@ -166,11 +176,17 @@ pub fn generate_for_adjectives(
                 // third declension
                 (3, 1) => set_principle_parts(parts, vec![("", 1), ("(gen.)", 0), ("is", 2)], None),
                 (3, 2) => set_principle_parts(parts, vec![("is", 1), ("is", 2), ("e", 2)], None),
-                (3, 3) => set_principle_parts(parts, vec![("", 1), ("is", 2), ("e", 2)], None), 
+                (3, 3) => set_principle_parts(parts, vec![("", 1), ("is", 2), ("e", 2)], None),
                 (3, 6) => set_principle_parts(parts, vec![("", 1), ("(gen.)", 0), ("os", 2)], None),
                 // special
-                (9, 9) => set_principle_parts(parts, vec![("", 0), ("", 0), ("", 0)], Some("undeclined")), 
-                (9, 8) => set_principle_parts(parts, vec![("", 0), ("", 0), ("", 0)], Some("abbreviation")), 
+                (9, 8) => set_principle_parts(
+                    parts,
+                    vec![("", 0), ("", 0), ("", 0)],
+                    Some("abbreviation"),
+                ),
+                (9, 9) => {
+                    set_principle_parts(parts, vec![("", 0), ("", 0), ("", 0)], Some("undeclined"))
+                }
                 _ => parts,
             }
         }
@@ -179,27 +195,49 @@ pub fn generate_for_adjectives(
                 // unknown first declension
                 (1, 1) => set_principle_parts(
                     parts,
-                    vec![("us", 1), ("a -um", 2), ("or -or -us", 3), ("mus -a -um", 4)],
+                    vec![
+                        ("us", 1),
+                        ("a -um", 2),
+                        ("or -or -us", 3),
+                        ("mus -a -um", 4),
+                    ],
                     None,
                 ),
-                (1, 2) => {
-                    set_principle_parts(parts, vec![("", 1), ("a -um", 2), ("or -or -us", 3), ("mus -a -um", 4)], None)
-                }
+                (1, 2) => set_principle_parts(
+                    parts,
+                    vec![("", 1), ("a -um", 2), ("or -or -us", 3), ("mus -a -um", 4)],
+                    None,
+                ),
                 // unknown third declension
                 (3, 1) => set_principle_parts(
                     parts,
-                    vec![("", 1), ("is (gen .)", 2), ("or -or -us", 3), ("mus -a -um", 4)],
+                    vec![
+                        ("", 1),
+                        ("is (gen .)", 2),
+                        ("or -or -us", 3),
+                        ("mus -a -um", 4),
+                    ],
                     None,
                 ),
-                (3, 2) => {
-                    set_principle_parts(parts, vec![("is", 1), ("e", 2), ("or -or -us", 3), ("mus -a -um", 4)], None)
-                }
-                (3, 3) => {
-                    set_principle_parts(parts, vec![("", 1), ("is -e", 2), ("or -or -us", 3), ("mus -a -um", 4)], None)
-                }
+                (3, 2) => set_principle_parts(
+                    parts,
+                    vec![("is", 1), ("e", 2), ("or -or -us", 3), ("mus -a -um", 4)],
+                    None,
+                ),
+                (3, 3) => set_principle_parts(
+                    parts,
+                    vec![("", 1), ("is -e", 2), ("or -or -us", 3), ("mus -a -um", 4)],
+                    None,
+                ),
                 // special
-                (9, 9) => set_principle_parts(parts, vec![("", 1), ("", 1), ("", 1)], Some("undeclined")),
-                (9, 8) => set_principle_parts(parts, vec![("", 1), ("", 1), ("", 1)], Some("abbreviation")),
+                (9, 8) => set_principle_parts(
+                    parts,
+                    vec![("", 0), ("", 0), ("", 0)],
+                    Some("abbreviation"),
+                ),
+                (9, 9) => {
+                    set_principle_parts(parts, vec![("", 0), ("", 0), ("", 0)], Some("undeclined"))
+                }
                 _ => parts,
             }
         }
@@ -214,56 +252,110 @@ pub fn generate_for_verbs(
     let (num_type_1, num_type_2) = translate_number_types(number_types);
 
     if num_type_1 == 9 && num_type_2 == 8 {
-        return set_principle_parts(parts, vec![("", 1), ("", 1), ("", 1), ("", 1)], Some("abbreviation"));
+        return set_principle_parts(
+            parts,
+            vec![("", 0), ("", 0), ("", 0), ("", 0)],
+            Some("abbreviation"),
+        );
     }
 
     if num_type_1 == 9 && num_type_2 == 9 {
-        return set_principle_parts(parts, vec![("", 1), ("", 1), ("", 1), ("", 1)], Some("undeclined"));
+        return set_principle_parts(
+            parts,
+            vec![("", 0), ("", 0), ("", 0), ("", 0)],
+            Some("undeclined"),
+        );
     }
 
     match verb_type {
         VerbType::DEP => match num_type_1 {
-            1 => set_principle_parts(parts, vec![("or", 1), ("ari", 2), ("", 0), ("us sum", 4)], None),
-            2 => set_principle_parts(parts, vec![("eor", 1), ("eri", 2), ("", 0), ("us sum", 4)], None),
+            1 => set_principle_parts(
+                parts,
+                vec![("or", 1), ("ari", 2), ("", 0), ("us sum", 4)],
+                None,
+            ),
+            2 => set_principle_parts(
+                parts,
+                vec![("eor", 1), ("eri", 2), ("", 0), ("us sum", 4)],
+                None,
+            ),
             3 => {
                 if num_type_2 == 4 {
-                    set_principle_parts(parts, vec![("or", 1), ("iri", 2), ("", 0), ("us sum", 4)], None)
+                    set_principle_parts(
+                        parts,
+                        vec![("or", 1), ("iri", 2), ("", 0), ("us sum", 4)],
+                        None,
+                    )
                 } else {
-                    set_principle_parts(parts, vec![("or", 1), ("i", 2), ("", 0), ("us sum", 4)], None)
+                    set_principle_parts(
+                        parts,
+                        vec![("or", 1), ("i", 2), ("", 0), ("us sum", 4)],
+                        None,
+                    )
                 }
             }
             _ => parts,
         },
-        VerbType::PERFDEF => set_principle_parts(parts, vec![("i", 3), ("isse", 3), ("us", 4), ("", 0)], None),
+        VerbType::PERFDEF => {
+            set_principle_parts(parts, vec![("i", 3), ("isse", 3), ("us", 4), ("", 0)], None)
+        }
         _ => {
             if verb_type == VerbType::IMPERS && parts[0].trim() == "zzz" && parts[1].trim() == "zzz"
             {
-                set_principle_parts(parts, vec![("it", 3), ("isse", 3), ("us est", 4), ("", 0)], None)
+                set_principle_parts(
+                    parts,
+                    vec![("it", 3), ("isse", 3), ("us est", 4), ("", 0)],
+                    None,
+                )
             } else if verb_type == VerbType::IMPERS {
                 match num_type_1 {
-                    1 => set_principle_parts(parts, vec![("at", 1), ("", 0), ("", 0), ("", 0)], None),
-                    2 => set_principle_parts(parts, vec![("et", 1), ("", 0), ("", 0), ("", 0)], None),
+                    1 => {
+                        set_principle_parts(parts, vec![("at", 1), ("", 0), ("", 0), ("", 0)], None)
+                    }
+                    2 => {
+                        set_principle_parts(parts, vec![("et", 1), ("", 0), ("", 0), ("", 0)], None)
+                    }
                     3 => {
                         if num_type_2 == 2 {
-                            set_principle_parts(parts, vec![("t", 1), ("", 0), ("", 0), ("", 0)], None)
+                            set_principle_parts(
+                                parts,
+                                vec![("t", 1), ("", 0), ("", 0), ("", 0)],
+                                None,
+                            )
                         } else {
                             if parts[0].ends_with("i") {
-                                set_principle_parts(parts, vec![("t", 1), ("", 0), ("", 0), ("", 0)], None)
+                                set_principle_parts(
+                                    parts,
+                                    vec![("t", 1), ("", 0), ("", 0), ("", 0)],
+                                    None,
+                                )
                             } else {
-                                set_principle_parts(parts, vec![("it", 1), ("", 0), ("", 0), ("", 0)], None)
+                                set_principle_parts(
+                                    parts,
+                                    vec![("it", 1), ("", 0), ("", 0), ("", 0)],
+                                    None,
+                                )
                             }
                         }
                     }
                     5 => {
                         if num_type_2 == 1 {
-                            set_principle_parts(parts, vec![("est", 1), ("", 0), ("", 0), ("", 0)], None)
+                            set_principle_parts(
+                                parts,
+                                vec![("est", 1), ("", 0), ("", 0), ("", 0)],
+                                None,
+                            )
                         } else {
                             parts
                         }
                     }
                     7 => {
                         if num_type_2 == 1 || num_type_2 == 2 {
-                            set_principle_parts(parts, vec![("t", 1), ("", 0), ("", 0), ("", 0)], None)
+                            set_principle_parts(
+                                parts,
+                                vec![("t", 1), ("", 0), ("", 0), ("", 0)],
+                                None,
+                            )
                         } else {
                             parts
                         }
@@ -272,7 +364,7 @@ pub fn generate_for_verbs(
                 }
             } else {
                 // building array instead of each case, because lots of options / overlap
-                let mut ending_array = vec![("", 0 ); 4];
+                let mut ending_array = vec![("", 0); 4];
 
                 // first part ending
                 if num_type_1 == 2 {
@@ -363,41 +455,75 @@ pub fn generate_for_verbs(
     }
 }
 
-pub fn generate_for_numerals(number_types: Vec<NValue>, parts: Vec<String>, numeral_type: NumeralType) -> Vec<String> {
+pub fn generate_for_numerals(
+    number_types: Vec<NValue>,
+    parts: Vec<String>,
+    numeral_type: NumeralType,
+) -> Vec<String> {
     let (num_type_1, num_type_2) = translate_number_types(number_types);
 
     match numeral_type {
-        NumeralType::UNKNOWN => {
-            match (num_type_1, num_type_2) {
-                (1, 1) => set_principle_parts(parts, vec![("us -a -um", 1), ("us -a -um", 2), ("i -ae -a", 3), ("", 4)], None), 
-                (1, 2) => set_principle_parts(parts, vec![("o -ae o", 1), ("us -a -um", 2), ("i -ae -a", 3), ("", 4)], None),
-                (1, 3) => set_principle_parts(parts, vec![("es -es -ia", 1), ("us -a -um", 2), ("i -ae -a", 3), ("", 4)], None),
-                (1, 4) => set_principle_parts(parts, vec![("i -ae -a", 1), ("us -a -um", 2), ("i -ae -a", 3), ("ie (n)s", 4)], None),
-                _ => {
-                    if num_type_1 == 2 {
-                        set_principle_parts(parts, vec![("", 1), ("us -a -um", 2), ("i -ae -a", 3), ("ie (n)s", 4)], None)
-                    } else {
-                        parts
-                    }
+        NumeralType::UNKNOWN => match (num_type_1, num_type_2) {
+            (1, 1) => set_principle_parts(
+                parts,
+                vec![("us -a -um", 1), ("us -a -um", 2), ("i -ae -a", 3), ("", 4)],
+                None,
+            ),
+            (1, 2) => set_principle_parts(
+                parts,
+                vec![("o -ae o", 1), ("us -a -um", 2), ("i -ae -a", 3), ("", 4)],
+                None,
+            ),
+            (1, 3) => set_principle_parts(
+                parts,
+                vec![
+                    ("es -es -ia", 1),
+                    ("us -a -um", 2),
+                    ("i -ae -a", 3),
+                    ("", 4),
+                ],
+                None,
+            ),
+            (1, 4) => set_principle_parts(
+                parts,
+                vec![
+                    ("i -ae -a", 1),
+                    ("us -a -um", 2),
+                    ("i -ae -a", 3),
+                    ("ie (n)s", 4),
+                ],
+                None,
+            ),
+            _ => {
+                if num_type_1 == 2 {
+                    set_principle_parts(
+                        parts,
+                        vec![("", 1), ("us -a -um", 2), ("i -ae -a", 3), ("ie (n)s", 4)],
+                        None,
+                    )
+                } else {
+                    parts
                 }
             }
-        }
-        NumeralType::CARD => {
-            match (num_type_1, num_type_2) {
-                (1, 1) => set_principle_parts(parts, vec![("us", 1), ("a", 1), ("um", 1)], None), 
-                (1, 2) => set_principle_parts(parts, vec![("o", 1), ("ae", 1), ("o", 1)], None),
-                (1, 3) => set_principle_parts(parts, vec![("es", 1), ("es", 1), ("ia", 1)], None),
-                (1, 4) => set_principle_parts(parts, vec![("i", 1), ("ae", 1), ("a", 1)], None),
-                _ => parts,
-            }
-        }
-        NumeralType::ORD => set_principle_parts(parts, vec![("us", 1), ("a", 1), ("um", 1)] , None),
-        NumeralType::DIST => set_principle_parts(parts, vec![("i", 1), ("ae", 1), ("a", 1)] , None),
+        },
+        NumeralType::CARD => match (num_type_1, num_type_2) {
+            (1, 1) => set_principle_parts(parts, vec![("us", 1), ("a", 1), ("um", 1)], None),
+            (1, 2) => set_principle_parts(parts, vec![("o", 1), ("ae", 1), ("o", 1)], None),
+            (1, 3) => set_principle_parts(parts, vec![("es", 1), ("es", 1), ("ia", 1)], None),
+            (1, 4) => set_principle_parts(parts, vec![("i", 1), ("ae", 1), ("a", 1)], None),
+            _ => parts,
+        },
+        NumeralType::ORD => set_principle_parts(parts, vec![("us", 1), ("a", 1), ("um", 1)], None),
+        NumeralType::DIST => set_principle_parts(parts, vec![("i", 1), ("ae", 1), ("a", 1)], None),
     }
 }
 
 // first item in endings is the ending, and the second item is the number of the stem the ending is attached to
-fn set_principle_parts(parts: Vec<String>, endings: Vec<(&str, i8)>, special_case: Option<&str>) -> Vec<String> {
+fn set_principle_parts(
+    parts: Vec<String>,
+    endings: Vec<(&str, i8)>,
+    special_case: Option<&str>,
+) -> Vec<String> {
     let mut principle_parts = Vec::new();
 
     if endings.iter().all(|x| x.0 == "" && x.1 == 0) {
