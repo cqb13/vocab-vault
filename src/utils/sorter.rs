@@ -32,7 +32,6 @@ pub fn sort_output(mut translations: Vec<Translation>) -> Vec<Translation> {
 
                 // if an entry has a higher freq than the entry before it, swap them
                 // if an entry has the same freq as the entry before it, do nothing
-                // !!! test with sorting of words with same freq
                 let mut sorted_entry_freq_map: Vec<(&usize, &usize)> =
                     entry_freq_map.iter().collect();
                 sorted_entry_freq_map.sort_by(|a, b| a.1.cmp(b.1));
