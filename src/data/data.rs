@@ -13,6 +13,8 @@ pub struct LatinWordInfo {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub modifiers: Option<Vec<Modifier>>,
     pub id: i32,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub extension_senses: Option<Vec<String>>,
 }
 
 impl Clone for LatinWordInfo {
@@ -27,6 +29,7 @@ impl Clone for LatinWordInfo {
             n: self.n.clone(),
             modifiers: self.modifiers.clone(),
             id: self.id.clone(),
+            extension_senses: self.extension_senses.clone(),
         }
     }
 }
@@ -43,6 +46,7 @@ impl LatinWordInfo {
             n: Vec::new(),
             modifiers: None,
             id: 0,
+            extension_senses: None,
         }
     }
 

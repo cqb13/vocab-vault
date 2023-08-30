@@ -26,6 +26,7 @@ pub struct PrettifiedDefinition {
 }
 
 //TODO: add modifier support for LatinWordInfo
+//TODO: add extension senses support
 
 pub fn prettify_output(translation: Translation, search_word: String) -> PrettifiedOutput {
     let mut prettified_output = PrettifiedOutput::new(search_word, vec![]);

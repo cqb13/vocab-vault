@@ -274,11 +274,6 @@ fn check_stems(
     (matched_stems, inflections)
 }
 
-//TODO: a new prop needs to be added to LatinWordInfo:
-/*
-senses and extension senses. extension senses are senses that start with a "|", they are found in the next word in the dictionary.
-when adding a word, check the next word, if the senses start with a "|", assign that sense to the extension_senses prop.
-*/
 fn lookup_stems(stems: Vec<Stem>, inflections: Vec<Inflection>) -> Vec<LatinTranslationInfo> {
     let latin_dictionary = get_latin_dictionary();
     let mut output: Vec<LatinTranslationInfo> = Vec::new();
@@ -325,7 +320,24 @@ fn lookup_stems(stems: Vec<Stem>, inflections: Vec<Inflection>) -> Vec<LatinTran
                     new_inflections = inflections.clone();
                 }
 
-                let new_word = Word::LatinWordInfo((*latin_word).clone());
+                let mut new_word = Word::LatinWordInfo((*latin_word).clone());
+
+                let next_word = latin_dictionary.iter().find(|word| word.id == latin_word.id + 1);
+                let next_word_senses = if let Some(next_word) = next_word {
+                    next_word.senses.clone()
+                } else {
+                    Vec::new()
+                };
+
+                // senses starting with | also apply to word before
+                if next_word_senses.len() > 0 && next_word_senses[0].trim().starts_with("|") {
+                    let first_sense = next_word_senses[0].trim_start_matches("|").to_string();
+                    let mut extension_senses = next_word_senses;
+                    extension_senses[0] = first_sense;
+                    if let Word::LatinWordInfo(latin_word_info) = &mut new_word {
+                        latin_word_info.extension_senses = Some(extension_senses);
+                    }
+                }
 
                 output.push(LatinTranslationInfo {
                     tricks: None,
@@ -434,7 +446,6 @@ fn split_enclitic(latin_word: &str) -> (String, Vec<Modifier>) {
         }
     }
 
-    //TODO: add a way to tell what kind of enclitic it is
     if tackon != Attachment::new() {
         // Est exception
         if latin_word != "est" {
