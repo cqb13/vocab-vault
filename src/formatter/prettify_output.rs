@@ -106,8 +106,20 @@ fn create_pretty_latin_definition(
                 .map(ToString::to_string)
                 .collect::<Vec<String>>()
                 .join(" ");
-            let senses_info = latin_word_info
-                .senses
+
+            let senses = latin_word_info.senses.clone();
+            let extension_senses = latin_word_info.extension_senses;
+
+            let senses = if extension_senses.is_some() {
+                let mut senses = senses;
+                let extension_senses = extension_senses.unwrap();
+                senses.extend(extension_senses);
+                senses
+            } else {
+                senses
+            };
+
+            let senses_info = senses
                 .iter()
                 .map(ToString::to_string)
                 .collect::<Vec<String>>()

@@ -210,11 +210,6 @@ fn find_form(latin_word: &str, reduced: bool) -> Vec<LatinTranslationInfo> {
     output
 }
 
-/**
- * For each inflection that was a match, remove the inflection from
- * the end of the word string and then check the resulting stem
- * against the list of stems from stemList.ts
- */
 fn check_stems(
     latin_word: &str,
     latin_word_inflections: &Vec<Inflection>,
