@@ -3,8 +3,8 @@ use serde::{Deserialize, Serialize, Serializer};
 use crate::data::data::{
     get_latin_dictionary, get_latin_inflections, get_latin_not_packons, get_latin_packons,
     get_latin_prefixes, get_latin_stems, get_latin_suffixes, get_latin_tackons,
-    get_unique_latin_words, Attachment, Form, Inflection, LatinWordInfo, Stem, UniqueLatinWordInfo,
-    WordInfo,
+    get_unique_latin_words, Attachment, Form, Inflection, LatinWordInfo, Modifier, Stem,
+    UniqueLatinWordInfo, WordInfo,
 };
 
 use crate::tricks::tricks::{evaluate_roman_numeral, is_roman_number, try_tricks};
@@ -362,24 +362,22 @@ fn remove_extra_inflections(inflections: Vec<Inflection>, pos_to_remove: &str) -
 }
 
 fn reduce(latin_word: &mut String) -> (Vec<LatinTranslationInfo>, bool) {
-    let mut modifiers: Vec<UniqueLatinWordInfo> = Vec::new();
+    let mut modifiers: Vec<Modifier> = Vec::new();
     let latin_prefixes = get_latin_prefixes();
     let latin_suffixes = get_latin_suffixes();
     let mut found = false;
 
-    //TODO: add a way to tell if prefix or suffix
     // cutting length instead of replace to avoid removing letters if 1 letter prefix/suffix
     for prefix in latin_prefixes {
         if latin_word.starts_with(&prefix.orth) {
             *latin_word = latin_word[prefix.orth.len()..].to_string();
             modifiers.push({
-                UniqueLatinWordInfo {
+                Modifier {
                     orth: prefix.orth,
                     senses: prefix.senses,
                     pos: prefix.pos,
                     form: prefix.form,
-                    n: Vec::new(),
-                    info: WordInfo::new(),
+                    modifier: Some("prefix".to_string()),
                 }
             });
         }
@@ -389,13 +387,12 @@ fn reduce(latin_word: &mut String) -> (Vec<LatinTranslationInfo>, bool) {
         if latin_word.ends_with(&suffix.orth) {
             *latin_word = latin_word[..latin_word.len() - suffix.orth.len()].to_string();
             modifiers.push({
-                UniqueLatinWordInfo {
+                Modifier {
                     orth: suffix.orth,
                     senses: suffix.senses,
                     pos: suffix.pos,
                     form: suffix.form,
-                    n: Vec::new(),
-                    info: WordInfo::new(),
+                    modifier: Some("suffix".to_string()),
                 }
             });
         }
@@ -421,9 +418,9 @@ fn reduce(latin_word: &mut String) -> (Vec<LatinTranslationInfo>, bool) {
     (output, true)
 }
 
-fn split_enclitic(latin_word: &str) -> (String, Vec<UniqueLatinWordInfo>) {
+fn split_enclitic(latin_word: &str) -> (String, Vec<Modifier>) {
     // using vector to make life easier
-    let mut modifier: Vec<UniqueLatinWordInfo> = Vec::new();
+    let mut modifier: Vec<Modifier> = Vec::new();
     let latin_not_packons = get_latin_not_packons();
     let mut split_word = latin_word.to_string();
     let latin_tackons = get_latin_tackons();
@@ -441,13 +438,12 @@ fn split_enclitic(latin_word: &str) -> (String, Vec<UniqueLatinWordInfo>) {
     if tackon != Attachment::new() {
         // Est exception
         if latin_word != "est" {
-            modifier.push(UniqueLatinWordInfo {
+            modifier.push(Modifier {
                 orth: tackon.orth.clone(),
                 senses: tackon.senses,
                 pos: tackon.pos,
                 form: Form::StrForm(tackon.orth.clone()),
-                n: Vec::new(),
-                info: WordInfo::new(),
+                modifier: Some("enclitic tackon".to_string()),
             });
         }
         split_word.truncate(split_word.len() - tackon.orth.len());
@@ -455,13 +451,12 @@ fn split_enclitic(latin_word: &str) -> (String, Vec<UniqueLatinWordInfo>) {
         if latin_word.starts_with("qu") {
             for packon in latin_packons {
                 if latin_word.ends_with(&packon.orth) {
-                    modifier.push(UniqueLatinWordInfo {
+                    modifier.push(Modifier {
                         orth: packon.orth.clone(),
                         senses: packon.senses,
                         pos: packon.pos,
                         form: Form::StrForm("".to_string()),
-                        n: Vec::new(),
-                        info: WordInfo::new(),
+                        modifier: Some("enclitic packon".to_string()),
                     });
                 }
 
@@ -470,13 +465,12 @@ fn split_enclitic(latin_word: &str) -> (String, Vec<UniqueLatinWordInfo>) {
         } else {
             for not_packon in latin_not_packons {
                 if latin_word.ends_with(&not_packon.orth) {
-                    modifier.push(UniqueLatinWordInfo {
+                    modifier.push(Modifier {
                         orth: not_packon.orth.clone(),
                         senses: not_packon.senses,
                         pos: not_packon.pos,
                         form: Form::StrForm("".to_string()),
-                        n: Vec::new(),
-                        info: WordInfo::new(),
+                        modifier: Some("enclitic not packon".to_string()),
                     });
                 }
 

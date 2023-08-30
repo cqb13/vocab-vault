@@ -11,7 +11,7 @@ pub struct LatinWordInfo {
     pub info: WordInfo,
     pub n: Vec<NValue>,
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub modifiers: Option<Vec<UniqueLatinWordInfo>>,
+    pub modifiers: Option<Vec<Modifier>>,
     pub id: i32,
 }
 
@@ -46,7 +46,7 @@ impl LatinWordInfo {
         }
     }
 
-    pub fn set_modifiers(&mut self, modifiers: Vec<UniqueLatinWordInfo>) {
+    pub fn set_modifiers(&mut self, modifiers: Vec<Modifier>) {
         self.modifiers = Some(modifiers);
     }
 
@@ -226,6 +226,20 @@ pub struct Modifier {
     pub form: Form,
     pub senses: Vec<String>,
     pub orth: String,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub modifier: Option<String>,
+}
+
+impl Clone for Modifier {
+    fn clone(&self) -> Modifier {
+        Modifier {
+            pos: self.pos.clone(),
+            form: self.form.clone(),
+            senses: self.senses.clone(),
+            orth: self.orth.clone(),
+            modifier: self.modifier.clone(),
+        }
+    }
 }
 
 #[derive(Serialize, Deserialize, Clone, Debug)]
