@@ -54,7 +54,7 @@ pub fn post_process(
 fn latin_translation_output_post_processing(
     mut translations: Vec<Translation>,
     clean: bool,
-    filter_uncommon: bool,
+    mut filter_uncommon: bool,
     max: usize,
 ) -> Vec<Translation> {
     translations
@@ -65,6 +65,11 @@ fn latin_translation_output_post_processing(
 
                 if max > 0 && definitions.len() > max {
                     definitions.truncate(max);
+                }
+
+                if definitions.len() <= 1 {
+                    // prevents accidental filtering of definitions with no alternatives
+                    filter_uncommon = false;
                 }
 
                 for definition in definitions.iter_mut() {
