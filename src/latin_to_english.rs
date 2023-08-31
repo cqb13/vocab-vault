@@ -383,7 +383,7 @@ fn reduce(latin_word: &mut String) -> (Vec<LatinTranslationInfo>, bool) {
                     orth: prefix.orth,
                     senses: prefix.senses,
                     pos: prefix.pos,
-                    form: prefix.form,
+                    form: None,
                     modifier: Some("prefix".to_string()),
                 }
             });
@@ -398,7 +398,7 @@ fn reduce(latin_word: &mut String) -> (Vec<LatinTranslationInfo>, bool) {
                     orth: suffix.orth,
                     senses: suffix.senses,
                     pos: suffix.pos,
-                    form: suffix.form,
+                    form: None,
                     modifier: Some("suffix".to_string()),
                 }
             });
@@ -448,7 +448,7 @@ fn split_enclitic(latin_word: &str) -> (String, Vec<Modifier>) {
                 orth: tackon.orth.clone(),
                 senses: tackon.senses,
                 pos: tackon.pos,
-                form: Form::StrForm(tackon.orth.clone()),
+                form: None,
                 modifier: Some("enclitic tackon".to_string()),
             });
         }
@@ -461,7 +461,7 @@ fn split_enclitic(latin_word: &str) -> (String, Vec<Modifier>) {
                         orth: packon.orth.clone(),
                         senses: packon.senses,
                         pos: packon.pos,
-                        form: Form::StrForm("".to_string()),
+                        form: None,
                         modifier: Some("enclitic packon".to_string()),
                     });
                 }
@@ -475,7 +475,7 @@ fn split_enclitic(latin_word: &str) -> (String, Vec<Modifier>) {
                         orth: not_packon.orth.clone(),
                         senses: not_packon.senses,
                         pos: not_packon.pos,
-                        form: Form::StrForm("".to_string()),
+                        form: None,
                         modifier: Some("enclitic not packon".to_string()),
                     });
                 }

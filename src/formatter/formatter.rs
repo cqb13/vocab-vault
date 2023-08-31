@@ -10,7 +10,9 @@ use super::key_translator::{
     translate_mood, translate_noun, translate_number, translate_pronoun, translate_source,
     translate_tense, translate_verb, translate_voice,
 };
-use crate::data::data::{Form, Inflection, LatinWordInfo, LongForm, UniqueLatinWordInfo, WordInfo};
+use crate::data::data::{Form, Inflection, LatinWordInfo, LongForm, UniqueLatinWordInfo, WordInfo, Modifier};
+
+// TODO: add modifier formatting
 
 pub fn format_output(
     mut translation_output: Vec<Translation>,
@@ -72,6 +74,20 @@ fn format_english_word(
 fn format_latin_word_info(latin_word_info: LatinWordInfo, clean: bool) -> LatinWordInfo {
     let mut clean_latin_word_info: LatinWordInfo = latin_word_info;
 
+    let modifiers = if clean_latin_word_info.modifiers.clone().is_some() {
+        clean_latin_word_info.modifiers.clone().unwrap()
+    } else {
+        Vec::new()
+    };
+
+    let mut clean_modifiers: Vec<Modifier> = Vec::new();
+
+    for modifier in modifiers {
+        clean_modifiers.push(format_modifier(modifier));
+    }
+
+    clean_latin_word_info.modifiers = Some(clean_modifiers);
+
     clean_latin_word_info.pos =
         translate_part_of_speech(&clean_latin_word_info.pos[..]).to_string();
     clean_latin_word_info.info = format_word_info(clean_latin_word_info.info);
@@ -85,6 +101,14 @@ fn format_latin_word_info(latin_word_info: LatinWordInfo, clean: bool) -> LatinW
     ));
 
     clean_latin_word_info
+}
+
+fn format_modifier(modifier: Modifier) -> Modifier {
+    let mut clean_modifier: Modifier = modifier;
+
+    clean_modifier.pos = translate_part_of_speech(&clean_modifier.pos[..]).to_string();
+
+    clean_modifier
 }
 
 fn format_unique_latin_word_info(
@@ -127,7 +151,11 @@ fn translate_latin_word_info_form(form: String, pos: String, clean: bool) -> Lon
         return clean_form;
     }
 
-    let word_type: String = form_array[2].to_string();
+    let word_type = if form_array.len() >= 3 {
+        form_array[2].to_string()
+    } else {
+        "cqb13".to_string()
+    };
 
     if pos == "noun" {
         clean_form.gender = Some(translate_gender(&word_type[..]).to_string());

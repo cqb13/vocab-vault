@@ -227,7 +227,8 @@ impl Clone for Stem {
 #[derive(Serialize, Deserialize, Debug)]
 pub struct Modifier {
     pub pos: String,
-    pub form: Form,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub form: Option<Form>,
     pub senses: Vec<String>,
     pub orth: String,
     #[serde(skip_serializing_if = "Option::is_none")]
