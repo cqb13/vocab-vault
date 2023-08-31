@@ -23,11 +23,11 @@ pub struct PrettifiedDefinition {
     pub inflections: Vec<String>,
     pub details: String,
     pub senses: String,
+    pub modifiers: Vec<ModifierAttachment>,
 }
 
 pub struct ModifierAttachment {
     pub pos: String,
-    pub form: String,
     pub senses: String,
     pub orth: String,
     pub modifier: String,
@@ -68,6 +68,7 @@ fn create_pretty_english_definition(latin_word_info: LatinWordInfo) -> Prettifie
         inflections: vec![],
         details: "".to_string(),
         senses: "".to_string(),
+        modifiers: vec![],
     };
 
     let parts_info = latin_word_info
@@ -101,6 +102,7 @@ fn create_pretty_latin_definition(
         inflections: vec![],
         details: "".to_string(),
         senses: "".to_string(),
+        modifiers: vec![],
     };
 
     let latin_word_info = latin_translation_info.word;
@@ -131,6 +133,34 @@ fn create_pretty_latin_definition(
                 .map(ToString::to_string)
                 .collect::<Vec<String>>()
                 .join(" | ");
+
+            let modifiers = if latin_word_info.modifiers.is_some() {
+                latin_word_info.modifiers.unwrap()
+            } else {
+                vec![]
+            };
+
+            if modifiers.len() >= 1 {
+                for modifier in modifiers {
+                    let mut modifier_attachment = ModifierAttachment {
+                        pos: "".to_string(),
+                        senses: "".to_string(),
+                        orth: "".to_string(),
+                        modifier: "".to_string(),
+                    };
+
+                    modifier_attachment.pos = modifier.pos;
+                    modifier_attachment.senses = modifier.senses
+                        .iter()
+                        .map(ToString::to_string)
+                        .collect::<Vec<String>>()
+                        .join(" | ");
+                    modifier_attachment.orth = modifier.orth;
+                    modifier_attachment.modifier = modifier.modifier.unwrap_or("".to_string());
+
+                    output.modifiers.push(modifier_attachment);
+                }
+            }
 
             output.orth_info = parts_info;
             output.form_info = convert_form_to_string(latin_word_info.form);

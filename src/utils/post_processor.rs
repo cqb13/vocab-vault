@@ -200,6 +200,14 @@ fn print_pretty_output(translations: Vec<Translation>, detailed_pretty_output: b
                     println!("{}", trick[0]);
                     println!();
                 }
+
+                for modifier in &definition.modifiers {
+                    println!();
+                    println!("{}, {}", modifier.modifier, modifier.orth);
+                    println!("{}", modifier.pos);
+                    println!("{}", modifier.senses);
+                    println!();
+                }
             }
 
             println!("{}", definition.orth_info);
