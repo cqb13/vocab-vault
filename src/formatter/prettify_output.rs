@@ -33,8 +33,6 @@ pub struct ModifierAttachment {
     pub modifier: String,
 }
 
-//TODO: add modifier support for LatinWordInfo
-
 pub fn prettify_output(translation: Translation, search_word: String) -> PrettifiedOutput {
     let mut prettified_output = PrettifiedOutput::new(search_word, vec![]);
 
@@ -150,7 +148,8 @@ fn create_pretty_latin_definition(
                     };
 
                     modifier_attachment.pos = modifier.pos;
-                    modifier_attachment.senses = modifier.senses
+                    modifier_attachment.senses = modifier
+                        .senses
                         .iter()
                         .map(ToString::to_string)
                         .collect::<Vec<String>>()

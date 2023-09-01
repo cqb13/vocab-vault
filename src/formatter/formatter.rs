@@ -10,9 +10,9 @@ use super::key_translator::{
     translate_mood, translate_noun, translate_number, translate_pronoun, translate_source,
     translate_tense, translate_verb, translate_voice,
 };
-use crate::data::data::{Form, Inflection, LatinWordInfo, LongForm, UniqueLatinWordInfo, WordInfo, Modifier};
-
-// TODO: add modifier formatting
+use crate::data::data::{
+    Form, Inflection, LatinWordInfo, LongForm, Modifier, UniqueLatinWordInfo, WordInfo,
+};
 
 pub fn format_output(
     mut translation_output: Vec<Translation>,

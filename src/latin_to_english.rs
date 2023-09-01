@@ -317,7 +317,9 @@ fn lookup_stems(stems: Vec<Stem>, inflections: Vec<Inflection>) -> Vec<LatinTran
 
                 let mut new_word = Word::LatinWordInfo((*latin_word).clone());
 
-                let next_word = latin_dictionary.iter().find(|word| word.id == latin_word.id + 1);
+                let next_word = latin_dictionary
+                    .iter()
+                    .find(|word| word.id == latin_word.id + 1);
                 let next_word_senses = if let Some(next_word) = next_word {
                     next_word.senses.clone()
                 } else {
