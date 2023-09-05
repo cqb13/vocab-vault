@@ -4,17 +4,13 @@ pub fn switch_first_i_or_j(word: &str) -> (String, Option<Vec<String>>) {
     if let Some(first_char) = chars.first_mut() {
         if *first_char == 'i' {
             *first_char = 'j';
-            explanation = Some(vec![String::from(
-                "An initial 'i' may be rendered by 'j'",
-            )]);
+            explanation = Some(vec![String::from("An initial 'i' may be rendered by 'j'")]);
         } else if *first_char == 'j' {
             *first_char = 'i';
-            explanation = Some(vec![String::from(
-                "An initial 'j' may be rendered by 'i'",
-            )]);
+            explanation = Some(vec![String::from("An initial 'j' may be rendered by 'i'")]);
         }
     }
-    
+
     (chars.into_iter().collect(), explanation)
 }
 
@@ -66,7 +62,7 @@ pub fn flip_flop(str_to_replace: &str, replacement_str: &str, word: &str) -> (St
             return (new_word, explanation);
         }
     }
-    
+
     (word.to_string(), explanation)
 }
 

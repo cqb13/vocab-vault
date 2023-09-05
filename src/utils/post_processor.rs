@@ -225,7 +225,7 @@ fn print_pretty_output(translations: Vec<Translation>, detailed_pretty_output: b
             println!("{}", definition.senses);
             println!();
         }
-        // check if it is the last output entry
+
         if output != pretty_output.last().unwrap() {
             println!("---------------------------------");
         }
