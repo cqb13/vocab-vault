@@ -202,7 +202,6 @@ fn print_pretty_output(translations: Vec<Translation>, detailed_pretty_output: b
                 }
 
                 for modifier in &definition.modifiers {
-                    println!();
                     println!("{}, {}", modifier.modifier, modifier.orth);
                     println!("{}", modifier.pos);
                     println!("{}", modifier.senses);
