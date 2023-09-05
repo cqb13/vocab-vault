@@ -16,6 +16,12 @@ impl PrettifiedOutput {
     }
 }
 
+impl PartialEq for PrettifiedOutput {
+    fn eq(&self, other: &Self) -> bool {
+        self.searched_word == other.searched_word && self.definitions == other.definitions
+    }
+}
+
 pub struct PrettifiedDefinition {
     pub tricks: Option<Vec<String>>,
     pub orth_info: String,
@@ -26,11 +32,32 @@ pub struct PrettifiedDefinition {
     pub modifiers: Vec<ModifierAttachment>,
 }
 
+impl PartialEq for PrettifiedDefinition {
+    fn eq(&self, other: &Self) -> bool {
+        self.tricks == other.tricks
+            && self.orth_info == other.orth_info
+            && self.form_info == other.form_info
+            && self.inflections == other.inflections
+            && self.details == other.details
+            && self.senses == other.senses
+            && self.modifiers == other.modifiers
+    }
+}
+
 pub struct ModifierAttachment {
     pub pos: String,
     pub senses: String,
     pub orth: String,
     pub modifier: String,
+}
+
+impl PartialEq for ModifierAttachment {
+    fn eq(&self, other: &Self) -> bool {
+        self.pos == other.pos
+            && self.senses == other.senses
+            && self.orth == other.orth
+            && self.modifier == other.modifier
+    }
 }
 
 pub fn prettify_output(translation: Translation, search_word: String) -> PrettifiedOutput {
