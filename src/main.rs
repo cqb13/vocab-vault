@@ -21,6 +21,7 @@ pub mod formatter {
     pub mod formatter;
     pub mod key_translator;
     pub mod prettify_output;
+    pub mod type_translator;
 }
 
 pub mod tricks {

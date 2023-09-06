@@ -2,6 +2,7 @@
 use std::vec;
 
 use crate::data::data::NValue;
+use crate::formatter::type_translator::translate_number_types;
 
 pub enum Comparison {
     POS,
@@ -550,18 +551,4 @@ fn set_principle_parts(
     }
 
     principle_parts
-}
-
-fn translate_number_types(number_types: Vec<NValue>) -> (i8, i8) {
-    let num_type_1 = match &number_types.get(0) {
-        Some(NValue::Integer(num)) => *num,
-        _ => 0,
-    };
-
-    let num_type_2 = match &number_types.get(1) {
-        Some(NValue::Integer(num)) => *num,
-        _ => 0,
-    };
-
-    (num_type_1, num_type_2)
 }
