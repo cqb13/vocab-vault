@@ -11,6 +11,8 @@ use crate::{Language, Translation, TranslationType};
 
 use super::sorter::sort_output;
 
+//TODO: convert the nums to their meaning
+
 pub fn post_process(
     translations: Vec<Translation>,
     language: Language,
@@ -210,6 +212,7 @@ fn print_pretty_output(translations: Vec<Translation>, detailed_pretty_output: b
             }
 
             println!("{}", definition.orth_info);
+            println!("{}", definition.pos);
             println!("{}", definition.form_info);
 
             if !definition.inflections.is_empty() {

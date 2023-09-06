@@ -24,6 +24,7 @@ impl PartialEq for PrettifiedOutput {
 
 pub struct PrettifiedDefinition {
     pub tricks: Option<Vec<String>>,
+    pub pos: String,
     pub orth_info: String,
     pub form_info: String,
     pub inflections: Vec<String>,
@@ -35,6 +36,7 @@ pub struct PrettifiedDefinition {
 impl PartialEq for PrettifiedDefinition {
     fn eq(&self, other: &Self) -> bool {
         self.tricks == other.tricks
+            && self.pos == other.pos
             && self.orth_info == other.orth_info
             && self.form_info == other.form_info
             && self.inflections == other.inflections
@@ -88,6 +90,7 @@ pub fn prettify_output(translation: Translation, search_word: String) -> Prettif
 fn create_pretty_english_definition(latin_word_info: LatinWordInfo) -> PrettifiedDefinition {
     let mut output = PrettifiedDefinition {
         tricks: None,
+        pos: "".to_string(),
         orth_info: "".to_string(),
         form_info: "".to_string(),
         inflections: vec![],
@@ -109,6 +112,7 @@ fn create_pretty_english_definition(latin_word_info: LatinWordInfo) -> Prettifie
         .collect::<Vec<String>>()
         .join(" | ");
 
+    output.pos = latin_word_info.pos;
     output.orth_info = parts_info;
     output.form_info = convert_form_to_string(latin_word_info.form);
     output.details = WordInfo::info_to_string(latin_word_info.info);
@@ -122,6 +126,7 @@ fn create_pretty_latin_definition(
 ) -> PrettifiedDefinition {
     let mut output = PrettifiedDefinition {
         tricks: None,
+        pos: "".to_string(),
         orth_info: "".to_string(),
         form_info: "".to_string(),
         inflections: vec![],
@@ -188,12 +193,14 @@ fn create_pretty_latin_definition(
                 }
             }
 
+            output.pos = latin_word_info.pos;
             output.orth_info = parts_info;
             output.form_info = convert_form_to_string(latin_word_info.form);
             output.details = WordInfo::info_to_string(latin_word_info.info);
             output.senses = senses_info;
         }
         Word::UniqueLatinWordInfo(unique_latin_word_info) => {
+            output.pos = unique_latin_word_info.pos;
             output.orth_info = unique_latin_word_info.orth;
             output.form_info = convert_form_to_string(unique_latin_word_info.form);
             output.details = WordInfo::info_to_string(unique_latin_word_info.info);
