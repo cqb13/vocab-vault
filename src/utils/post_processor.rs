@@ -11,8 +11,6 @@ use crate::{Language, Translation, TranslationType};
 
 use super::sorter::sort_output;
 
-//TODO: convert the nums to their meaning
-
 pub fn post_process(
     translations: Vec<Translation>,
     language: Language,

@@ -1,6 +1,6 @@
 use regex::Regex;
 
-use crate::data::data::{Stem, NValue};
+use crate::data::data::{NValue, Stem};
 use crate::english_to_latin::EnglishTranslationInfo;
 use crate::formatter::key_translator::translate_part_of_speech;
 use crate::{latin_to_english::Word, Language, Translation, TranslationType};
@@ -135,7 +135,12 @@ fn format_unique_latin_word_info(
     clean_unique_latin_word_info
 }
 
-fn translate_latin_word_info_form(form: String, number_types: Vec<NValue>, pos: String, clean: bool) -> LongForm {
+fn translate_latin_word_info_form(
+    form: String,
+    number_types: Vec<NValue>,
+    pos: String,
+    clean: bool,
+) -> LongForm {
     let form_array = form.split_whitespace().collect::<Vec<&str>>();
     let mut clean_form: LongForm = LongForm::new();
 
