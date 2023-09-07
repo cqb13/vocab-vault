@@ -4,9 +4,9 @@ pub fn translate_type(number_types: Vec<NValue>, pos: String) -> String {
     let (num_type_1, _num_type_2) = translate_number_types(number_types);
 
     let type_name = match pos.as_str() {
-        "N" => translate_noun_type(num_type_1),
-        "V" => translate_verb_type(num_type_1),
-        "ADJ" => translate_adjective_type(num_type_1),
+        "noun" => translate_noun_type(num_type_1),
+        "verb" => translate_verb_type(num_type_1),
+        "adjective" => translate_adjective_type(num_type_1),
         _ => "unknown".to_string(),
     };
 

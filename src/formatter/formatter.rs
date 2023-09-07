@@ -1,6 +1,6 @@
 use regex::Regex;
 
-use crate::data::data::Stem;
+use crate::data::data::{Stem, NValue};
 use crate::english_to_latin::EnglishTranslationInfo;
 use crate::formatter::key_translator::translate_part_of_speech;
 use crate::{latin_to_english::Word, Language, Translation, TranslationType};
@@ -13,6 +13,7 @@ use super::key_translator::{
 use crate::data::data::{
     Form, Inflection, LatinWordInfo, LongForm, Modifier, UniqueLatinWordInfo, WordInfo,
 };
+use crate::formatter::type_translator::translate_type;
 
 pub fn format_output(
     mut translation_output: Vec<Translation>,
@@ -96,6 +97,7 @@ fn format_latin_word_info(latin_word_info: LatinWordInfo, clean: bool) -> LatinW
             Form::LongForm(_form) => "".to_string(),
             Form::StrForm(form) => form,
         },
+        clean_latin_word_info.n.clone(),
         clean_latin_word_info.pos.clone(),
         clean,
     ));
@@ -125,6 +127,7 @@ fn format_unique_latin_word_info(
             Form::LongForm(_form) => "".to_string(),
             Form::StrForm(form) => form,
         },
+        clean_unique_latin_word_info.n.clone(),
         clean_unique_latin_word_info.pos.clone(),
         clean,
     ));
@@ -132,7 +135,7 @@ fn format_unique_latin_word_info(
     clean_unique_latin_word_info
 }
 
-fn translate_latin_word_info_form(form: String, pos: String, clean: bool) -> LongForm {
+fn translate_latin_word_info_form(form: String, number_types: Vec<NValue>, pos: String, clean: bool) -> LongForm {
     let form_array = form.split_whitespace().collect::<Vec<&str>>();
     let mut clean_form: LongForm = LongForm::new();
 
@@ -160,10 +163,14 @@ fn translate_latin_word_info_form(form: String, pos: String, clean: bool) -> Lon
     if pos == "noun" {
         clean_form.gender = Some(translate_gender(&word_type[..]).to_string());
         clean_form.kind = Some(translate_noun(&form_array[3]).to_string());
+        clean_form.declension = Some(translate_type(number_types, pos))
     } else if pos == "verb" || pos == "participle" {
         clean_form.verb = Some(translate_verb(&word_type[..]).to_string());
+        clean_form.kind = Some(translate_type(number_types, pos))
     } else if pos == "pronoun" || pos == "packon" {
         clean_form.voice = Some(translate_pronoun(&word_type[..]).to_string());
+    } else if pos == "adjective" {
+        clean_form.declension = Some(translate_type(number_types, pos))
     }
 
     if !clean {
@@ -194,6 +201,7 @@ fn format_latin_stem(latin_stem: Stem, clean: bool) -> Stem {
             Form::LongForm(_form) => "".to_string(),
             Form::StrForm(form) => form,
         },
+        clean_latin_stem.n.clone(),
         clean_latin_stem.pos.clone(),
         clean,
     ));
