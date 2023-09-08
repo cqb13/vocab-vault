@@ -8,7 +8,7 @@ use crate::data::data::{
 };
 
 use crate::tricks::tricks::{evaluate_roman_numeral, is_roman_number, try_tricks};
-use crate::tricks::word_mods::switch_first_i_or_j;
+use crate::tricks::word_mods::{switch_first_i_or_j, try_syncopes};
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct LatinTranslationInfo {
@@ -66,7 +66,16 @@ pub fn translate_to_english(latin_word: String, tricks: bool) -> Vec<LatinTransl
     let mut output = parse(&latin_word, false);
 
     if output.len() == 0 && tricks {
-        let (modified_latin_word, trick_explanations) = try_tricks(latin_word.clone());
+        let ( mut modified_latin_word, mut trick_explanations) = try_tricks(latin_word.clone());
+        // !!!: Test this
+        let (syncopated_word, trick_explanation) = try_syncopes(modified_latin_word.clone());
+        if syncopated_word != modified_latin_word {
+            modified_latin_word = syncopated_word;
+            let mut trick_explanation_list = trick_explanations.unwrap_or(Vec::new());
+            trick_explanation_list.push(trick_explanation);
+            trick_explanations = Some(trick_explanation_list);
+        }
+
         output = parse(&modified_latin_word, false);
         if output.len() > 0 {
             for entry in &mut output {
