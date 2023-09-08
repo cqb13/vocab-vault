@@ -24,12 +24,9 @@ jobs:
       run: cargo build --release
     - name: Get binary
       run: cp target/release/vocab_vault ${{ github.workspace }}/vocab_vault.exe
-    - name: Publish Release
-      uses: softprops/action-gh-release@v1
+    - name: Upload binary
+      uses: actions/upload-artifact@v2
       with:
-        files: ${{ github.workspace }}/target/release/vocab_vault.exe
-        tag_name: "v1.0.0" 
-        title: "Release v1.0.0"  
-        body: "Release v1.0.0"  
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        name: vocab_vault
+        path: ${{ github.workspace }}/vocab_vault.exe
+        
