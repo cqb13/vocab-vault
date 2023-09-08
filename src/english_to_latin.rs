@@ -25,7 +25,7 @@ pub fn translate_to_latin(
 
     let english_words = get_english_words();
     for word in english_words {
-        if word.orth == english_word.to_lowercase() {
+        if word.orth.to_lowercase() == english_word.to_lowercase() {
             let mut english_word_info = EnglishTranslationInfo {
                 word: word.clone(),
                 translation: LatinWordInfo::new(),
