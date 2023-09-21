@@ -66,6 +66,26 @@ pub fn flip_flop(str_to_replace: &str, replacement_str: &str, word: &str) -> (St
     (word.to_string(), explanation)
 }
 
+// replace str_to_replace by replacement_str anywhere in the word, then tests for validity
+pub fn internal(str_to_replace: &str, replacement_str: &str, word: &str) -> (String, String) {
+    let explanation = String::from("");
+
+    if word.contains(str_to_replace) {
+        let new_word = word.replace(str_to_replace, replacement_str);
+
+        if new_word.len() >= replacement_str.len() + 2 {
+            let explanation = format!(
+                "An internal '{}' may be rendered by '{}'",
+                str_to_replace, replacement_str
+            );
+
+            return (new_word, explanation);
+        }
+    }
+
+    (word.to_string(), explanation)
+}
+
 pub fn slur(str_to_slur: &str, word: &str) -> String {
     //let explanation = format!("{} was slurped", str_to_slur);
 

@@ -2,7 +2,7 @@ use std::char;
 
 use crate::tricks::trick_list::Trick;
 use crate::tricks::trick_list::{get_any_tricks, match_slur_trick_list, match_tricks_list};
-use crate::tricks::word_mods::{flip, flip_flop};
+use crate::tricks::word_mods::{flip, flip_flop, internal};
 
 #[derive(Debug, Clone)]
 pub enum Operation {
@@ -90,8 +90,6 @@ pub fn try_tricks(word: String) -> (String, Option<Vec<String>>) {
             iterate_over_tricks(any_tricks.clone(), new_word.to_string());
         new_word = updated_new_word;
 
-        //TODO: change the way tricks are implemented. they should be called in the parsing process after some info about the word is known. so medieval tricks can be called on medieval words.
-
         applied_tricks
             .as_mut()
             .unwrap()
@@ -124,7 +122,7 @@ fn iterate_over_tricks(trick_list: Vec<Trick>, mut word: String) -> (String, Vec
         let (new_word, new_explanation) = match trick.operation {
             Operation::FlipFlop => flip_flop(trick.str_1, trick.str_2, &word),
             Operation::Flip => flip(trick.str_1, trick.str_2, &word),
-            Operation::Internal => (word.clone(), String::new()), //internal(trick.internal1, trick.internal2),
+            Operation::Internal => internal(trick.str_1, trick.str_2, &word),
             Operation::Slur => (word.clone(), String::new()), // Assuming Slur causes an exception
         };
 
