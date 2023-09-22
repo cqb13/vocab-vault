@@ -8,7 +8,7 @@ use crate::data::data::{
 };
 
 use crate::tricks::tricks::{evaluate_roman_numeral, is_roman_number, try_tricks};
-use crate::tricks::word_mods::{switch_first_i_or_j, try_syncopes};
+use crate::tricks::word_mods::try_syncopes;
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct LatinTranslationInfo {
@@ -87,22 +87,6 @@ pub fn translate_to_english(latin_word: String, tricks: bool) -> Vec<LatinTransl
     }
 
     // most words should be found by now
-
-    //instead of updating actual word, a copy is created that is switched, to not break splitEnclitic parsing.
-    // Some words that start with i can also start with j
-    // ex: iecit -> jecit
-    // checking if return is word, because if word does not start with I or J, original word is returned, making the parsing not needed.
-    if output.len() == 0 {
-        let (switched_word, trick_explanation) = switch_first_i_or_j(&latin_word);
-        if switched_word != latin_word {
-            output = parse(&switched_word, false);
-            if output.len() > 0 {
-                for entry in &mut output {
-                    entry.tricks = trick_explanation.clone();
-                }
-            }
-        }
-    }
 
     // If nothing is found, try removing enclitics and try again
     // ex: clamaverunt -> clamare

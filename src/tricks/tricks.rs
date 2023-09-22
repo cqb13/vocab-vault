@@ -68,7 +68,8 @@ pub fn evaluate_roman_numeral(roman_numeral: &str) -> u32 {
 
 pub fn try_tricks(word: String) -> (String, Option<Vec<String>>) {
     let trick_chars = [
-        'a', 'd', 'e', 'f', 'g', 'h', 'k', 'l', 'm', 'n', 'o', 'p', 's', 't', 'u', 'y', 'z',
+        'a', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 's', 't', 'u', 'y',
+        'z',
     ];
     let slur_trick_chars = ['a', 'c', 'i', 'n', 'o', 'q', 's'];
     let mut applied_tricks: Option<Vec<String>> = None;
@@ -83,10 +84,7 @@ pub fn try_tricks(word: String) -> (String, Option<Vec<String>>) {
         new_word = updated_new_word;
         explanations.extend(updated_explanations);
 
-        applied_tricks
-            .as_mut()
-            .unwrap()
-            .extend(explanations.clone());
+        applied_tricks = Some(explanations.clone());
     }
 
     let any_tricks = get_any_tricks();

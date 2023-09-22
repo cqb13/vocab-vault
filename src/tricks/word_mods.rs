@@ -1,19 +1,3 @@
-pub fn switch_first_i_or_j(word: &str) -> (String, Option<Vec<String>>) {
-    let mut chars: Vec<char> = word.chars().collect();
-    let mut explanation: Option<Vec<String>> = None;
-    if let Some(first_char) = chars.first_mut() {
-        if *first_char == 'i' {
-            *first_char = 'j';
-            explanation = Some(vec![String::from("An initial 'i' may be rendered by 'j'")]);
-        } else if *first_char == 'j' {
-            *first_char = 'i';
-            explanation = Some(vec![String::from("An initial 'j' may be rendered by 'i'")]);
-        }
-    }
-
-    (chars.into_iter().collect(), explanation)
-}
-
 pub fn flip(str_to_replace: &str, replacement_str: &str, word: &str) -> (String, String) {
     let mut new_word = String::from(word);
     let mut explanation = String::from("");
@@ -29,7 +13,7 @@ pub fn flip(str_to_replace: &str, replacement_str: &str, word: &str) -> (String,
 
             explanation = if !canned_explanation.is_empty() {
                 format!(
-                    "An initial '{}'{}{}'",
+                    "An initial '{}{}{}'",
                     str_to_replace, canned_explanation, replacement_str
                 )
             } else {

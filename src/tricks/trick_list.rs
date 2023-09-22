@@ -26,6 +26,8 @@ pub fn match_tricks_list(first_char_of_word: char) -> Vec<Trick> {
         'f' => return get_f_tricks(),
         'g' => return get_g_tricks(),
         'h' => return get_h_tricks(),
+        'i' => return get_i_tricks(),
+        'j' => return get_j_tricks(),
         'k' => return get_k_tricks(),
         'l' => return get_l_tricks(),
         'm' => return get_m_tricks(),
@@ -267,6 +269,26 @@ fn get_h_tricks() -> Vec<Trick> {
     ];
 
     h_trick_list
+}
+
+fn get_i_tricks() -> Vec<Trick> {
+    let i_trick_list = vec![Trick {
+        operation: Operation::Flip,
+        str_1: "i",
+        str_2: "j",
+    }];
+
+    i_trick_list
+}
+
+fn get_j_tricks() -> Vec<Trick> {
+    let j_trick_list = vec![Trick {
+        operation: Operation::Flip,
+        str_1: "j",
+        str_2: "i",
+    }];
+
+    j_trick_list
 }
 
 fn get_k_tricks() -> Vec<Trick> {
