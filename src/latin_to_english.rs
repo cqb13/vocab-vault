@@ -64,9 +64,8 @@ where
 
 pub fn translate_to_english(latin_word: String, tricks: bool) -> Vec<LatinTranslationInfo> {
     let mut output = parse(&latin_word, false);
-
-    if output.len() == 0 && tricks {
-        let ( mut modified_latin_word, mut trick_explanations) = try_tricks(latin_word.clone());
+    if tricks {
+        let (mut modified_latin_word, mut trick_explanations) = try_tricks(latin_word.clone());
         // !!!: Test this
         let (syncopated_word, trick_explanation) = try_syncopes(modified_latin_word.clone());
         if syncopated_word != modified_latin_word {
@@ -76,12 +75,15 @@ pub fn translate_to_english(latin_word: String, tricks: bool) -> Vec<LatinTransl
             trick_explanations = Some(trick_explanation_list);
         }
 
-        output = parse(&modified_latin_word, false);
-        if output.len() > 0 {
-            for entry in &mut output {
+        let mut output_from_trick = parse(&modified_latin_word, false);
+
+        if output_from_trick.len() > 0 {
+            for entry in &mut output_from_trick {
                 entry.tricks = trick_explanations.clone();
             }
         }
+
+        output.append(&mut output_from_trick);
     }
 
     // most words should be found by now
@@ -312,7 +314,7 @@ fn lookup_stems(stems: Vec<Stem>, inflections: Vec<Inflection>) -> Vec<LatinTran
                 }
             } else {
                 let new_inflections: Vec<Inflection>;
-                if latin_word.pos == "V" {
+                if latin_word.pos == "V" || latin_word.pos == "VPAR" {
                     let fourth_part = latin_word.parts[3].as_str();
                     if fourth_part != stem.orth {
                         let inflections_clone = inflections.clone();

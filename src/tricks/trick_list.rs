@@ -653,11 +653,6 @@ pub fn get_any_tricks() -> Vec<Trick> {
         },
         Trick {
             operation: Operation::Internal,
-            str_1: "vol",
-            str_2: "vul",
-        },
-        Trick {
-            operation: Operation::Internal,
             str_1: "uol",
             str_2: "vul",
         },
