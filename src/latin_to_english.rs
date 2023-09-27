@@ -66,6 +66,7 @@ pub fn translate_to_english(latin_word: String, tricks: bool) -> Vec<LatinTransl
     let mut output = parse(&latin_word, false);
     if tricks {
         let (mut modified_latin_word, mut trick_explanations) = try_tricks(latin_word.clone());
+
         // !!!: Test this
         let (syncopated_word, trick_explanation) = try_syncopes(modified_latin_word.clone());
         if syncopated_word != modified_latin_word {
@@ -77,13 +78,15 @@ pub fn translate_to_english(latin_word: String, tricks: bool) -> Vec<LatinTransl
 
         let mut output_from_trick = parse(&modified_latin_word, false);
 
-        if output_from_trick.len() > 0 {
-            for entry in &mut output_from_trick {
-                entry.tricks = trick_explanations.clone();
+        if modified_latin_word != latin_word {
+            if output_from_trick.len() > 0 {
+                for entry in &mut output_from_trick {
+                    entry.tricks = trick_explanations.clone();
+                }
             }
-        }
 
-        output.append(&mut output_from_trick);
+            output.append(&mut output_from_trick);
+        }
     }
 
     // most words should be found by now
