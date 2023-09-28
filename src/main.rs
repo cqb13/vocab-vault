@@ -1,4 +1,4 @@
-use clap::{App, Arg};
+use clap::{Arg, Command};
 use english_to_latin::EnglishTranslationInfo;
 use latin_to_english::LatinTranslationInfo;
 use serde::{Deserialize, Serialize, Serializer};
@@ -94,81 +94,71 @@ where
 
 fn main() {
     let global_args = vec![
-        Arg::with_name("max_entries")
+        Arg::new("max_entries")
             .short('m')
             .long("max-entries")
             .value_name("MAX_ENTRIES")
             .help("The maximum number of entries")
-            .takes_value(true)
             .default_value("6"),
-        Arg::with_name("formatted")
+        Arg::new("formatted")
             .short('f')
             .long("formatted")
-            .help("Determines if the output should be formatted")
-            .takes_value(false),
-        Arg::with_name("clean")
+            .help("Determines if the output should be formatted"),
+        Arg::new("clean")
             .short('c')
             .long("clean")
             .help("Removes objects with vague values, such as 'unknown'.")
-            .takes_value(false)
             .requires("formatted"),
-        Arg::with_name("sort")
+        Arg::new("sort")
             .short('s')
             .long("sort")
-            .help("Will sort the output by frequency.")
-            .takes_value(false),
-        Arg::with_name("pretty")
+            .help("Will sort the output by frequency."),
+        Arg::new("pretty")
             .short('p')
             .long("pretty")
-            .help("Will show a pretty version of the output.")
-            .takes_value(false),
-        Arg::with_name("detailed")
+            .help("Will show a pretty version of the output."),
+        Arg::new("detailed")
             .short('d')
             .long("detailed")
             .help("Will add more information to prettified output.")
-            .takes_value(false)
             .requires("pretty"),
     ];
 
-    let matches = App::new("Vocab Vault")
-        .version("0.1.0")
-        .author("cqb13")
-        .about("A CLI for interacting with the Whitaker's Words Dictionary")
-        .subcommand(
-            App::new("transEng")
-                .about("Translate English to Latin")
-                .arg(
-                    Arg::with_name("text")
-                        .help("The English text to translate to Latin")
-                        .required(true),
-                )
-                .args(&global_args),
-        )
-        .subcommand(
-            App::new("transLat")
-                .about("Translate Latin to English")
-                .arg(
-                    Arg::with_name("text")
-                        .help("The Latin text to translate to English")
-                        .required(true),
-                )
-                .arg(
-                    Arg::with_name("tricks")
-                        .short('t')
-                        .long("tricks")
-                        .help("Will attempt to use various tricks on words to get a better result.")
-                        .takes_value(false),
-                )
-                .arg(
-                    Arg::with_name("filter uncommon")
-                        .short('u')
-                        .long("uncommon")
-                        .help("Will remove uncommon words.")
-                        .takes_value(false),
-                )
-                .args(&global_args),
-        )
-        .get_matches();
+    let matches =
+        Command::new("Vocab Vault")
+            .version("0.1.0")
+            .author("cqb13")
+            .about("A CLI for interacting with the Whitaker's Words Dictionary")
+            .subcommand(
+                Command::new("transEng")
+                    .about("Translate English to Latin")
+                    .arg(
+                        Arg::new("text")
+                            .help("The English text to translate to Latin")
+                            .required(true),
+                    )
+                    .args(&global_args),
+            )
+            .subcommand(
+                Command::new("transLat")
+                    .about("Translate Latin to English")
+                    .arg(
+                        Arg::new("text")
+                            .help("The Latin text to translate to English")
+                            .required(true),
+                    )
+                    .arg(Arg::new("tricks").short('t').long("tricks").help(
+                        "Will attempt to use various tricks on words to get a better result.",
+                    ))
+                    .arg(
+                        Arg::new("filter uncommon")
+                            .short('u')
+                            .long("uncommon")
+                            .help("Will remove uncommon words."),
+                    )
+                    .args(&global_args),
+            )
+            .get_matches();
 
     match matches.subcommand() {
         Some(("transEng", trans_eng_matches)) => {
