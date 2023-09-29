@@ -1,4 +1,4 @@
-use std::char;
+use std::{char, vec};
 
 use crate::tricks::trick_list::Trick;
 use crate::tricks::trick_list::{get_any_tricks, match_slur_trick_list, match_tricks_list};
@@ -51,6 +51,21 @@ pub fn translate_roman_digit_to_number(c: char) -> u32 {
     }
 }
 
+pub fn translate_number_to_roman_numeral(number: usize) -> String {
+    let roman_numeral = match number {
+        1 => "I",
+        5 => "V",
+        10 => "X",
+        50 => "L",
+        100 => "C",
+        500 => "D",
+        1000 => "M",
+        _ => panic!("Invalid number: {}", number),
+    };
+
+    roman_numeral.to_string()
+}
+
 pub fn evaluate_roman_numeral(roman_numeral: &str) -> u32 {
     let mut result = 0;
     let mut last_digit = 0;
@@ -64,6 +79,84 @@ pub fn evaluate_roman_numeral(roman_numeral: &str) -> u32 {
         last_digit = digit;
     }
     result
+}
+
+fn simplify_full_numeral_to_proper_numeral(numeral: String) -> String {
+    let mut new_numeral = String::new();
+
+    let numeral_counts = [
+        numeral.matches("M").count(),
+        numeral.matches("C").count(),
+        numeral.matches("X").count(),
+        numeral.matches("I").count(),
+    ];
+
+    let numerals = ["M", "C", "X", "I"];
+    let fives = ["", "D", "L", "V"];
+    let tens = ["", "M", "C", "X"];
+
+    for i in 0..4 {
+        let count = numeral_counts[i];
+        let numeral = numerals[i];
+        let five = fives[i];
+        let ten = tens[i];
+
+        match count {
+            1..=3 => new_numeral.push_str(&numeral.repeat(count)),
+            4 => new_numeral.push_str(&format!("{}{}", numeral, five)),
+            5 => new_numeral.push_str(five),
+            6..=8 => new_numeral.push_str(&format!("{}{}", five, numeral.repeat(count - 5))),
+            9 => new_numeral.push_str(&format!("{}{}", numeral, ten)),
+            _ => (),
+        }
+    }
+
+    new_numeral
+}
+fn evaluate_full_numeral_from_number(number: &str) -> String {
+    let array_of_nums = split_number_by_places(number);
+    let mut roman_numeral = String::new();
+
+    for num in array_of_nums.iter() {
+        let first_digit = num.to_string().chars().next().unwrap();
+        let places = num.to_string().len();
+        let iterations = first_digit.to_string().parse::<usize>().unwrap();
+        let mut base = 1;
+
+        let basic_number = 10u32.pow(places as u32);
+        let basic_number = basic_number / 10;
+
+        while base <= iterations {
+            roman_numeral.push_str(
+                translate_number_to_roman_numeral(
+                    basic_number.to_string().parse::<usize>().unwrap(),
+                )
+                .as_str(),
+            );
+            base += 1;
+        }
+    }
+
+    roman_numeral
+}
+
+fn split_number_by_places(number: &str) -> Vec<u32> {
+    let split_number = number.split("").collect::<Vec<&str>>();
+    // removes the empty string at the beginning and end
+    let split_number = &split_number[1..split_number.len() - 1];
+
+    let mut array_of_true_digits = Vec::new();
+
+    for (index, digit) in split_number.iter().enumerate() {
+        let digit = digit.parse::<u32>().unwrap();
+        let place = split_number.len() - index - 1;
+        let place = 10u32.pow(place as u32);
+
+        let true_digit = digit * place;
+        array_of_true_digits.push(true_digit);
+    }
+
+    array_of_true_digits
 }
 
 pub fn try_tricks(word: String) -> (String, Option<Vec<String>>) {
