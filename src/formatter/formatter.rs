@@ -302,12 +302,10 @@ pub fn sanitize_word(word: &str) -> String {
     // allows for translation of numbers to roman numerals
     if contains_number(word.clone()) && !is_all_numbers(word.clone()) {
         word = remove_all_numbers(word.clone());
-        println!("here");
     }
 
     if contains_non_alphanumeric(word.clone()) {
         word = remove_non_alphanumeric(word.clone());
-        println!("heres")
     }
 
     word
