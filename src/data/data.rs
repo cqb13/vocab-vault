@@ -282,6 +282,21 @@ pub struct EnglishWordInfo {
     pub semi: i16,
 }
 
+impl EnglishWordInfo {
+    pub fn new() -> EnglishWordInfo {
+        EnglishWordInfo {
+            orth: "".to_string(),
+            wid: 0,
+            pos: "".to_string(),
+            frequency_type: "".to_string(),
+            true_frequency: None,
+            frequency: 0,
+            compound: 0,
+            semi: 0,
+        }
+    }
+}
+
 impl Clone for EnglishWordInfo {
     fn clone(&self) -> EnglishWordInfo {
         EnglishWordInfo {

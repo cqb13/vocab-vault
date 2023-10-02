@@ -12,6 +12,10 @@ pub enum Operation {
     Slur,
 }
 
+pub fn is_all_numbers(word: &str) -> bool {
+    word.chars().all(char::is_numeric)
+}
+
 pub fn is_vowel(c: char) -> bool {
     match c {
         'a' | 'e' | 'i' | 'o' | 'u' => true,
@@ -81,6 +85,12 @@ pub fn evaluate_roman_numeral(roman_numeral: &str) -> u32 {
     result
 }
 
+pub fn convert_number_to_roman_numeral(number: &str) -> String {
+    let full_numeral = evaluate_full_numeral_from_number(number);
+    let proper_numeral = simplify_full_numeral_to_proper_numeral(full_numeral);
+    proper_numeral
+}
+
 fn simplify_full_numeral_to_proper_numeral(numeral: String) -> String {
     let mut new_numeral = String::new();
 
@@ -113,6 +123,7 @@ fn simplify_full_numeral_to_proper_numeral(numeral: String) -> String {
 
     new_numeral
 }
+
 fn evaluate_full_numeral_from_number(number: &str) -> String {
     let array_of_nums = split_number_by_places(number);
     let mut roman_numeral = String::new();

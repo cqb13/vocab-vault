@@ -116,6 +116,9 @@ fn english_translation_output_post_processing(
         if let TranslationType::English(definitions) = &mut translation.definitions {
             for definition in definitions.iter_mut() {
                 let latin_word_info = &mut definition.translation;
+                if latin_word_info.parts.is_empty() {
+                    continue;
+                }
                 let word_with_parts = add_principle_parts(latin_word_info.clone());
                 definition.translation = word_with_parts;
             }

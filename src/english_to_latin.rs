@@ -1,4 +1,7 @@
-use crate::data::data::{get_english_words, get_latin_dictionary, EnglishWordInfo, LatinWordInfo};
+use crate::data::data::{
+    get_english_words, get_latin_dictionary, EnglishWordInfo, Form, LatinWordInfo, WordInfo,
+};
+use crate::tricks::tricks::{convert_number_to_roman_numeral, is_all_numbers};
 use serde::{Deserialize, Serialize};
 
 #[derive(Serialize, Deserialize, Debug)]
@@ -45,12 +48,44 @@ pub fn translate_to_latin(
 
     output = remove_duplicates(output);
 
-    // other words are probably rare/irrelevant or wrong
+    // other words are probably rare/irrelevant or wrong (default 6)
     if output.len() > max {
         output.truncate(max);
     }
 
     find_definition(&mut output);
+
+    if is_all_numbers(english_word) {
+        let roman_numeral = convert_number_to_roman_numeral(english_word);
+        let mut english_word_info = EnglishTranslationInfo {
+            word: EnglishWordInfo::new(),
+            translation: LatinWordInfo::new(),
+        };
+
+        english_word_info.word.orth = english_word.to_string();
+        english_word_info.word.pos = "NUM".to_string();
+        english_word_info.word.frequency_type = "C".to_string();
+        english_word_info.word.true_frequency = Some(0);
+        english_word_info.word.frequency = 0;
+        english_word_info.word.compound = 0;
+        english_word_info.word.semi = 0;
+        english_word_info.translation.orth = roman_numeral.clone();
+        english_word_info.translation.senses = vec![format!(
+            "{}, Roman numeral for {}",
+            roman_numeral, english_word
+        )];
+        english_word_info.translation.info = WordInfo::new_set(
+            "X".to_string(),
+            "T".to_string(),
+            "I".to_string(),
+            "C".to_string(),
+            "X".to_string(),
+        );
+        english_word_info.translation.pos = "NUM".to_string();
+        english_word_info.translation.form = Form::StrForm("NUM".to_string());
+
+        output.push(english_word_info);
+    }
 
     output
 }

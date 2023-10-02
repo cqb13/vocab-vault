@@ -8,7 +8,7 @@ use crate::{latin_to_english::Word, Language, Translation, TranslationType};
 use super::key_translator::{
     translate_age, translate_area, translate_declension, translate_frequency, translate_gender,
     translate_mood, translate_noun, translate_number, translate_pronoun, translate_source,
-    translate_tense, translate_verb, translate_voice,
+    translate_tense, translate_verb, translate_voice, translate_geo
 };
 use crate::data::data::{
     Form, Inflection, LatinWordInfo, LongForm, Modifier, UniqueLatinWordInfo, WordInfo,
@@ -190,7 +190,7 @@ fn format_word_info(word_info: WordInfo) -> WordInfo {
 
     clean_word_info.age = translate_age(&clean_word_info.age[..]).to_string();
     clean_word_info.area = translate_area(&clean_word_info.area[..]).to_string();
-    clean_word_info.geo = translate_area(&clean_word_info.geo[..]).to_string();
+    clean_word_info.geo = translate_geo(&clean_word_info.geo[..]).to_string();
     clean_word_info.freq = translate_frequency(&clean_word_info.freq[..]).to_string();
     clean_word_info.source = translate_source(&clean_word_info.source[..]).to_string();
 
@@ -295,7 +295,10 @@ fn fill_in_form_blank(mut clean_form: LongForm) -> LongForm {
 pub fn sanitize_word(word: &str) -> String {
     let mut word = word.to_owned();
     word = word.trim().to_lowercase();
-    let re = Regex::new(r"[^a-z ]|\d|\s+").unwrap();
-    word = re.replace_all(&word, " ").to_string();
+    //let re = Regex::new(r"[^a-z ]|\d|\s+").unwrap();
+    //word = re.replace_all(&word, " ").to_string();
+
+    //TODO: only allow letters and numbers
+    // numbers should only be allowed if all symbols are numbers, and translating from english to latin (make that a bool)
     word
 }
