@@ -12,8 +12,24 @@ pub enum Operation {
     Slur,
 }
 
-pub fn is_all_numbers(word: &str) -> bool {
+pub fn is_all_numbers(word: String) -> bool {
     word.chars().all(char::is_numeric)
+}
+
+pub fn contains_number(word: String) -> bool {
+    word.chars().any(char::is_numeric)
+}
+
+pub fn remove_all_numbers(word: String) -> String {
+    word.chars().filter(|c| !c.is_numeric()).collect()
+}
+
+pub fn contains_non_alphanumeric(word: String) -> bool {
+    word.chars().any(|c| !c.is_alphanumeric())
+}
+
+pub fn remove_non_alphanumeric(word: String) -> String {
+    word.chars().filter(|c| c.is_alphanumeric()).collect()
 }
 
 pub fn is_vowel(c: char) -> bool {

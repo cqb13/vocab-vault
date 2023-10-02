@@ -1,5 +1,3 @@
-use regex::Regex;
-
 use crate::data::data::{NValue, Stem};
 use crate::english_to_latin::EnglishTranslationInfo;
 use crate::formatter::key_translator::translate_part_of_speech;
@@ -7,13 +5,18 @@ use crate::{latin_to_english::Word, Language, Translation, TranslationType};
 
 use super::key_translator::{
     translate_age, translate_area, translate_declension, translate_frequency, translate_gender,
-    translate_mood, translate_noun, translate_number, translate_pronoun, translate_source,
-    translate_tense, translate_verb, translate_voice, translate_geo
+    translate_geo, translate_mood, translate_noun, translate_number, translate_pronoun,
+    translate_source, translate_tense, translate_verb, translate_voice,
 };
 use crate::data::data::{
     Form, Inflection, LatinWordInfo, LongForm, Modifier, UniqueLatinWordInfo, WordInfo,
 };
 use crate::formatter::type_translator::translate_type;
+
+use crate::tricks::tricks::{
+    contains_non_alphanumeric, contains_number, is_all_numbers, remove_all_numbers,
+    remove_non_alphanumeric,
+};
 
 pub fn format_output(
     mut translation_output: Vec<Translation>,
@@ -295,10 +298,17 @@ fn fill_in_form_blank(mut clean_form: LongForm) -> LongForm {
 pub fn sanitize_word(word: &str) -> String {
     let mut word = word.to_owned();
     word = word.trim().to_lowercase();
-    //let re = Regex::new(r"[^a-z ]|\d|\s+").unwrap();
-    //word = re.replace_all(&word, " ").to_string();
 
-    //TODO: only allow letters and numbers
-    // numbers should only be allowed if all symbols are numbers, and translating from english to latin (make that a bool)
+    // allows for translation of numbers to roman numerals
+    if contains_number(word.clone()) && !is_all_numbers(word.clone()) {
+        word = remove_all_numbers(word.clone());
+        println!("here");
+    }
+
+    if contains_non_alphanumeric(word.clone()) {
+        word = remove_non_alphanumeric(word.clone());
+        println!("heres")
+    }
+
     word
 }

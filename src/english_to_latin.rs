@@ -55,7 +55,7 @@ pub fn translate_to_latin(
 
     find_definition(&mut output);
 
-    if is_all_numbers(english_word) {
+    if is_all_numbers(english_word.to_string()) {
         let roman_numeral = convert_number_to_roman_numeral(english_word);
         let mut english_word_info = EnglishTranslationInfo {
             word: EnglishWordInfo::new(),
