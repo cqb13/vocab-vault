@@ -111,7 +111,7 @@ pub fn translate_to_english(latin_word: String, tricks: bool) -> Vec<LatinTransl
             output.push(LatinTranslationInfo {
                 tricks: None,
                 word: Word::UniqueLatinWordInfo(UniqueLatinWordInfo {
-                    orth: latin_word.to_string(),
+                    orth: latin_word.to_uppercase(),
                     senses: [numeral_evaluation.to_string()].to_vec(),
                     pos: "NUM".to_string(),
                     form: Form::StrForm("NUM".to_string()),
