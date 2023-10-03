@@ -156,7 +156,6 @@ fn translate_latin_word_info_form(
         return clean_form;
     }
 
-    //???: should be other stuff here too i think
     if form_array.len() < 2 {
         clean_form.kind = Some("part of speech".to_string());
         return clean_form;

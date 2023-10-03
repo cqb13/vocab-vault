@@ -67,7 +67,6 @@ pub fn translate_to_english(latin_word: String, tricks: bool) -> Vec<LatinTransl
     if tricks {
         let (mut modified_latin_word, mut trick_explanations) = try_tricks(latin_word.clone());
 
-        // !!!: Test this
         let (syncopated_word, trick_explanation) = try_syncopes(modified_latin_word.clone());
         if syncopated_word != modified_latin_word {
             modified_latin_word = syncopated_word;
