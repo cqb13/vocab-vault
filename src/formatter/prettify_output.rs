@@ -22,6 +22,7 @@ impl PartialEq for PrettifiedOutput {
     }
 }
 
+//TODO: add addon support
 pub struct PrettifiedDefinition {
     pub tricks: Option<Vec<String>>,
     pub pos: String,
@@ -213,10 +214,12 @@ fn create_pretty_latin_definition(
         }
     }
 
-    output.inflections = make_inflection_string(
-        latin_translation_info.stem,
-        latin_translation_info.inflections,
-    );
+    if latin_translation_info.inflections.is_some() {
+        output.inflections = make_inflection_string(
+            latin_translation_info.stem,
+            latin_translation_info.inflections.clone().unwrap(),
+        );
+    }
 
     output
 }

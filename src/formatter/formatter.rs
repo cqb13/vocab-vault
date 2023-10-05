@@ -35,6 +35,10 @@ pub fn format_output(
         } else if language == Language::Latin {
             if let TranslationType::Latin(info) = &mut translation.definitions {
                 for latin_word_info in info.iter_mut() {
+                    if !clean && latin_word_info.tricks.is_none() {
+                        latin_word_info.tricks = Some(Vec::new());
+                    }
+
                     if let Word::LatinWordInfo(latin_word_info) = &mut latin_word_info.word {
                         *latin_word_info = format_latin_word_info(latin_word_info.clone(), clean);
                     } else if let Word::UniqueLatinWordInfo(unique_latin_word_info) =
@@ -45,9 +49,26 @@ pub fn format_output(
                     } else {
                         panic!("Invalid Word type for Latin language.");
                     }
+
+                    //TODO: remove stem if it is empty
                     latin_word_info.stem = format_latin_stem(latin_word_info.stem.clone(), clean);
-                    latin_word_info.inflections =
-                        format_latin_inflections(latin_word_info.inflections.clone(), clean);
+
+                    if latin_word_info.inflections.is_none()
+                        || latin_word_info.inflections.clone().unwrap().len() == 0
+                    {
+                        if clean {
+                            latin_word_info.inflections = None;
+                        }
+                    } else {
+                        latin_word_info.inflections = Some(format_latin_inflections(
+                            latin_word_info.inflections.clone().unwrap(),
+                            clean,
+                        ));
+                    }
+
+                    if !clean && latin_word_info.addon.is_none() {
+                        latin_word_info.addon = Some("".to_string());
+                    }
                 }
             } else {
                 panic!("Invalid TranslationType for Latin language.");
@@ -78,29 +99,34 @@ fn format_english_word(
 fn format_latin_word_info(latin_word_info: LatinWordInfo, clean: bool) -> LatinWordInfo {
     let mut clean_latin_word_info: LatinWordInfo = latin_word_info;
 
-    let modifiers = if clean_latin_word_info.modifiers.clone().is_some() {
-        clean_latin_word_info.modifiers.clone().unwrap()
+    if clean_latin_word_info.modifiers.clone().is_some() {
+        let modifiers = clean_latin_word_info.modifiers.clone().unwrap();
+        let mut clean_modifiers: Vec<Modifier> = Vec::new();
+        for modifier in modifiers {
+            clean_modifiers.push(format_modifier(modifier));
+        }
     } else {
-        Vec::new()
+        if !clean {
+            clean_latin_word_info.modifiers = Some(Vec::new());
+        }
     };
-
-    let mut clean_modifiers: Vec<Modifier> = Vec::new();
-
-    for modifier in modifiers {
-        clean_modifiers.push(format_modifier(modifier));
-    }
-
-    clean_latin_word_info.modifiers = Some(clean_modifiers);
 
     clean_latin_word_info.pos =
         translate_part_of_speech(&clean_latin_word_info.pos[..]).to_string();
+
+    if clean && clean_latin_word_info.n.is_none()
+        || clean_latin_word_info.n.clone().unwrap().len() == 0
+    {
+        clean_latin_word_info.n = None;
+    }
+
     clean_latin_word_info.info = format_word_info(clean_latin_word_info.info);
     clean_latin_word_info.form = Form::LongForm(translate_latin_word_info_form(
         match clean_latin_word_info.form.clone() {
             Form::LongForm(_form) => "".to_string(),
             Form::StrForm(form) => form,
         },
-        clean_latin_word_info.n.clone(),
+        clean_latin_word_info.n.clone().unwrap_or(Vec::new()),
         clean_latin_word_info.pos.clone(),
         clean,
     ));
@@ -125,12 +151,18 @@ fn format_unique_latin_word_info(
     clean_unique_latin_word_info.pos =
         translate_part_of_speech(&clean_unique_latin_word_info.pos[..]).to_string();
     clean_unique_latin_word_info.info = format_word_info(clean_unique_latin_word_info.info);
+    if clean && clean_unique_latin_word_info.n.is_none()
+        || clean_unique_latin_word_info.n.clone().unwrap().len() == 0
+    {
+        clean_unique_latin_word_info.n = None;
+    }
+
     clean_unique_latin_word_info.form = Form::LongForm(translate_latin_word_info_form(
         match clean_unique_latin_word_info.form.clone() {
             Form::LongForm(_form) => "".to_string(),
             Form::StrForm(form) => form,
         },
-        clean_unique_latin_word_info.n.clone(),
+        clean_unique_latin_word_info.n.clone().unwrap_or(Vec::new()),
         clean_unique_latin_word_info.pos.clone(),
         clean,
     ));
@@ -212,6 +244,7 @@ fn format_latin_stem(latin_stem: Stem, clean: bool) -> Stem {
         clean_latin_stem.pos.clone(),
         clean,
     ));
+    //TODO: format the n
 
     clean_latin_stem
 }

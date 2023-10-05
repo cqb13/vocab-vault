@@ -80,10 +80,12 @@ fn latin_translation_output_post_processing(
                         definition.word = Word::LatinWordInfo(word_with_parts);
 
                         let inflections = &definition.inflections;
-                        let filtered_inflections =
-                            filter_inflections(inflections.clone(), pos, clean);
+                        if inflections.is_some() {
+                            let inflections = inflections.clone().unwrap();
+                            let filtered_inflections = filter_inflections(inflections, pos, clean);
 
-                        definition.inflections = filtered_inflections;
+                            definition.inflections = Some(filtered_inflections);
+                        }
 
                         if vague && (clean || filter_uncommon) {
                             continue;
@@ -147,16 +149,20 @@ fn add_principle_parts(mut latin_word_info: LatinWordInfo) -> LatinWordInfo {
     };
 
     let principle_parts: Vec<String> = match pos.as_str() {
-        "N" => generate_for_nouns(number_type, gender, principle_parts),
-        "V" => generate_for_verbs(number_type, principle_parts, VerbType::from_str(word_type)),
+        "N" => generate_for_nouns(number_type.clone().unwrap(), gender, principle_parts),
+        "V" => generate_for_verbs(
+            number_type.clone().unwrap(),
+            principle_parts,
+            VerbType::from_str(word_type),
+        ),
         "ADJ" => generate_for_adjectives(
-            number_type,
+            number_type.clone().unwrap(),
             principle_parts,
             Comparison::from_str(word_type),
         ),
-        "PRON" => generate_for_pronouns(number_type, principle_parts),
+        "PRON" => generate_for_pronouns(number_type.clone().unwrap(), principle_parts),
         "NUM" => generate_for_numerals(
-            number_type,
+            number_type.clone().unwrap(),
             principle_parts,
             NumeralType::from_str(word_type),
         ),
@@ -199,9 +205,11 @@ fn print_pretty_output(translations: Vec<Translation>, detailed_pretty_output: b
         println!("{}\n", output.searched_word);
         for definition in &output.definitions {
             if detailed_pretty_output {
-                for trick in &definition.tricks {
-                    println!("{}", trick[0]);
-                    println!();
+                if definition.tricks.is_some() && definition.tricks.clone().unwrap().len() > 0 {
+                    for trick in &definition.tricks {
+                        println!("{}", trick[0]);
+                        println!();
+                    }
                 }
 
                 for modifier in &definition.modifiers {

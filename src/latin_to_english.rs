@@ -12,12 +12,15 @@ use crate::tricks::word_mods::try_syncopes;
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct LatinTranslationInfo {
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub tricks: Option<Vec<String>>,
     #[serde(serialize_with = "serialize_word")]
     pub word: Word,
     pub stem: Stem,
-    pub inflections: Vec<Inflection>,
-    pub addon: String,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub inflections: Option<Vec<Inflection>>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub addon: Option<String>,
 }
 
 impl Clone for LatinTranslationInfo {
@@ -114,7 +117,7 @@ pub fn translate_to_english(latin_word: String, tricks: bool) -> Vec<LatinTransl
                     senses: [numeral_evaluation.to_string()].to_vec(),
                     pos: "NUM".to_string(),
                     form: Form::StrForm("NUM".to_string()),
-                    n: Vec::new(),
+                    n: None,
                     info: WordInfo::new_set(
                         "X".to_string(),
                         "T".to_string(),
@@ -124,8 +127,8 @@ pub fn translate_to_english(latin_word: String, tricks: bool) -> Vec<LatinTransl
                     ),
                 }),
                 stem: Stem::new(),
-                inflections: Vec::new(),
-                addon: "roman numeral".to_string(),
+                inflections: None,
+                addon: Some("roman numeral".to_string()),
             });
         }
     }
@@ -143,8 +146,8 @@ fn parse(latin_word: &str, reduced: bool) -> Vec<LatinTranslationInfo> {
             tricks: None,
             word: Word::UniqueLatinWordInfo(unique_latin_word),
             stem: Stem::new(),
-            inflections: Vec::new(),
-            addon: "unique".to_string(),
+            inflections: None,
+            addon: Some("unique".to_string()),
         });
     }
 
@@ -337,8 +340,8 @@ fn lookup_stems(stems: Vec<Stem>, inflections: Vec<Inflection>) -> Vec<LatinTran
                     tricks: None,
                     word: new_word,
                     stem,
-                    inflections: new_inflections,
-                    addon: "".to_string(),
+                    inflections: Some(new_inflections),
+                    addon: None,
                 });
             }
         }

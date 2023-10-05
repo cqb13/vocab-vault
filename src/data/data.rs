@@ -9,7 +9,8 @@ pub struct LatinWordInfo {
     pub pos: String,
     pub form: Form,
     pub info: WordInfo,
-    pub n: Vec<NValue>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub n: Option<Vec<NValue>>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub modifiers: Option<Vec<Modifier>>,
     pub id: i32,
@@ -43,7 +44,7 @@ impl LatinWordInfo {
             pos: "".to_string(),
             form: Form::new_str(),
             info: WordInfo::new(),
-            n: Vec::new(),
+            n: None,
             modifiers: None,
             id: 0,
             extension_senses: None,
@@ -65,7 +66,8 @@ pub struct UniqueLatinWordInfo {
     pub senses: Vec<String>,
     pub pos: String,
     pub form: Form,
-    pub n: Vec<NValue>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub n: Option<Vec<NValue>>,
     pub info: WordInfo,
 }
 
@@ -76,7 +78,7 @@ impl UniqueLatinWordInfo {
             senses: Vec::new(),
             pos: "".to_string(),
             form: Form::new_str(),
-            n: Vec::new(),
+            n: None,
             info: WordInfo::new(),
         }
     }
