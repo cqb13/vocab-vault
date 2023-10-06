@@ -9,7 +9,6 @@ pub enum Operation {
     FlipFlop,
     Flip,
     Internal,
-    Slur,
 }
 
 pub fn is_all_numbers(word: String) -> bool {
@@ -249,7 +248,6 @@ fn iterate_over_tricks(trick_list: Vec<Trick>, mut word: String) -> (String, Vec
             Operation::FlipFlop => flip_flop(trick.str_1, trick.str_2, &word),
             Operation::Flip => flip(trick.str_1, trick.str_2, &word),
             Operation::Internal => internal(trick.str_1, trick.str_2, &word),
-            Operation::Slur => (word.clone(), String::new()), // Assuming Slur causes an exception
         };
 
         word = new_word;

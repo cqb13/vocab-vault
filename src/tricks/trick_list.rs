@@ -43,16 +43,15 @@ pub fn match_tricks_list(first_char_of_word: char) -> Vec<Trick> {
     }
 }
 
-pub fn match_slur_trick_list(first_chart_of_word: char) -> Vec<Trick> {
-    match first_chart_of_word {
+pub fn match_slur_trick_list(first_char_of_word: char) -> Vec<Trick> {
+    match first_char_of_word {
         'a' => return get_a_slur_tricks(),
         'c' => return get_c_slur_tricks(),
         'i' => return get_i_slur_tricks(),
         'n' => return get_n_slur_tricks(),
-        'o' => return get_o_slur_tricks(),
         'q' => return get_q_slur_tricks(),
         's' => return get_s_slur_tricks(),
-        _ => panic!("Invalid first char of word: {}", first_chart_of_word),
+        _ => panic!("Invalid first char of word: {}", first_char_of_word),
     }
 }
 
@@ -507,11 +506,6 @@ fn get_a_slur_tricks() -> Vec<Trick> {
             str_1: "auri",
             str_2: "auru",
         },
-        Trick {
-            operation: Operation::Slur,
-            str_1: "ad",
-            str_2: "",
-        },
     ];
 
     a_slur_trick_list
@@ -553,11 +547,6 @@ fn get_c_slur_tricks() -> Vec<Trick> {
 fn get_i_slur_tricks() -> Vec<Trick> {
     let i_slur_trick_list = vec![
         Trick {
-            operation: Operation::Slur,
-            str_1: "in",
-            str_2: "",
-        },
-        Trick {
             operation: Operation::FlipFlop,
             str_1: "inb",
             str_2: "imb",
@@ -582,16 +571,6 @@ fn get_n_slur_tricks() -> Vec<Trick> {
     n_slur_trick_list
 }
 
-fn get_o_slur_tricks() -> Vec<Trick> {
-    let o_slur_trick_list = vec![Trick {
-        operation: Operation::Slur,
-        str_1: "ob",
-        str_2: "",
-    }];
-
-    o_slur_trick_list
-}
-
 fn get_q_slur_tricks() -> Vec<Trick> {
     let q_slur_trick_list = vec![Trick {
         operation: Operation::FlipFlop,
@@ -609,12 +588,6 @@ fn get_s_slur_tricks() -> Vec<Trick> {
             operation: Operation::Flip,
             str_1: "se",
             str_2: "ce",
-        },
-        // From Oxford Latin Dictionary p.1815 "sub-"
-        Trick {
-            operation: Operation::Slur,
-            str_1: "sub",
-            str_2: "",
         },
     ];
 

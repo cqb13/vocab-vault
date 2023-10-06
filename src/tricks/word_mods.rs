@@ -70,14 +70,6 @@ pub fn internal(str_to_replace: &str, replacement_str: &str, word: &str) -> (Str
     (word.to_string(), explanation)
 }
 
-pub fn slur(str_to_slur: &str, word: &str) -> String {
-    //let explanation = format!("{} was slurped", str_to_slur);
-
-    let mut new_word = word.to_string();
-
-    new_word
-}
-
 pub fn try_syncopes(word: String) -> (String, String) {
     let mut new_word = word;
     let mut explanation = String::new();

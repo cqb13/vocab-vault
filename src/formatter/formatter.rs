@@ -50,7 +50,6 @@ pub fn format_output(
                         panic!("Invalid Word type for Latin language.");
                     }
 
-                    //TODO: remove stem if it is empty
                     latin_word_info.stem = format_latin_stem(latin_word_info.stem.clone(), clean);
 
                     if latin_word_info.inflections.is_none()
@@ -244,7 +243,6 @@ fn format_latin_stem(latin_stem: Stem, clean: bool) -> Stem {
         clean_latin_stem.pos.clone(),
         clean,
     ));
-    //TODO: format the n
 
     clean_latin_stem
 }
