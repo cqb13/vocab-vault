@@ -194,9 +194,20 @@ fn find_form(latin_word: &str, reduced: bool) -> Vec<LatinTranslationInfo> {
     // If no stems were found, try again without ensuring infls
     // allows for words that end with erunt and similar cases
     // ex: clamaverunt return null without this
-    if stems.len() == 0 {
-        (stems, inflections) = check_stems(latin_word, &latin_word_inflections, false);
-    }
+    let (more_stems, more_inflections) = check_stems(latin_word, &latin_word_inflections, false);
+    stems.extend(more_stems);
+    inflections.extend(more_inflections);
+
+    // remove duplicates
+    stems.sort_by(|a, b| a.pos.cmp(&b.pos));
+    stems.dedup_by(|a, b| {
+        a.pos == b.pos && a.form == b.form && a.orth == b.orth && a.n == b.n && a.wid == b.wid
+    });
+
+    inflections.sort_by(|a, b| a.ending.len().cmp(&b.ending.len()));
+    inflections.dedup_by(|a, b| {
+        a.ending == b.ending && a.pos == b.pos && a.n == b.n && a.form == b.form && a.note == b.note
+    });
 
     let mut output = lookup_stems(stems, inflections);
 
@@ -207,7 +218,38 @@ fn find_form(latin_word: &str, reduced: bool) -> Vec<LatinTranslationInfo> {
         }
     }
 
-    output
+    let mut filtered_output = Vec::new();
+
+    // remove inflections from output, that don't match n with the word
+    for mut definition in output.clone() {
+        let unfiltered_inflections = definition.inflections.clone();
+        let n = match &definition.word {
+            Word::LatinWordInfo(word) => word.n.clone(),
+            Word::UniqueLatinWordInfo(word) => word.n.clone(),
+        };
+
+        let mut filtered_inflections: Vec<Inflection> = Vec::new();
+
+        match n {
+            Some(n) => {
+                for inflection in unfiltered_inflections.unwrap_or(Vec::new()) {
+                    if inflection.n[0] != n[0] {
+                        continue;
+                    }
+
+                    filtered_inflections.push(inflection);
+                }
+            }
+            None => {
+                filtered_inflections = unfiltered_inflections.unwrap_or(Vec::new());
+            }
+        }
+
+        definition.inflections = Some(filtered_inflections);
+        filtered_output.push(definition);
+    }
+
+    filtered_output
 }
 
 fn check_stems(
@@ -228,39 +270,26 @@ fn check_stems(
                     || (inflection.pos == "VPAR" && stem.pos == "V")
                     || (inflection.pos == "V" && stem.pos == "VPAR")
                 {
-                    if inflection.n[0] != stem.n[0] && ensure_inflections {
+                    if inflection.n != stem.n && ensure_inflections {
                         continue;
                     }
-
-                    let mut is_matched_stem = false;
-
-                    for matched_stem in &matched_stems {
-                        if stem.form == matched_stem.form {
-                            is_matched_stem = true;
-                            let mut in_stem_inflections = false;
-                            for stem_inflection in &inflections {
-                                if stem_inflection.form == inflection.form {
-                                    in_stem_inflections = true;
-                                    break;
-                                }
-                            }
-                            if !in_stem_inflections {
-                                inflections.push(inflection.clone());
-                            }
-                        }
-                    }
-
+                    let mut in_stem_inflections = false;
                     for stem_inflection in &inflections {
-                        if stem_inflection.form == inflection.form {
-                            is_matched_stem = true;
+                        if stem_inflection.pos == inflection.pos
+                            || (stem_inflection.pos == "VPAR" && inflection.pos == "V")
+                            || (stem_inflection.pos == "V" && inflection.pos == "VPAR")
+                        {
+                            in_stem_inflections = true;
                             break;
                         }
                     }
-
-                    if !is_matched_stem {
-                        matched_stems.push(stem.clone());
+                    if !in_stem_inflections {
+                        // !!!: this is important, but needs to be filtered somehow (cursus | whitakers words)
+                        //println!("added infl form {:?}", inflection.form);
                         inflections.push(inflection.clone());
                     }
+                    matched_stems.push(stem.clone());
+                    inflections.push(inflection.clone());
                 }
             }
         }
