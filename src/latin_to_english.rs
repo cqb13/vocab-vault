@@ -245,7 +245,23 @@ fn find_form(latin_word: &str, reduced: bool) -> Vec<LatinTranslationInfo> {
             }
         }
 
-        definition.inflections = Some(filtered_inflections);
+        let mut unique_inflections: Vec<Inflection> = Vec::new();
+
+        for inflection in filtered_inflections.clone() {
+            let mut is_unique = true;
+            for unique_inflection in unique_inflections.clone() {
+                if inflection.form == unique_inflection.form
+                {
+                    is_unique = false;
+                    continue;
+                }
+            }
+            if is_unique {
+                unique_inflections.push(inflection);
+            }
+        }
+
+        definition.inflections = Some(unique_inflections);
         filtered_output.push(definition);
     }
 
@@ -483,6 +499,7 @@ fn split_enclitic(latin_word: &str) -> (String, Vec<Modifier>) {
                 modifier: Some("enclitic tackon".to_string()),
             });
         }
+
         split_word.truncate(split_word.len() - tackon.orth.len());
     } else {
         if latin_word.starts_with("qu") {
@@ -495,9 +512,9 @@ fn split_enclitic(latin_word: &str) -> (String, Vec<Modifier>) {
                         form: None,
                         modifier: Some("enclitic packon".to_string()),
                     });
-                }
 
-                split_word.truncate(split_word.len() - packon.orth.len());
+                    split_word.truncate(split_word.len() - packon.orth.len());
+                }
             }
         } else {
             for not_packon in latin_not_packons {
@@ -509,9 +526,9 @@ fn split_enclitic(latin_word: &str) -> (String, Vec<Modifier>) {
                         form: None,
                         modifier: Some("enclitic not packon".to_string()),
                     });
-                }
 
-                split_word.truncate(split_word.len() - not_packon.orth.len());
+                    split_word.truncate(split_word.len() - not_packon.orth.len());
+                }
             }
         }
     }
