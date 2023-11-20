@@ -199,6 +199,7 @@ fn find_form(latin_word: &str, reduced: bool) -> Vec<LatinTranslationInfo> {
     inflections.extend(more_inflections);
 
     // remove duplicates
+    //TODO: test if this is needed
     stems.sort_by(|a, b| a.pos.cmp(&b.pos));
     stems.dedup_by(|a, b| {
         a.pos == b.pos && a.form == b.form && a.orth == b.orth && a.n == b.n && a.wid == b.wid
@@ -250,8 +251,7 @@ fn find_form(latin_word: &str, reduced: bool) -> Vec<LatinTranslationInfo> {
         for inflection in filtered_inflections.clone() {
             let mut is_unique = true;
             for unique_inflection in unique_inflections.clone() {
-                if inflection.form == unique_inflection.form
-                {
+                if inflection.form == unique_inflection.form {
                     is_unique = false;
                     continue;
                 }
