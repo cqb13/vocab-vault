@@ -29,7 +29,6 @@ pub fn post_process(
             } else {
                 translations
             };
-
             latin_translation_output_post_processing(
                 sorted_translations,
                 clean,
@@ -57,6 +56,8 @@ fn latin_translation_output_post_processing(
     mut filter_uncommon: bool,
     max: usize,
 ) -> Vec<Translation> {
+    let mut translation_length = translations.len();
+
     translations
         .iter_mut()
         .filter_map(|translation| {
@@ -87,7 +88,9 @@ fn latin_translation_output_post_processing(
                             definition.inflections = Some(filtered_inflections);
                         }
 
-                        if vague && (clean || filter_uncommon) {
+                        // !!!: issue here, keep track of length of output, if output length drops bellow 0, dont allow
+                        if vague && (clean || filter_uncommon) && translation_length - 1 > 0 {
+                            translation_length -= 1;
                             continue;
                         } else {
                             modified_definitions.push(definition.clone());

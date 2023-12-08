@@ -535,6 +535,11 @@ fn set_principle_parts(
     }
 
     for ending in endings {
+        if parts[ending.1 as usize - 1] == "zzz" {
+            principle_parts.push("---".to_string());
+            continue;
+        }
+
         if ending.0 == "" && ending.1 == 0 {
             // when there is no principle part
             principle_parts.push("---".to_string());
