@@ -41,6 +41,16 @@ pub fn format_output(
 
                     if let Word::LatinWordInfo(latin_word_info) = &mut latin_word_info.word {
                         *latin_word_info = format_latin_word_info(latin_word_info.clone(), clean);
+
+                        if latin_word_info.extension_senses.is_none()
+                            || latin_word_info.extension_senses.clone().unwrap().len() == 0
+                        {
+                            if clean {
+                                latin_word_info.extension_senses = None;
+                            } else {
+                                latin_word_info.extension_senses = Some(Vec::new());
+                            }
+                        }
                     } else if let Word::UniqueLatinWordInfo(unique_latin_word_info) =
                         &mut latin_word_info.word
                     {

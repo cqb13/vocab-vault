@@ -351,8 +351,7 @@ fn lookup_stems(stems: Vec<Stem>, inflections: Vec<Inflection>) -> Vec<LatinTran
                 if latin_word.pos == "V" || latin_word.pos == "VPAR" {
                     let fourth_part = latin_word.parts[3].as_str();
                     if fourth_part != stem.orth {
-                        let inflections_clone = inflections.clone();
-                        new_inflections = remove_extra_inflections(inflections_clone, "VPAR");
+                        new_inflections = remove_extra_inflections(inflections.clone(), "VPAR");
                     } else {
                         new_inflections = remove_extra_inflections(inflections.clone(), "V");
                     }
