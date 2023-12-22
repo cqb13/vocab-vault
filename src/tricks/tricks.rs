@@ -210,16 +210,14 @@ pub fn try_tricks(word: String) -> (String, Option<Vec<String>>) {
 
     if applied_tricks.is_none() {
         applied_tricks = Some(explanations.clone());
-    }
-
-    let (updated_new_word, updated_explanations) =
+        let (updated_new_word, updated_explanations) =
         iterate_over_tricks(any_tricks.clone(), new_word.to_string());
-    new_word = updated_new_word;
-
-    applied_tricks
-        .as_mut()
-        .unwrap()
-        .extend(updated_explanations);
+        new_word = updated_new_word;
+        applied_tricks
+            .as_mut()
+            .unwrap()
+            .extend(updated_explanations);
+    }
 
     if new_word == word && slur_trick_chars.contains(&first_char) {
         let trick_list = match_slur_trick_list(first_char);
