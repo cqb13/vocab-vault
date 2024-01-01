@@ -18,7 +18,7 @@ pub fn post_process(
     clean: bool,
     sort: bool,
     filter_uncommon: bool,
-) -> Vec<Translation> {
+) -> String {
     let mut translations = match language {
         Language::Latin => {
             let sorted_translations = if sort {
@@ -41,7 +41,8 @@ pub fn post_process(
     }
 
 
-    translations
+    let json_output = serde_json::to_string_pretty(&translations).unwrap();
+    json_output
 }
 
 fn latin_translation_output_post_processing(

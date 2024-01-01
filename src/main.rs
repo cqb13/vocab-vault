@@ -34,6 +34,7 @@ use crate::formatter::formatter::sanitize_word;
 use crate::utils::post_processor::post_process;
 
 #[derive(Serialize, Deserialize, Debug)]
+#[serde(tag = "type")]
 pub struct Translation {
     word: String,
     #[serde(serialize_with = "serialize_translation")]
@@ -96,7 +97,7 @@ where
 async fn main() -> std::io::Result<()> {
     HttpServer::new(|| {
         let cors = Cors::default()
-            .allowed_origin("http://localhost:5050")
+            .allowed_origin("http://192.168.4.149:5500")
             .allowed_methods(vec!["GET", "POST"])
             .allowed_headers(vec![http::header::AUTHORIZATION, http::header::ACCEPT])
             .allowed_header(http::header::CONTENT_TYPE)
@@ -142,7 +143,7 @@ async fn query_latin_to_english(query: web::Query<Query>) -> impl Responder {
         }
     }
 
-    translations = post_process(
+    let output = post_process(
         translations,
         Language::Latin,
         max_definitions,
@@ -152,7 +153,7 @@ async fn query_latin_to_english(query: web::Query<Query>) -> impl Responder {
         filter_uncommon_translations,
     );
 
-    HttpResponse::Ok().body(format!("{:?}", translations))
+    HttpResponse::Ok().body(format!("{}", output))
 }
 
 #[get("/english_to_latin")]
@@ -167,7 +168,11 @@ async fn query_english_to_latin(query: web::Query<Query>) -> impl Responder {
     let mut translations: Vec<Translation> = Vec::new();
 
     for word in english_words {
-        let output = english_to_latin::translate_to_latin(&sanitize_word(word), max_definitions, sort_output);
+        let output = english_to_latin::translate_to_latin(
+            &sanitize_word(word),
+            max_definitions,
+            sort_output,
+        );
         if output.len() > 0 {
             translations.push(Translation {
                 word: word.to_string(),
@@ -176,7 +181,7 @@ async fn query_english_to_latin(query: web::Query<Query>) -> impl Responder {
         }
     }
 
-    translations = post_process(
+    let output = post_process(
         translations,
         Language::English,
         max_definitions,
@@ -186,5 +191,5 @@ async fn query_english_to_latin(query: web::Query<Query>) -> impl Responder {
         false,
     );
 
-    HttpResponse::Ok().body(format!("{:?}", translations))
+    HttpResponse::Ok().body(format!("{}", output))
 }
