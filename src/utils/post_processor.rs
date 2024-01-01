@@ -1,6 +1,5 @@
 use crate::data::data::{Form, LatinWordInfo};
 use crate::formatter::formatter::format_output;
-use crate::formatter::prettify_output::{prettify_output, PrettifiedOutput};
 use crate::latin_to_english::Word;
 use crate::utils::filter::{entry_is_vague, filter_inflections};
 use crate::utils::principle_part_generator::{
@@ -19,9 +18,7 @@ pub fn post_process(
     clean: bool,
     sort: bool,
     filter_uncommon: bool,
-    pretty_output: bool,
-    detailed_pretty_output: bool,
-) {
+) -> Vec<Translation> {
     let mut translations = match language {
         Language::Latin => {
             let sorted_translations = if sort {
@@ -43,11 +40,8 @@ pub fn post_process(
         translations = format_output(translations, language, clean);
     }
 
-    if pretty_output {
-        print_pretty_output(translations, detailed_pretty_output);
-    } else {
-        print_output(translations);
-    }
+
+    translations
 }
 
 fn latin_translation_output_post_processing(
@@ -191,58 +185,4 @@ fn get_gender(form: Form) -> String {
     }
 
     form_array[2].to_string()
-}
-
-fn print_output(translations: Vec<Translation>) {
-    let json_output = serde_json::to_string_pretty(&translations).unwrap();
-    println!("{}", json_output);
-}
-
-fn print_pretty_output(translations: Vec<Translation>, detailed_pretty_output: bool) {
-    let pretty_output: Vec<PrettifiedOutput> = translations
-        .into_iter()
-        .map(|t| prettify_output(t.clone(), t.word.clone()))
-        .collect();
-
-    for output in &pretty_output {
-        println!("{}\n", output.searched_word);
-        for definition in &output.definitions {
-            if detailed_pretty_output {
-                if definition.tricks.is_some() && definition.tricks.clone().unwrap().len() > 0 {
-                    for trick in &definition.tricks {
-                        println!("{}", trick[0]);
-                        println!();
-                    }
-                }
-
-                for modifier in &definition.modifiers {
-                    println!("{}, {}", modifier.modifier, modifier.orth);
-                    println!("{}", modifier.pos);
-                    println!("{}", modifier.senses);
-                    println!();
-                }
-            }
-
-            println!("{}", definition.orth_info);
-            println!("{}", definition.pos);
-            println!("{}", definition.form_info);
-
-            if !definition.inflections.is_empty() {
-                for inflection in &definition.inflections {
-                    println!("{}", inflection);
-                }
-            }
-
-            if detailed_pretty_output {
-                println!("{}", definition.details);
-            }
-
-            println!("{}", definition.senses);
-            println!();
-        }
-
-        if output != pretty_output.last().unwrap() {
-            println!("---------------------------------");
-        }
-    }
 }

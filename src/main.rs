@@ -1,4 +1,5 @@
-use clap::{Arg, Command};
+use actix_cors::Cors;
+use actix_web::{get, http, web, App, HttpResponse, HttpServer, Responder};
 use english_to_latin::EnglishTranslationInfo;
 use latin_to_english::LatinTranslationInfo;
 use serde::{Deserialize, Serialize, Serializer};
@@ -20,7 +21,6 @@ pub mod data {
 pub mod formatter {
     pub mod formatter;
     pub mod key_translator;
-    pub mod prettify_output;
     pub mod type_translator;
 }
 
@@ -92,143 +92,48 @@ where
     }
 }
 
-fn main() {
-    let global_args = vec![
-        Arg::new("max_entries")
-            .short('m')
-            .long("max-entries")
-            .value_name("MAX_ENTRIES")
-            .help("The maximum number of entries")
-            .default_value("6"),
-        Arg::new("formatted")
-            .short('f')
-            .long("formatted")
-            .help("Determines if the output should be formatted"),
-        Arg::new("clean")
-            .short('c')
-            .long("clean")
-            .help("Removes objects with vague values, such as 'unknown'.")
-            .requires("formatted"),
-        Arg::new("sort")
-            .short('s')
-            .long("sort")
-            .help("Will sort the output by frequency."),
-        Arg::new("pretty")
-            .short('p')
-            .long("pretty")
-            .help("Will show a pretty version of the output."),
-        Arg::new("detailed")
-            .short('d')
-            .long("detailed")
-            .help("Will add more information to prettified output.")
-            .requires("pretty"),
-    ];
-
-    let matches =
-        Command::new("Vocab Vault")
-            .version("0.1.0")
-            .author("cqb13")
-            .about("A CLI for interacting with the Whitaker's Words Dictionary")
-            .subcommand(
-                Command::new("transEng")
-                    .about("Translate English to Latin")
-                    .arg(
-                        Arg::new("text")
-                            .help("The English text to translate to Latin")
-                            .required(true),
-                    )
-                    .args(&global_args),
-            )
-            .subcommand(
-                Command::new("transLat")
-                    .about("Translate Latin to English")
-                    .arg(
-                        Arg::new("text")
-                            .help("The Latin text to translate to English")
-                            .required(true),
-                    )
-                    .arg(Arg::new("tricks").short('t').long("tricks").help(
-                        "Will attempt to use various tricks on words to get a better result.",
-                    ))
-                    .arg(
-                        Arg::new("filter uncommon")
-                            .short('u')
-                            .long("uncommon")
-                            .help("Will remove uncommon words."),
-                    )
-                    .args(&global_args),
-            )
-            .get_matches();
-
-    match matches.subcommand() {
-        Some(("transEng", trans_eng_matches)) => {
-            let text = trans_eng_matches.value_of("text").unwrap();
-            let max = trans_eng_matches
-                .value_of("max_entries")
-                .unwrap()
-                .parse::<usize>()
-                .unwrap();
-            let formatted_output = trans_eng_matches.is_present("formatted");
-            let clean = trans_eng_matches.is_present("clean");
-            let sort = trans_eng_matches.is_present("sort");
-            let pretty_output = trans_eng_matches.is_present("pretty");
-            let detailed_pretty_output = trans_eng_matches.is_present("detailed");
-            translate_to_latin(
-                text,
-                max,
-                formatted_output,
-                clean,
-                sort,
-                pretty_output,
-                detailed_pretty_output,
-            );
-        }
-        Some(("transLat", trans_lat_matches)) => {
-            let text = trans_lat_matches.value_of("text").unwrap();
-            let max = trans_lat_matches
-                .value_of("max_entries")
-                .unwrap()
-                .parse::<usize>()
-                .unwrap();
-            let tricks = trans_lat_matches.is_present("tricks");
-            let formatted_output = trans_lat_matches.is_present("formatted");
-            let clean = trans_lat_matches.is_present("clean");
-            let sort = trans_lat_matches.is_present("sort");
-            let filter_uncommon = trans_lat_matches.is_present("filter uncommon");
-            let pretty_output = trans_lat_matches.is_present("pretty");
-            let detailed_pretty_output = trans_lat_matches.is_present("detailed");
-            translate_to_english(
-                text,
-                max,
-                tricks,
-                formatted_output,
-                clean,
-                sort,
-                filter_uncommon,
-                pretty_output,
-                detailed_pretty_output,
-            );
-        }
-        _ => println!("Please provide a valid command: transEng or transLat"),
-    }
+#[actix_web::main]
+async fn main() -> std::io::Result<()> {
+    HttpServer::new(|| {
+        let cors = Cors::default()
+            .allowed_origin("http://192.168.4.149:5500")
+            .allowed_methods(vec!["GET", "POST"])
+            .allowed_headers(vec![http::header::AUTHORIZATION, http::header::ACCEPT])
+            .allowed_header(http::header::CONTENT_TYPE)
+            .max_age(3600);
+        App::new().wrap(cors).service(query_latin_to_english)
+    })
+    .bind(("0.0.0.0", 8080))?
+    .run()
+    .await
 }
 
-fn translate_to_english(
-    latin_text: &str,
-    max: usize,
-    tricks: bool,
-    formatted_output: bool,
-    clean: bool,
-    sort: bool,
-    filter_uncommon: bool,
-    pretty_output: bool,
-    detailed_pretty_output: bool,
-) {
-    let latin_words: Vec<&str> = latin_text.split(" ").collect();
+#[derive(Deserialize, Debug)]
+struct Query {
+    text: String,
+    max_definitions: usize,
+    use_tricks: bool,
+    format_output: bool,
+    clean_output: bool,
+    sort_output: bool,
+    filter_uncommon_translations: bool,
+}
+
+#[get("/latin_to_english")]
+async fn query_latin_to_english(query: web::Query<Query>) -> impl Responder {
+    let text = &query.text;
+    let max_definitions = query.max_definitions;
+    let use_tricks = query.use_tricks;
+    let format_output = query.format_output;
+    let clean_output = query.clean_output;
+    let sort_output = query.sort_output;
+    let filter_uncommon_translations = query.filter_uncommon_translations;
+
+    let latin_words: Vec<&str> = text.split(" ").collect();
     let mut translations: Vec<Translation> = Vec::new();
 
     for latin_word in latin_words {
-        let output = latin_to_english::translate_to_english(sanitize_word(latin_word), tricks);
+        let output = latin_to_english::translate_to_english(sanitize_word(latin_word), use_tricks);
         if output.len() > 0 {
             translations.push(Translation {
                 word: latin_word.to_string(),
@@ -237,33 +142,32 @@ fn translate_to_english(
         }
     }
 
-    post_process(
+    translations = post_process(
         translations,
         Language::Latin,
-        max,
-        formatted_output,
-        clean,
-        sort,
-        filter_uncommon,
-        pretty_output,
-        detailed_pretty_output,
+        max_definitions,
+        format_output,
+        clean_output,
+        sort_output,
+        filter_uncommon_translations,
     );
+
+    HttpResponse::Ok().body(format!("{:?}", translations))
 }
 
-fn translate_to_latin(
-    english_text: &str,
-    max: usize,
-    formatted_output: bool,
-    clean: bool,
-    sort: bool,
-    pretty_output: bool,
-    detailed_pretty_output: bool,
-) {
-    let english_words: Vec<&str> = english_text.split(" ").collect();
+#[get("/english_to_latin")]
+async fn query_english_to_latin(query: web::Query<Query>) -> impl Responder {
+    let text = &query.text;
+    let max_definitions = query.max_definitions;
+    let format_output = query.format_output;
+    let clean_output = query.clean_output;
+    let sort_output = query.sort_output;
+
+    let english_words: Vec<&str> = text.split(" ").collect();
     let mut translations: Vec<Translation> = Vec::new();
 
     for word in english_words {
-        let output = english_to_latin::translate_to_latin(&sanitize_word(word), max, sort);
+        let output = english_to_latin::translate_to_latin(&sanitize_word(word), max_definitions, sort_output);
         if output.len() > 0 {
             translations.push(Translation {
                 word: word.to_string(),
@@ -272,15 +176,15 @@ fn translate_to_latin(
         }
     }
 
-    post_process(
+    translations = post_process(
         translations,
         Language::English,
-        max,
-        formatted_output,
-        clean,
-        false, // already sorted in english_to_latin
-        false, // filter_uncommon, does not apply to english, bc we know what each word means
-        pretty_output,
-        detailed_pretty_output,
+        max_definitions,
+        format_output,
+        clean_output,
+        false,
+        false,
     );
+
+    HttpResponse::Ok().body(format!("{:?}", translations))
 }
