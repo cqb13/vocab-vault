@@ -105,7 +105,10 @@ async fn main() -> std::io::Result<()> {
             .allowed_headers(vec![http::header::AUTHORIZATION, http::header::ACCEPT])
             .allowed_header(http::header::CONTENT_TYPE)
             .max_age(3600);
-        App::new().wrap(cors).service(query_latin_to_english)
+        App::new()
+            .wrap(cors)
+            .service(query_latin_to_english)
+            .service(query_english_to_latin)
     })
     .bind(("0.0.0.0", 8080))?
     .run()
@@ -113,7 +116,7 @@ async fn main() -> std::io::Result<()> {
 }
 
 #[derive(Deserialize, Debug)]
-struct Query {
+struct QueryLatin {
     text: String,
     max_definitions: usize,
     use_tricks: bool,
@@ -123,8 +126,17 @@ struct Query {
     filter_uncommon_translations: bool,
 }
 
+#[derive(Deserialize, Debug)]
+struct QueryEnglish {
+    text: String,
+    max_definitions: usize,
+    format_output: bool,
+    clean_output: bool,
+    sort_output: bool,
+}
+
 #[get("/latin_to_english")]
-async fn query_latin_to_english(query: web::Query<Query>) -> impl Responder {
+async fn query_latin_to_english(query: web::Query<QueryLatin>) -> impl Responder {
     let text = &query.text;
     let max_definitions = query.max_definitions;
     let use_tricks = query.use_tricks;
@@ -160,13 +172,12 @@ async fn query_latin_to_english(query: web::Query<Query>) -> impl Responder {
 }
 
 #[get("/english_to_latin")]
-async fn query_english_to_latin(query: web::Query<Query>) -> impl Responder {
+async fn query_english_to_latin(query: web::Query<QueryEnglish>) -> impl Responder {
     let text = &query.text;
     let max_definitions = query.max_definitions;
     let format_output = query.format_output;
     let clean_output = query.clean_output;
     let sort_output = query.sort_output;
-
     let english_words: Vec<&str> = text.split(" ").collect();
     let mut translations: Vec<Translation> = Vec::new();
 
