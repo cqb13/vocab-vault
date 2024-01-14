@@ -1,0 +1,31 @@
+# flyctl launch added from .gitignore
+# Build output
+target
+
+# Dependency directories
+dependencies
+
+# Rust toolchain
+rust-toolchain
+
+# Editor-specific files
+**/.vscode
+**/.idea
+
+# Generated files
+**/Cargo.lock
+**/Cargo.toml.orig
+
+# Exclude hidden files and directories
+!**/.gitignore
+!**/.gitattributes
+
+# Exclude sensitive or environment-specific information
+**/.env
+**/secrets.env
+**/*.log
+
+# Exclude OS-specific files
+**/Thumbs.db
+**/.DS_Store
+fly.toml
