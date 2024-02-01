@@ -1,6 +1,6 @@
 # Vocab Vault
 
-Vocab Vault is a Rust-based API for translating text between English and Latin, leveraging the Whitaker's Words Dictionary. This project originated as a port of [Open Words TS](https://github.com/Templar-Development/Open-Words-TS), which was originally written in Ada by [dsanson](https://github.com/dsanson). The original Words program by William Whitaker can be found at [dsanson/Words](https://github.com/dsanson/Words).
+Vocab Vault is a Rust-based API for translating text between English and Latin, leveraging the Whitaker's Words Dictionary. This project originated as a port of [Open Words TS](https://github.com/Templar-Development/Open-Words-TS). The original Words program by William Whitaker can be found at [dsanson/Words](https://github.com/dsanson/Words).
 
 ## API Usage Guide
 
