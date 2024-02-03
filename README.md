@@ -4,6 +4,8 @@ Vocab Vault is a port of [Open Words TS](https://github.com/Templar-Development/
 
 Find the original Whitaker's Words written in Ada at https://github.com/dsanson/Words, thoughtfully documented and maintained by [dsanson](https://github.com/dsanson).  More information about William Whitaker and the Words program is available there.  
 
+*No no updates for a bit. Big rewrite and update in progress!*
+
 ## CLI Usage Guide
 
 The CLI is designed to provide translation functionality between English and Latin, using the Whitaker's Words Dictionary.
