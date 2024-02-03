@@ -88,7 +88,6 @@ fn latin_translation_output_post_processing(
                             definition.inflections = Some(filtered_inflections);
                         }
 
-                        // !!!: issue here, keep track of length of output, if output length drops bellow 0, dont allow
                         if vague && (clean || filter_uncommon) && translation_length - 1 > 0 {
                             translation_length -= 1;
                             continue;

@@ -89,7 +89,7 @@ pub fn translate_part_of_speech(key: &str) -> &str {
         "SUPINE" => "supine",
         "PACK" => "packon",
         "TACKON" => "tackon",
-        "PREFIC" => "prefix",
+        "PREFIX" => "prefix",
         "SUFFIX" => "suffix",
         _ => "unknown",
     }
