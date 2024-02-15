@@ -1,11 +1,22 @@
 [package]
-name = "vocab_vault"
-version = "0.1.0"
+name = "vocab-vault"
+version = "0.1.1"
 edition = "2021"
+authors = ["cqb13 <cqb13.dev@gmail.com>"]
+license = "MIT"
+description = "A CLI for interacting with the Whitaker's Words Dictionary"
+readme = "README.md"
+homepage = "https://github.com/cqb13/vocab-vault"
+repository = "https://github.com/cqb13/vocab-vault"
+keywords = ["cli", "dictionary", "latin", "vocabulary"]
+categories = ["command-line-utilities"]
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-clap = "3.2.25"
-serde = { version = "1.0.171", features = ["derive"] }
-serde_json = "1.0.103"
+serde = { version = "1.0.196", features = ["derive"] }
+serde_json = "1.0.113"
+
+[[bin]]
+name = "vocab-vault"
+path = "src/main.rs"

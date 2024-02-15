@@ -1,17 +1,45 @@
-use std::{char, vec};
+pub mod data;
+pub mod principle_part_generator;
+pub mod type_translator;
 
-use crate::tricks::trick_list::Trick;
-use crate::tricks::trick_list::{get_any_tricks, match_slur_trick_list, match_tricks_list};
-use crate::tricks::word_mods::{flip, flip_flop, internal};
-
-#[derive(Debug, Clone)]
-pub enum Operation {
-    FlipFlop,
-    Flip,
-    Internal,
+/**
+ * Returns the number with the appropriate ending
+ * Ex: 1 -> 1st, 2 -> 2nd, 3 -> 3rd, 4 -> 4th, 5 -> 5th, 6 -> 6th, 7 -> 7th, 8 -> 8th, 9 -> 9th, 10 -> 10th
+ */
+pub fn number_with_ending(number: i8) -> String {
+    let last_digit = number % 10;
+    let last_two_digits = number % 100;
+    if last_two_digits >= 11 && last_two_digits <= 13 {
+        return format!("{}th", number);
+    }
+    match last_digit {
+        1 => format!("{}st", number),
+        2 => format!("{}nd", number),
+        3 => format!("{}rd", number),
+        _ => format!("{}th", number),
+    }
 }
 
-pub fn is_all_numbers(word: String) -> bool {
+/**
+ * Removes all non-alphanumeric characters from a string
+ */
+pub fn sanitize_word(word: &str) -> String {
+    let mut word = word.to_owned();
+    word = word.trim().to_lowercase();
+
+    // allows for translation of numbers to roman numerals
+    if contains_number(word.clone()) && !is_all_numbers(&word) {
+        word = remove_all_numbers(word.clone());
+    }
+
+    if contains_non_alphanumeric(word.clone()) {
+        word = remove_non_alphanumeric(word.clone());
+    }
+
+    word
+}
+
+pub fn is_all_numbers(word: &str) -> bool {
     word.chars().all(char::is_numeric)
 }
 
@@ -57,20 +85,20 @@ pub fn is_common_prefix(prefix: String) -> bool {
     constant_prefixes.contains(&prefix.as_str())
 }
 
-pub fn translate_roman_digit_to_number(c: char) -> u32 {
+pub fn translate_roman_digit_to_number(c: char) -> Result<i32, String> {
     match c.to_ascii_uppercase() {
-        'I' => 1,
-        'V' => 5,
-        'X' => 10,
-        'L' => 50,
-        'C' => 100,
-        'D' => 500,
-        'M' => 1000,
-        _ => panic!("Invalid roman digit: {}", c),
+        'I' => Ok(1),
+        'V' => Ok(5),
+        'X' => Ok(10),
+        'L' => Ok(50),
+        'C' => Ok(100),
+        'D' => Ok(500),
+        'M' => Ok(1000),
+        _ => return Err(format!("{} is an invalid roman numeral digit", c)),
     }
 }
 
-pub fn translate_number_to_roman_numeral(number: usize) -> String {
+pub fn translate_number_to_roman_numeral(number: usize) -> Result<String, String> {
     let roman_numeral = match number {
         1 => "I",
         5 => "V",
@@ -79,17 +107,17 @@ pub fn translate_number_to_roman_numeral(number: usize) -> String {
         100 => "C",
         500 => "D",
         1000 => "M",
-        _ => panic!("Invalid number: {}", number),
+        _ => return Err(format!("{} is an invalid number", number)),
     };
 
-    roman_numeral.to_string()
+    Ok(roman_numeral.to_string())
 }
 
-pub fn evaluate_roman_numeral(roman_numeral: &str) -> u32 {
+pub fn evaluate_roman_numeral(roman_numeral: &str) -> Result<i32, String> {
     let mut result = 0;
     let mut last_digit = 0;
     for c in roman_numeral.chars().rev() {
-        let digit = translate_roman_digit_to_number(c);
+        let digit = translate_roman_digit_to_number(c)?;
         if digit < last_digit {
             result -= digit;
         } else {
@@ -97,13 +125,13 @@ pub fn evaluate_roman_numeral(roman_numeral: &str) -> u32 {
         }
         last_digit = digit;
     }
-    result
+    Ok(result)
 }
 
-pub fn convert_number_to_roman_numeral(number: &str) -> String {
-    let full_numeral = evaluate_full_numeral_from_number(number);
+pub fn convert_number_to_roman_numeral(number: &str) -> Result<String, String> {
+    let full_numeral = evaluate_full_numeral_from_number(number)?;
     let proper_numeral = simplify_full_numeral_to_proper_numeral(full_numeral);
-    proper_numeral
+    Ok(proper_numeral)
 }
 
 fn simplify_full_numeral_to_proper_numeral(numeral: String) -> String {
@@ -139,7 +167,7 @@ fn simplify_full_numeral_to_proper_numeral(numeral: String) -> String {
     new_numeral
 }
 
-fn evaluate_full_numeral_from_number(number: &str) -> String {
+fn evaluate_full_numeral_from_number(number: &str) -> Result<String, String> {
     let array_of_nums = split_number_by_places(number);
     let mut roman_numeral = String::new();
 
@@ -156,14 +184,14 @@ fn evaluate_full_numeral_from_number(number: &str) -> String {
             roman_numeral.push_str(
                 translate_number_to_roman_numeral(
                     basic_number.to_string().parse::<usize>().unwrap(),
-                )
+                )?
                 .as_str(),
             );
             base += 1;
         }
     }
 
-    roman_numeral
+    Ok(roman_numeral)
 }
 
 fn split_number_by_places(number: &str) -> Vec<u32> {
@@ -183,77 +211,4 @@ fn split_number_by_places(number: &str) -> Vec<u32> {
     }
 
     array_of_true_digits
-}
-
-pub fn try_tricks(word: String) -> (String, Option<Vec<String>>) {
-    let trick_chars = [
-        'a', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 's', 't', 'u', 'y',
-        'z',
-    ];
-    let slur_trick_chars = ['a', 'c', 'i', 'n', 'o', 'q', 's'];
-    let mut applied_tricks: Option<Vec<String>> = None;
-    let mut new_word = word.clone();
-    let first_char = word.chars().next().unwrap();
-    let mut explanations = vec![];
-
-    if trick_chars.contains(&first_char) {
-        let trick_list = match_tricks_list(first_char);
-        let (updated_new_word, updated_explanations) =
-            iterate_over_tricks(trick_list.clone(), new_word.to_string());
-        new_word = updated_new_word;
-        explanations.extend(updated_explanations);
-
-        applied_tricks = Some(explanations.clone());
-    }
-
-    let any_tricks = get_any_tricks();
-
-    if applied_tricks.is_none() {
-        applied_tricks = Some(explanations.clone());
-        let (updated_new_word, updated_explanations) =
-        iterate_over_tricks(any_tricks.clone(), new_word.to_string());
-        new_word = updated_new_word;
-        applied_tricks
-            .as_mut()
-            .unwrap()
-            .extend(updated_explanations);
-    }
-
-    if new_word == word && slur_trick_chars.contains(&first_char) {
-        let trick_list = match_slur_trick_list(first_char);
-        let (updated_new_word, updated_explanations) =
-            iterate_over_tricks(trick_list.clone(), new_word.to_string());
-        new_word = updated_new_word;
-        applied_tricks
-            .as_mut()
-            .unwrap_or(&mut explanations)
-            .extend(updated_explanations);
-    }
-
-    if new_word == word {
-        (word, None)
-    } else {
-        (new_word, applied_tricks)
-    }
-}
-
-fn iterate_over_tricks(trick_list: Vec<Trick>, mut word: String) -> (String, Vec<String>) {
-    // word should be modified after each operation is applied.
-    let mut explanations = Vec::new();
-
-    for trick in trick_list.iter() {
-        let (new_word, new_explanation) = match trick.operation {
-            Operation::FlipFlop => flip_flop(trick.str_1, trick.str_2, &word),
-            Operation::Flip => flip(trick.str_1, trick.str_2, &word),
-            Operation::Internal => internal(trick.str_1, trick.str_2, &word),
-        };
-
-        word = new_word;
-
-        if !new_explanation.is_empty() {
-            explanations.push(new_explanation);
-        }
-    }
-
-    (word, explanations)
 }

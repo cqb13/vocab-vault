@@ -1,260 +1,138 @@
-use clap::{Arg, Command};
-use english_to_latin::EnglishTranslationInfo;
-use latin_to_english::LatinTranslationInfo;
-use serde::{Deserialize, Serialize, Serializer};
+pub mod cli;
+pub mod dictionary_structures;
+pub mod translators;
+pub mod utils;
 
-mod english_to_latin;
-mod latin_to_english;
-
-pub mod utils {
-    pub mod filter;
-    pub mod post_processor;
-    pub mod principle_part_generator;
-    pub mod sorter;
-}
-
-pub mod data {
-    pub mod data;
-}
-
-pub mod formatter {
-    pub mod formatter;
-    pub mod key_translator;
-    pub mod prettify_output;
-    pub mod type_translator;
-}
-
-pub mod tricks {
-    pub mod trick_list;
-    pub mod tricks;
-    pub mod word_mods;
-}
-
-use crate::formatter::formatter::sanitize_word;
-use crate::utils::post_processor::post_process;
-
-#[derive(Serialize, Deserialize, Debug)]
-pub struct Translation {
-    word: String,
-    #[serde(serialize_with = "serialize_translation")]
-    pub definitions: TranslationType,
-}
-
-impl Clone for Translation {
-    fn clone(&self) -> Self {
-        Translation {
-            word: self.word.clone(),
-            definitions: self.definitions.clone(),
-        }
-    }
-}
-
-#[derive(Serialize, Deserialize, Debug)]
-#[serde(tag = "type")]
-pub enum TranslationType {
-    #[serde(rename = "Latin")]
-    Latin(Vec<LatinTranslationInfo>),
-    #[serde(rename = "English")]
-    English(Vec<EnglishTranslationInfo>),
-}
-
-impl Clone for TranslationType {
-    fn clone(&self) -> Self {
-        match self {
-            TranslationType::Latin(info) => TranslationType::Latin(info.clone()),
-            TranslationType::English(info) => TranslationType::English(info.clone()),
-        }
-    }
-}
-
-pub enum Language {
-    Latin,
-    English,
-}
-
-impl PartialEq for Language {
-    fn eq(&self, other: &Self) -> bool {
-        match (self, other) {
-            (Language::Latin, Language::Latin) => true,
-            (Language::English, Language::English) => true,
-            _ => false,
-        }
-    }
-}
-
-fn serialize_translation<S>(def: &TranslationType, serializer: S) -> Result<S::Ok, S::Error>
-where
-    S: Serializer,
-{
-    match def {
-        TranslationType::Latin(info) => info.serialize(serializer),
-        TranslationType::English(info) => info.serialize(serializer),
-    }
-}
+use cli::{Arg, Cli, Command, Property};
+use translators::english_to_latin::translate_english_to_latin;
+use translators::latin_to_english::translate_latin_to_english;
+use translators::{DisplayType, Language, Translation, TranslationType};
+use utils::sanitize_word;
 
 fn main() {
     let global_args = vec![
-        Arg::new("max_entries")
-            .short('m')
-            .long("max-entries")
-            .value_name("MAX_ENTRIES")
-            .help("The maximum number of entries")
-            .default_value("6"),
-        Arg::new("formatted")
-            .short('f')
-            .long("formatted")
-            .help("Determines if the output should be formatted"),
-        Arg::new("clean")
-            .short('c')
-            .long("clean")
-            .help("Removes objects with vague values, such as 'unknown'.")
-            .requires("formatted"),
-        Arg::new("sort")
-            .short('s')
-            .long("sort")
-            .help("Will sort the output by frequency."),
-        Arg::new("pretty")
-            .short('p')
-            .long("pretty")
-            .help("Will show a pretty version of the output."),
-        Arg::new("detailed")
-            .short('d')
-            .long("detailed")
-            .help("Will add more information to prettified output.")
+        Arg::new()
+            .with_name("words")
+            .with_value_name("WORDS")
+            .with_help("The words to translate"),
+        Arg::new()
+            .with_name("max")
+            .with_short('m')
+            .with_long("max")
+            .with_value_name("MAX")
+            .default("6")
+            .with_help("The maximum number of translations per definition"),
+        Arg::new()
+            .with_name("sort")
+            .with_short('s')
+            .with_long("sort")
+            .with_help("Sort the output by word frequency"),
+        Arg::new()
+            .with_name("pretty")
+            .with_short('p')
+            .with_long("pretty")
+            .with_help("Prints the output in a pretty format"),
+        Arg::new()
+            .with_name("detailed")
+            .with_short('d')
+            .with_long("detailed")
+            .with_help("Adds more information to the pretty output")
             .requires("pretty"),
     ];
 
-    let matches =
-        Command::new("Vocab Vault")
-            .version("0.1.0")
-            .author("cqb13")
-            .about("A CLI for interacting with the Whitaker's Words Dictionary")
-            .subcommand(
-                Command::new("transEng")
-                    .about("Translate English to Latin")
-                    .arg(
-                        Arg::new("text")
-                            .help("The English text to translate to Latin")
-                            .required(true),
-                    )
-                    .args(&global_args),
-            )
-            .subcommand(
-                Command::new("transLat")
-                    .about("Translate Latin to English")
-                    .arg(
-                        Arg::new("text")
-                            .help("The Latin text to translate to English")
-                            .required(true),
-                    )
-                    .arg(Arg::new("tricks").short('t').long("tricks").help(
-                        "Will attempt to use various tricks on words to get a better result.",
-                    ))
-                    .arg(
-                        Arg::new("filter uncommon")
-                            .short('u')
-                            .long("uncommon")
-                            .help("Will remove uncommon words."),
-                    )
-                    .args(&global_args),
-            )
-            .get_matches();
+    let cli = Cli::new(
+        Property::Auto,
+        Property::Auto,
+        Property::Auto,
+        Property::Auto,
+        Property::Auto,
+        vec![
+            Command::new("transEng", "Translate english to latin").with_args(&global_args),
+            Command::new("transLat", "Translate latin to english")
+                .with_args(&global_args)
+                .with_arg(
+                    Arg::new()
+                        .with_name("tricks")
+                        .with_short('t')
+                        .with_long("tricks")
+                        .with_help("Will attempt to use various tricks to find the translation"),
+                ),
+            Command::new("help", "Helps you"),
+        ],
+    );
 
-    match matches.subcommand() {
-        Some(("transEng", trans_eng_matches)) => {
-            let text = trans_eng_matches.value_of("text").unwrap();
-            let max = trans_eng_matches
-                .value_of("max_entries")
-                .unwrap()
+    let command = cli.match_commands();
+
+    match command.name {
+        "transEng" => {
+            let words = command.get_value().throw_if_none();
+            let max = command
+                .get_value_of("max")
+                .throw_if_none()
                 .parse::<usize>()
                 .unwrap();
-            let formatted_output = trans_eng_matches.is_present("formatted");
-            let clean = trans_eng_matches.is_present("clean");
-            let sort = trans_eng_matches.is_present("sort");
-            let pretty_output = trans_eng_matches.is_present("pretty");
-            let detailed_pretty_output = trans_eng_matches.is_present("detailed");
-            translate_to_latin(
-                text,
-                max,
-                formatted_output,
-                clean,
-                sort,
-                pretty_output,
-                detailed_pretty_output,
-            );
+            let sort = command.has("sort");
+            let pretty = command.has("pretty");
+            let detailed = command.has("detailed");
+
+            english_to_latin(&words, max, sort, pretty, detailed);
         }
-        Some(("transLat", trans_lat_matches)) => {
-            let text = trans_lat_matches.value_of("text").unwrap();
-            let max = trans_lat_matches
-                .value_of("max_entries")
-                .unwrap()
+        "transLat" => {
+            let words = command.get_value().throw_if_none();
+            let max = command
+                .get_value_of("max")
+                .throw_if_none()
                 .parse::<usize>()
                 .unwrap();
-            let tricks = trans_lat_matches.is_present("tricks");
-            let formatted_output = trans_lat_matches.is_present("formatted");
-            let clean = trans_lat_matches.is_present("clean");
-            let sort = trans_lat_matches.is_present("sort");
-            let filter_uncommon = trans_lat_matches.is_present("filter uncommon");
-            let pretty_output = trans_lat_matches.is_present("pretty");
-            let detailed_pretty_output = trans_lat_matches.is_present("detailed");
-            translate_to_english(
-                text,
-                max,
-                tricks,
-                formatted_output,
-                clean,
-                sort,
-                filter_uncommon,
-                pretty_output,
-                detailed_pretty_output,
-            );
+            let sort = command.has("sort");
+            let pretty = command.has("pretty");
+            let detailed = command.has("detailed");
+            let tricks = command.has("tricks");
+
+            latin_to_english(&words, max, tricks, sort, pretty, detailed);
         }
-        _ => println!("Please provide a valid command: transEng or transLat"),
+        "help" => {
+            cli.help();
+        }
+        _ => {
+            println!("Invalid command. Please use `help` to see the available commands.");
+        }
     }
 }
 
-fn translate_to_english(
+fn latin_to_english(
     latin_text: &str,
     max: usize,
     tricks: bool,
-    formatted_output: bool,
-    clean: bool,
     sort: bool,
-    filter_uncommon: bool,
     pretty_output: bool,
     detailed_pretty_output: bool,
 ) {
     let latin_words: Vec<&str> = latin_text.split(" ").collect();
     let mut translations: Vec<Translation> = Vec::new();
 
-    for latin_word in latin_words {
-        let output = latin_to_english::translate_to_english(sanitize_word(latin_word), tricks);
-        if output.len() > 0 {
-            translations.push(Translation {
-                word: latin_word.to_string(),
-                definitions: TranslationType::Latin(output),
-            });
-        }
+    for word in latin_words {
+        let mut definitions = translate_latin_to_english(&sanitize_word(word), tricks);
+        definitions.truncate(max);
+        let mut translation =
+            Translation::new(word.to_string(), TranslationType::Latin(definitions));
+
+        translation.post_process(Language::Latin, sort);
+        translations.push(translation);
     }
 
-    post_process(
-        translations,
-        Language::Latin,
-        max,
-        formatted_output,
-        clean,
-        sort,
-        filter_uncommon,
-        pretty_output,
-        detailed_pretty_output,
-    );
+    if pretty_output {
+        for translation in translations {
+            translation.display(DisplayType::Pretty(detailed_pretty_output));
+        }
+    } else {
+        println!("{}", serde_json::to_string_pretty(&translations).unwrap());
+    }
 }
 
-fn translate_to_latin(
+fn english_to_latin(
     english_text: &str,
     max: usize,
-    formatted_output: bool,
-    clean: bool,
     sort: bool,
     pretty_output: bool,
     detailed_pretty_output: bool,
@@ -263,24 +141,18 @@ fn translate_to_latin(
     let mut translations: Vec<Translation> = Vec::new();
 
     for word in english_words {
-        let output = english_to_latin::translate_to_latin(&sanitize_word(word), max, sort);
-        if output.len() > 0 {
-            translations.push(Translation {
-                word: word.to_string(),
-                definitions: TranslationType::English(output),
-            });
-        }
+        let definitions = translate_english_to_latin(&sanitize_word(word), max, sort);
+        let mut translation =
+            Translation::new(word.to_string(), TranslationType::English(definitions));
+        translation.post_process(Language::English, sort);
+        translations.push(translation);
     }
 
-    post_process(
-        translations,
-        Language::English,
-        max,
-        formatted_output,
-        clean,
-        false, // already sorted in english_to_latin
-        false, // filter_uncommon, does not apply to english, bc we know what each word means
-        pretty_output,
-        detailed_pretty_output,
-    );
+    if pretty_output {
+        for translation in translations {
+            translation.display(DisplayType::Pretty(detailed_pretty_output));
+        }
+    } else {
+        println!("{}", serde_json::to_string_pretty(&translations).unwrap());
+    }
 }

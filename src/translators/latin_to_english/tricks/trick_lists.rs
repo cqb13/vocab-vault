@@ -1,6 +1,4 @@
-use std::vec;
-
-use crate::tricks::tricks::Operation;
+use crate::translators::latin_to_english::tricks::Operation;
 
 pub struct Trick {
     pub operation: Operation,
@@ -8,49 +6,39 @@ pub struct Trick {
     pub str_2: &'static str,
 }
 
-impl Clone for Trick {
-    fn clone(&self) -> Trick {
-        Trick {
-            operation: self.operation.clone(),
-            str_1: self.str_1,
-            str_2: self.str_2,
-        }
-    }
-}
-
 pub fn match_tricks_list(first_char_of_word: char) -> Vec<Trick> {
     match first_char_of_word {
-        'a' => return get_a_tricks(),
-        'd' => return get_d_tricks(),
-        'e' => return get_e_tricks(),
-        'f' => return get_f_tricks(),
-        'g' => return get_g_tricks(),
-        'h' => return get_h_tricks(),
-        'i' => return get_i_tricks(),
-        'j' => return get_j_tricks(),
-        'k' => return get_k_tricks(),
-        'l' => return get_l_tricks(),
-        'm' => return get_m_tricks(),
-        'n' => return get_n_tricks(),
-        'o' => return get_o_tricks(),
-        'p' => return get_p_tricks(),
-        's' => return get_s_tricks(),
-        't' => return get_t_tricks(),
-        'u' => return get_u_tricks(),
-        'y' => return get_y_tricks(),
-        'z' => return get_z_tricks(),
+        'a' => get_a_tricks(),
+        'd' => get_d_tricks(),
+        'e' => get_e_tricks(),
+        'f' => get_f_tricks(),
+        'g' => get_g_tricks(),
+        'h' => get_h_tricks(),
+        'i' => get_i_tricks(),
+        'j' => get_j_tricks(),
+        'k' => get_k_tricks(),
+        'l' => get_l_tricks(),
+        'm' => get_m_tricks(),
+        'n' => get_n_tricks(),
+        'o' => get_o_tricks(),
+        'p' => get_p_tricks(),
+        's' => get_s_tricks(),
+        't' => get_t_tricks(),
+        'u' => get_u_tricks(),
+        'y' => get_y_tricks(),
+        'z' => get_z_tricks(),
         _ => panic!("Invalid first char of word: {}", first_char_of_word),
     }
 }
 
 pub fn match_slur_trick_list(first_char_of_word: char) -> Vec<Trick> {
     match first_char_of_word {
-        'a' => return get_a_slur_tricks(),
-        'c' => return get_c_slur_tricks(),
-        'i' => return get_i_slur_tricks(),
-        'n' => return get_n_slur_tricks(),
-        'q' => return get_q_slur_tricks(),
-        's' => return get_s_slur_tricks(),
+        'a' => get_a_slur_tricks(),
+        'c' => get_c_slur_tricks(),
+        'i' => get_i_slur_tricks(),
+        'n' => get_n_slur_tricks(),
+        'q' => get_q_slur_tricks(),
+        's' => get_s_slur_tricks(),
         _ => panic!("Invalid first char of word: {}", first_char_of_word),
     }
 }

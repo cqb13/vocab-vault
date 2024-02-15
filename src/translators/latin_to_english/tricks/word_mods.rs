@@ -69,20 +69,3 @@ pub fn internal(str_to_replace: &str, replacement_str: &str, word: &str) -> (Str
 
     (word.to_string(), explanation)
 }
-
-pub fn try_syncopes(word: String) -> (String, String) {
-    let mut new_word = word;
-    let mut explanation = String::new();
-
-    if new_word.len() >= 3 && new_word.ends_with("ivi") {
-        new_word.replace_range(new_word.len() - 3..new_word.len(), "ii");
-        explanation =
-            String::from("Syncopated perfect 'ivi' can drop 'v' without contracting vowel");
-    } else if new_word.len() >= 4 && new_word.ends_with("iver") {
-        new_word.replace_range(new_word.len() - 4..new_word.len(), "ier");
-        explanation =
-            String::from("Syncopated perfect 'iver' can drop 'v' without contracting vowel");
-    }
-
-    (new_word, explanation)
-}

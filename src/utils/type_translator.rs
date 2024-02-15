@@ -1,12 +1,13 @@
-use crate::data::data::NValue;
+use crate::dictionary_structures::dictionary_values::NValue;
+use crate::dictionary_structures::dictionary_keys::PartOfSpeech;
 
-pub fn translate_type(number_types: Vec<NValue>, pos: String) -> String {
-    let (num_type_1, _num_type_2) = translate_number_types(number_types);
+pub fn translate_type(number_types: NValue, pos: PartOfSpeech) -> String {
+    let num_type_1 = number_types.get_n_value_1();
 
-    let type_name = match pos.as_str() {
-        "noun" => translate_noun_type(num_type_1),
-        "verb" => translate_verb_type(num_type_1),
-        "adjective" => translate_adjective_type(num_type_1),
+    let type_name = match pos {
+        PartOfSpeech::Noun => translate_noun_type(num_type_1),
+        PartOfSpeech::Verb => translate_verb_type(num_type_1),
+        PartOfSpeech::Adjective => translate_adjective_type(num_type_1),
         _ => "unknown".to_string(),
     };
 
@@ -50,18 +51,4 @@ fn translate_adjective_type(num_type_1: i8) -> String {
     };
 
     type_name.to_string()
-}
-
-pub fn translate_number_types(number_types: Vec<NValue>) -> (i8, i8) {
-    let num_type_1 = match &number_types.get(0) {
-        Some(NValue::Integer(num)) => *num,
-        _ => 0,
-    };
-
-    let num_type_2 = match &number_types.get(1) {
-        Some(NValue::Integer(num)) => *num,
-        _ => 0,
-    };
-
-    (num_type_1, num_type_2)
 }
