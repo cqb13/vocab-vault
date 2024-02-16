@@ -5,11 +5,14 @@ pub mod use_data;
 pub mod utils;
 
 use cli::{Arg, Cli, Command, Property};
+use dictionary_structures::dictionary_keys::PartOfSpeech;
 use translators::english_to_latin::translate_english_to_latin;
 use translators::latin_to_english::translate_latin_to_english;
 use translators::{DisplayType, Language, Translation, TranslationType};
 use use_data::WordType;
 use utils::sanitize_word;
+
+use crate::cli::ArgValue;
 
 fn main() {
     let global_args_for_translation = vec![
@@ -191,9 +194,26 @@ fn main() {
                 std::process::exit(0);
             });
 
+            let pos_list = match pos {
+                ArgValue::Present(pos) => {
+                    let pos_list: Vec<PartOfSpeech> = pos
+                        .split(",")
+                        .map(|pos| PartOfSpeech::dict_key_to_part_of_speech(pos))
+                        .collect();
+                    Some(pos_list)
+                }
+                ArgValue::Missing(_) => None,
+            };
+
+            if pos_list.is_some() && pos_list.as_ref().unwrap().contains(&PartOfSpeech::Unknown) {
+                println!("Invalid part of speech entered.");
+                println!("Please use the following: noun, verb, participle, adjective, preposition, pronoun, interjection, numeral, conjunction, adverb, number, supine, packon, tackon, prefix, suffix");
+                std::process::exit(0);
+            }
+
             println!(
-                "type: {}, pos: {:?}, max: {:?}, min: {:?}, exact: {:?}, amount: {:?}, random: {:?}, to: {:?}",
-                type_of_words, pos, max, min, exact, amount, random, to
+                "type: {:?}, pos: {:?}, max: {:?}, min: {:?}, exact: {:?}, amount: {:?}, random: {:?}, to: {:?}",
+                word_type, pos_list, max, min, exact, amount, random, to
             );
         }
         "help" => {
