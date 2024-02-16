@@ -98,7 +98,10 @@ impl Translation {
                             .collect();
                         TranslationType::Latin(new_definitions)
                     }
-                    _ => panic!("Expected Latin translation type"),
+                    _ => {
+                        println!("Expected Latin translation type");
+                        std::process::exit(0);
+                    }
                 };
             }
             Language::English => {
@@ -118,7 +121,10 @@ impl Translation {
                             .collect();
                         TranslationType::English(new_definitions)
                     }
-                    _ => panic!("Expected English translation type"),
+                    _ => {
+                        println!("Expected English translation type");
+                        std::process::exit(0);
+                    }
                 };
             }
         }

@@ -75,11 +75,17 @@ fn check_stems(
                 {
                     let n_from_inflection = match &inflection.n {
                         Some(n) => n,
-                        None => panic!("Inflection has no n value"),
+                        None => {
+                            println!("Inflection has no n value");
+                            std::process::exit(0);
+                        }
                     };
                     let n_from_stem = match &stem.n {
                         Some(n) => n,
-                        None => panic!("Stem has no n value"),
+                        None => {
+                            println!("Stem has no n value");
+                            std::process::exit(0);
+                        }
                     };
 
                     if n_from_stem.len() == 1 && n_from_stem[0] != n_from_inflection[0] {

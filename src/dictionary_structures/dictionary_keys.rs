@@ -296,7 +296,10 @@ impl PartOfSpeech {
             PartOfSpeech::Verb => crate::utils::principle_part_generator::Generator::Verb,
             PartOfSpeech::Participle => crate::utils::principle_part_generator::Generator::Verb,
             PartOfSpeech::Numeral => crate::utils::principle_part_generator::Generator::Numeral,
-            _ => panic!("Cannot convert {:?} to a generator", self),
+            _ => {
+                println!("Cannot convert {:?} to a generator", self);
+                std::process::exit(0);
+            }
         }
     }
 

@@ -1,11 +1,11 @@
 mod utils;
 
 use self::utils::{remove_duplicates, weigh_words};
-use crate::dictionary_structures::dictionary_values::{
-    EnglishWordInfo, Form, LatinWordInfo, LongForm,
-};
 use crate::dictionary_structures::dictionary_keys::{
     Age, Area, Frequency, Geography, PartOfSpeech, Source,
+};
+use crate::dictionary_structures::dictionary_values::{
+    EnglishWordInfo, Form, LatinWordInfo, LongForm,
 };
 use crate::utils::data::{get_english_dictionary, get_latin_dictionary};
 use crate::utils::{convert_number_to_roman_numeral, is_all_numbers};

@@ -1,5 +1,5 @@
-use crate::dictionary_structures::dictionary_values::NValue;
 use crate::dictionary_structures::dictionary_keys::PartOfSpeech;
+use crate::dictionary_structures::dictionary_values::NValue;
 
 pub fn translate_type(number_types: NValue, pos: PartOfSpeech) -> String {
     let num_type_1 = number_types.get_n_value_1();

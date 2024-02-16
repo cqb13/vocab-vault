@@ -186,8 +186,10 @@ fn main() {
                 return;
             }
 
-            let word_type = WordType::from_str(type_of_words.as_str())
-                .unwrap_or_else(|e| panic!("Error: {}", e));
+            let word_type = WordType::from_str(type_of_words.as_str()).unwrap_or_else(|e| {
+                println!("{}", e);
+                std::process::exit(0);
+            });
 
             println!(
                 "type: {}, pos: {:?}, max: {:?}, min: {:?}, exact: {:?}, amount: {:?}, random: {:?}, to: {:?}",

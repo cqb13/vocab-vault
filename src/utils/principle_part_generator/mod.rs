@@ -34,26 +34,30 @@ pub fn generate_principle_parts(
     match generator {
         Generator::Noun => {
             if gender.is_none() {
-                panic!("A gender is required for generating principle parts for a noun, but none was provided");
+                println!("A gender is required for generating principle parts for a noun, but none was provided");
+                std::process::exit(0);
             }
 
             generate_for_nouns(num_type_1, num_type_2, gender.unwrap(), parts)
         }
         Generator::Adjective => {
             if comparison.is_none() {
-                panic!("A comparison is required for generating principle parts for an adjective, but none was provided");
+                println!("A comparison is required for generating principle parts for an adjective, but none was provided");
+                std::process::exit(0);
             }
             generate_for_adjectives(num_type_1, num_type_2, parts, comparison.unwrap())
         }
         Generator::Verb => {
             if verb_type.is_none() {
-                panic!("A verb type is required for generating principle parts for a verb, but none was provided");
+                println!("A verb type is required for generating principle parts for a verb, but none was provided");
+                std::process::exit(0);
             }
             generate_for_verbs(num_type_1, num_type_2, parts, verb_type.unwrap())
         }
         Generator::Numeral => {
             if numeral_type.is_none() {
-                panic!("A numeral type is required for generating principle parts for a numeral, but none was provided");
+                println!("A numeral type is required for generating principle parts for a numeral, but none was provided");
+                std::process::exit(0);
             }
             generate_for_numerals(num_type_1, num_type_2, parts, numeral_type.unwrap())
         }
@@ -71,7 +75,8 @@ pub fn set_principle_parts(
 
     if endings.iter().all(|x| x.0 == "" && x.1 == 0) {
         if special_case.is_none() {
-            panic!("No Endings or Special Case provided");
+            println!("No Endings or Special Case provided");
+            std::process::exit(0);
         }
         return vec![parts[0].clone() + " | " + special_case.unwrap_or("")];
     }

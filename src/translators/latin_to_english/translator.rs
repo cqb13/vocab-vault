@@ -1,5 +1,5 @@
-use crate::dictionary_structures::dictionary_values::{Inflection, LatinWordInfo, Part, Stem};
 use crate::dictionary_structures::dictionary_keys::PartOfSpeech;
+use crate::dictionary_structures::dictionary_values::{Inflection, LatinWordInfo, Part, Stem};
 use crate::translators::latin_to_english::utils::add_stem_to_word;
 use crate::translators::latin_to_english::LatinTranslationInfo;
 use crate::utils::data::get_latin_dictionary;
@@ -81,8 +81,8 @@ pub fn lookup_stems(
     }
 
     if output.len() > 0 {
-        return Some(output);
+        Some(output)
     } else {
-        return None;
+        None
     }
 }

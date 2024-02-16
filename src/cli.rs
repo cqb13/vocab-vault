@@ -121,10 +121,11 @@ impl<'a> Command<'a> {
                     .iter()
                     .any(|s| *s == format!("--{}", required_arg.long.unwrap()))
             {
-                panic!(
-                    "The argument {} requires the argument {}",
+                println!(
+                    "The argument \"{}\" requires the argument \"{}\"",
                     arg.name, requires
                 );
+                std::process::exit(0);
             }
         }
     }
@@ -309,7 +310,8 @@ impl ArgValue {
     pub fn throw_if_none(&self) -> String {
         match self {
             ArgValue::Missing(name) => {
-                panic!("Missing required argument: {}", name);
+                println!("Missing required argument: {}", name);
+                std::process::exit(0);
             }
             ArgValue::Present(value) => value.to_string(),
         }
