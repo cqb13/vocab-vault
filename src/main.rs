@@ -9,7 +9,7 @@ use dictionary_structures::dictionary_keys::PartOfSpeech;
 use translators::english_to_latin::translate_english_to_latin;
 use translators::latin_to_english::translate_latin_to_english;
 use translators::{DisplayType, Language, Translation, TranslationType};
-use use_data::WordType;
+use use_data::{get_list, WordType};
 use utils::sanitize_word;
 
 use crate::cli::ArgValue;
@@ -211,10 +211,32 @@ fn main() {
                 std::process::exit(0);
             }
 
-            println!(
-                "type: {:?}, pos: {:?}, max: {:?}, min: {:?}, exact: {:?}, amount: {:?}, random: {:?}, to: {:?}",
-                word_type, pos_list, max, min, exact, amount, random, to
-            );
+            let max = match max {
+                ArgValue::Present(max) => Some(max.parse::<usize>().unwrap() as i32),
+                ArgValue::Missing(_) => None,
+            };
+
+            let min = match min {
+                ArgValue::Present(min) => Some(min.parse::<usize>().unwrap() as i32),
+                ArgValue::Missing(_) => None,
+            };
+
+            let exact = match exact {
+                ArgValue::Present(exact) => Some(exact.parse::<usize>().unwrap() as i32),
+                ArgValue::Missing(_) => None,
+            };
+
+            let amount = match amount {
+                ArgValue::Present(amount) => Some(amount.parse::<usize>().unwrap() as i32),
+                ArgValue::Missing(_) => None,
+            };
+
+            let to = match to {
+                ArgValue::Present(to) => Some(to),
+                ArgValue::Missing(_) => None,
+            };
+
+            get_list(word_type, pos_list, max, min, exact, amount, random, to);
         }
         "help" => {
             cli.help();

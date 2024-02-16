@@ -1,3 +1,10 @@
+use crate::dictionary_structures::dictionary_keys::PartOfSpeech;
+use crate::dictionary_structures::dictionary_values::{LatinWordInfo, EnglishWordInfo};
+
+mod parsers {
+    mod latin_dictionary_parser;
+}
+
 #[derive(Debug)]
 pub enum WordType {
     English,
@@ -30,4 +37,22 @@ impl WordType {
             _ => Err(format!("Invalid word type: {}", s)),
         }
     }
+}
+
+pub enum OutputList {
+    Latin(Vec<LatinWordInfo>),
+    English(Vec<EnglishWordInfo>),
+}
+
+pub fn get_list(
+    word_type: WordType,
+    pos_list: Option<Vec<PartOfSpeech>>,
+    max: Option<i32>,
+    min: Option<i32>,
+    exact: Option<i32>,
+    amount: Option<i32>,
+    random: bool,
+    to: Option<String>,
+) {
+
 }
