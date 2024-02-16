@@ -1,8 +1,10 @@
 use crate::dictionary_structures::dictionary_keys::PartOfSpeech;
 use crate::dictionary_structures::dictionary_values::{LatinWordInfo, EnglishWordInfo};
+use self::parsers::latin_dictionary_parser::parse_latin_dictionary;
+use serde_json;
 
 mod parsers {
-    mod latin_dictionary_parser;
+    pub mod latin_dictionary_parser;
 }
 
 #[derive(Debug)]
@@ -54,5 +56,12 @@ pub fn get_list(
     random: bool,
     to: Option<String>,
 ) {
-
+    let list: OutputList = match word_type {
+        WordType::Latin => {
+            let list = parse_latin_dictionary(pos_list, max, min, exact, amount, random);
+            println!("{}", serde_json::to_string_pretty(&list).unwrap());
+            OutputList::Latin(list)
+        }
+        _ => unimplemented!(),
+    };
 }
