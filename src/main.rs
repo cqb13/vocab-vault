@@ -121,6 +121,14 @@ fn main() {
                 )
                 .with_arg(
                     Arg::new()
+                    .with_name("display")
+                    .with_short('d')
+                    .with_long("display")
+                    .with_value_name("DISPLAY")
+                    .with_help("Will display as json"),
+                )
+                .with_arg(
+                    Arg::new()
                     .with_name("to")
                     .with_short('t')
                     .with_long("to")
@@ -169,6 +177,7 @@ fn main() {
             let exact = command.get_value_of("exact");
             let amount = command.get_value_of("amount");
             let random = command.has("random");
+            let display = command.has("display");
             let to = command.get_value_of("to");
 
             if type_of_words != "english"
@@ -236,7 +245,9 @@ fn main() {
                 ArgValue::Missing(_) => None,
             };
 
-            get_list(word_type, pos_list, max, min, exact, amount, random, to);
+            get_list(
+                word_type, pos_list, max, min, exact, amount, random, display, to,
+            );
         }
         "help" => {
             cli.help();
@@ -247,6 +258,7 @@ fn main() {
     }
 }
 
+//TODO: get dictionaries here, to not repeat getting them for each word
 fn latin_to_english(
     latin_text: &str,
     max: usize,

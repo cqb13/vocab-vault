@@ -464,7 +464,7 @@ impl<'de> Deserialize<'de> for UniqueLatinWordInfo {
     }
 }
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct EnglishWordInfo {
     pub orth: String,
     pub wid: i32,
