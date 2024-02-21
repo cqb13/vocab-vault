@@ -1604,6 +1604,33 @@ impl Attachment {
     }
 }
 
+impl Serialize for Attachment {
+    fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
+    where
+        S: serde::ser::Serializer,
+    {
+        let mut map = serde_json::Map::new();
+        map.insert(
+            "pos".to_string(),
+            serde_json::Value::String(self.pos.as_str().to_string()),
+        );
+        map.insert(
+            "senses".to_string(),
+            serde_json::Value::Array(
+                self.senses
+                    .iter()
+                    .map(|s| serde_json::Value::String(s.to_string()))
+                    .collect(),
+            ),
+        );
+        map.insert(
+            "orth".to_string(),
+            serde_json::Value::String(self.orth.to_string()),
+        );
+        serde_json::Value::Object(map).serialize(serializer)
+    }
+}
+
 impl<'de> Deserialize<'de> for Attachment {
     fn deserialize<D>(deserializer: D) -> Result<Attachment, D::Error>
     where
