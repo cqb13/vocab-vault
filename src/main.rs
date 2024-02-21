@@ -68,7 +68,7 @@ fn main() {
                     Arg::new()
                     .with_name("type")
                     .with_value_name("TYPE")
-                    .with_help("The type of words to get. Options: english, latin, inflections, not-packons, packons, prefixes, stems, suffixes, tackons, tickons, unique-latin"),
+                    .with_help("The type of words to get. Options: english, latin, inflections, not_packons, packons, prefixes, stems, suffixes, tackons, tickons, unique_latin"),
                 )
                 .with_arg(
                     Arg::new()
@@ -183,14 +183,14 @@ fn main() {
             if type_of_words != "english"
                 && type_of_words != "latin"
                 && type_of_words != "inflections"
-                && type_of_words != "not-packons"
+                && type_of_words != "not_packons"
                 && type_of_words != "packons"
                 && type_of_words != "prefixes"
                 && type_of_words != "stems"
                 && type_of_words != "suffixes"
                 && type_of_words != "tackons"
                 && type_of_words != "tickons"
-                && type_of_words != "unique-latin"
+                && type_of_words != "unique_latin"
             {
                 println!(
                     "Invalid type of words. Please use `help` to see the available types of words."

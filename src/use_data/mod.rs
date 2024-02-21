@@ -1,5 +1,6 @@
 use self::parsers::english_dictionary_parser::parse_english_dictionary;
 use self::parsers::latin_dictionary_parser::parse_latin_dictionary;
+use self::parsers::unique_latin_dictionary_parser::parse_unique_latin_words;
 use crate::dictionary_structures::dictionary_keys::PartOfSpeech;
 use crate::dictionary_structures::dictionary_values::{EnglishWordInfo, LatinWordInfo};
 use serde::Serialize;
@@ -8,6 +9,7 @@ use serde_json;
 mod parsers {
     pub mod english_dictionary_parser;
     pub mod latin_dictionary_parser;
+    pub mod unique_latin_dictionary_parser;
 }
 
 mod utils;
@@ -30,8 +32,8 @@ pub enum WordType {
 impl WordType {
     pub fn from_str(s: &str) -> Result<WordType, String> {
         match s {
-            "english" => Ok(WordType::English),
-            "latin" => Ok(WordType::Latin),
+            "english" => Ok(WordType::English), // done
+            "latin" => Ok(WordType::Latin), // done
             "inflections" => Ok(WordType::Inflections),
             "not_packons" => Ok(WordType::NotPackons),
             "packons" => Ok(WordType::Packons),
@@ -40,7 +42,7 @@ impl WordType {
             "suffixes" => Ok(WordType::Suffixes),
             "tackons" => Ok(WordType::Tackons),
             "tickons" => Ok(WordType::Tickons),
-            "unique_latin" => Ok(WordType::UniqueLatin),
+            "unique_latin" => Ok(WordType::UniqueLatin), // done
             _ => Err(format!("Invalid word type: {}", s)),
         }
     }
@@ -65,17 +67,20 @@ pub fn get_list(
     to: Option<String>,
 ) {
     let list: OutputList = match word_type {
-        WordType::Latin => {
-            let list = parse_latin_dictionary(pos_list, max, min, exact, amount, random);
-            OutputList::Latin(list)
-        }
         WordType::English => {
             let list = parse_english_dictionary(pos_list, max, min, exact, amount, random);
             OutputList::English(list)
         }
+        WordType::Latin => {
+            let list = parse_latin_dictionary(pos_list, max, min, exact, amount, random);
+            OutputList::Latin(list)
+        }
+        WordType::UniqueLatin => {
+            let list = parse_unique_latin_words(pos_list, max, min, exact, amount, random);
+            OutputList::Latin(list)
+        }
         _ => unimplemented!(),
     };
-
     if display {
         println!("{}", serde_json::to_string_pretty(&list).unwrap());
     }
