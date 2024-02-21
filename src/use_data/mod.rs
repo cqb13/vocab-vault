@@ -2,13 +2,16 @@ use self::parsers::attachment_parser::parse_attachments;
 use self::parsers::english_dictionary_parser::parse_english_dictionary;
 use self::parsers::latin_dictionary_parser::parse_latin_dictionary;
 use self::parsers::latin_inflection_parser::parse_latin_inflections;
+use self::parsers::modifiers_parser::parse_modifiers;
+use self::parsers::stem_parser::parse_latin_stems;
 use self::parsers::unique_latin_dictionary_parser::parse_unique_latin_words;
 use crate::dictionary_structures::dictionary_keys::PartOfSpeech;
 use crate::dictionary_structures::dictionary_values::{
-    Attachment, EnglishWordInfo, Inflection, LatinWordInfo,
+    Attachment, EnglishWordInfo, Inflection, LatinWordInfo, Modifier, Stem,
 };
 use crate::utils::data::{
-    get_latin_not_packons, get_latin_packons, get_latin_tackons, get_latin_tickons,
+    get_latin_not_packons, get_latin_packons, get_latin_prefixes, get_latin_suffixes,
+    get_latin_tackons, get_latin_tickons,
 };
 use serde::Serialize;
 use serde_json;
@@ -18,6 +21,8 @@ mod parsers {
     pub mod english_dictionary_parser;
     pub mod latin_dictionary_parser;
     pub mod latin_inflection_parser;
+    pub mod modifiers_parser;
+    pub mod stem_parser;
     pub mod unique_latin_dictionary_parser;
 }
 
@@ -64,6 +69,8 @@ pub enum OutputList {
     English(Vec<EnglishWordInfo>),
     Inflections(Vec<Inflection>),
     Attachment(Vec<Attachment>),
+    Modifiers(Vec<Modifier>),
+    Stems(Vec<Stem>),
 }
 
 pub fn get_list(
@@ -100,6 +107,20 @@ pub fn get_list(
             let list = parse_attachments(attachments, None, max, min, exact, amount, random);
             OutputList::Attachment(list)
         }
+        WordType::Prefixes => {
+            let modifiers = get_latin_prefixes();
+            let list = parse_modifiers(modifiers, pos_list, max, min, exact, amount, random);
+            OutputList::Modifiers(list)
+        }
+        WordType::Stems => {
+            let list = parse_latin_stems(pos_list, max, min, exact, amount, random);
+            OutputList::Stems(list)
+        }
+        WordType::Suffixes => {
+            let modifiers = get_latin_suffixes();
+            let list = parse_modifiers(modifiers, pos_list, max, min, exact, amount, random);
+            OutputList::Modifiers(list)
+        }
         WordType::Tackons => {
             let attachments = get_latin_tackons();
             let list = parse_attachments(attachments, None, max, min, exact, amount, random);
@@ -114,7 +135,6 @@ pub fn get_list(
             let list = parse_unique_latin_words(pos_list, max, min, exact, amount, random);
             OutputList::Latin(list)
         }
-        _ => unimplemented!(),
     };
     if display {
         println!("{}", serde_json::to_string_pretty(&list).unwrap());
