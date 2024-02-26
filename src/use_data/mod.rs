@@ -4,14 +4,13 @@ use self::parsers::latin_dictionary_parser::parse_latin_dictionary;
 use self::parsers::latin_inflection_parser::parse_latin_inflections;
 use self::parsers::modifiers_parser::parse_modifiers;
 use self::parsers::stem_parser::parse_latin_stems;
-use self::parsers::unique_latin_dictionary_parser::parse_unique_latin_words;
 use crate::dictionary_structures::dictionary_keys::PartOfSpeech;
 use crate::dictionary_structures::dictionary_values::{
     Attachment, EnglishWordInfo, Inflection, LatinWordInfo, Modifier, Stem,
 };
 use crate::utils::data::{
-    get_latin_not_packons, get_latin_packons, get_latin_prefixes, get_latin_suffixes,
-    get_latin_tackons, get_latin_tickons,
+    get_latin_dictionary, get_latin_not_packons, get_latin_packons, get_latin_prefixes,
+    get_latin_suffixes, get_latin_tackons, get_latin_tickons, get_unique_latin_words,
 };
 use serde::Serialize;
 use serde_json;
@@ -23,7 +22,6 @@ mod parsers {
     pub mod latin_inflection_parser;
     pub mod modifiers_parser;
     pub mod stem_parser;
-    pub mod unique_latin_dictionary_parser;
 }
 
 mod utils;
@@ -90,7 +88,9 @@ pub fn get_list(
             OutputList::English(list)
         }
         WordType::Latin => {
-            let list = parse_latin_dictionary(pos_list, max, min, exact, amount, random);
+            let dictionary = get_latin_dictionary();
+            let list =
+                parse_latin_dictionary(dictionary, pos_list, max, min, exact, amount, random);
             OutputList::Latin(list)
         }
         WordType::Inflections => {
@@ -132,7 +132,9 @@ pub fn get_list(
             OutputList::Attachment(list)
         }
         WordType::UniqueLatin => {
-            let list = parse_unique_latin_words(pos_list, max, min, exact, amount, random);
+            let dictionary = get_unique_latin_words();
+            let list =
+                parse_latin_dictionary(dictionary, pos_list, max, min, exact, amount, random);
             OutputList::Latin(list)
         }
     };
