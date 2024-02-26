@@ -10,6 +10,7 @@ use translators::english_to_latin::translate_english_to_latin;
 use translators::latin_to_english::translate_latin_to_english;
 use translators::{DisplayType, Language, Translation, TranslationType};
 use use_data::{get_list, WordType};
+use utils::data::{get_english_dictionary, get_latin_dictionary};
 use utils::sanitize_word;
 
 use crate::cli::ArgValue;
@@ -307,8 +308,17 @@ fn english_to_latin(
     let english_words: Vec<&str> = english_text.split(" ").collect();
     let mut translations: Vec<Translation> = Vec::new();
 
+    let latin_dictionary = get_latin_dictionary();
+    let english_dictionary = get_english_dictionary();
+
     for word in english_words {
-        let definitions = translate_english_to_latin(&sanitize_word(word), max, sort);
+        let definitions = translate_english_to_latin(
+            &english_dictionary,
+            &latin_dictionary,
+            &sanitize_word(word),
+            max,
+            sort,
+        );
         let mut translation =
             Translation::new(word.to_string(), TranslationType::English(definitions));
         translation.post_process(Language::English, sort);

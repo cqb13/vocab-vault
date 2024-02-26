@@ -94,6 +94,7 @@ pub fn translate_latin_to_english(latin_word: &str, tricks: bool) -> Vec<LatinTr
 
     let mut output = parse(&latin_word, false);
 
+    // curebantur -> currebantur
     if tricks {
         let trick_results = try_tricks(&latin_word);
 

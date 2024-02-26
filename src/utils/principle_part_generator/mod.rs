@@ -81,8 +81,8 @@ pub fn set_principle_parts(
         return vec![parts[0].clone() + " | " + special_case.unwrap_or("")];
     }
 
-    for ending in endings {
-        if parts[ending.1 as usize - 1] == "zzz" {
+    for (ending_number, ending) in endings.into_iter().enumerate() {
+        if parts[ending_number] == "zzz" {
             principle_parts.push("---".to_string());
             continue;
         }

@@ -7,7 +7,6 @@ use crate::dictionary_structures::dictionary_keys::{
 use crate::dictionary_structures::dictionary_values::{
     EnglishWordInfo, Form, LatinWordInfo, LongForm,
 };
-use crate::utils::data::{get_english_dictionary, get_latin_dictionary};
 use crate::utils::{convert_number_to_roman_numeral, is_all_numbers};
 use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
@@ -25,6 +24,8 @@ impl EnglishTranslationInfo {
 }
 
 pub fn translate_english_to_latin(
+    english_dictionary: &Vec<EnglishWordInfo>,
+    latin_dictionary: &Vec<LatinWordInfo>,
     english_word: &str,
     max: usize,
     sort: bool,
@@ -69,13 +70,12 @@ pub fn translate_english_to_latin(
         }
     }
 
-    let english_words = get_english_dictionary();
-    let latin_words = get_latin_dictionary();
+    let latin_words_map: HashMap<i32, &LatinWordInfo> = latin_dictionary
+        .iter()
+        .map(|word| (word.id, word))
+        .collect();
 
-    let latin_words_map: HashMap<i32, &LatinWordInfo> =
-        latin_words.iter().map(|word| (word.id, word)).collect();
-
-    for word in english_words {
+    for word in english_dictionary {
         if word.orth.to_lowercase() == english_word.to_lowercase() {
             let mut translation =
                 EnglishTranslationInfo::new(EnglishWordInfo::new(), LatinWordInfo::new());
@@ -84,7 +84,7 @@ pub fn translate_english_to_latin(
                 translation.translation.set_word(latin_word);
             }
 
-            translation.word.set_word(word);
+            translation.word.set_word(word.clone());
             output.push(translation);
         }
     }
