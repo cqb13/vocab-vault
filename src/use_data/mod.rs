@@ -58,6 +58,15 @@ impl WordType {
             _ => Err(format!("Invalid word type: {}", s)),
         }
     }
+
+    pub fn is_valid_word_type(s: &str) -> bool {
+        match s {
+            "english" | "latin" | "inflections" | "inflection" | "not_packons" | "not_packon"
+            | "packon" | "packons" | "prefixes" | "prefix" | "stems" | "stem" | "suffixes"
+            | "suffix" | "tackons" | "tackon" | "tickons" | "tickon" | "unique_latin" => true,
+            _ => false,
+        }
+    }
 }
 
 #[derive(Debug, Serialize)]
@@ -140,5 +149,11 @@ pub fn get_list(
     };
     if display {
         println!("{}", serde_json::to_string_pretty(&list).unwrap());
+    }
+
+    if to.is_some() {
+        let file_path = to.unwrap();
+        let file = std::fs::File::create(file_path).unwrap();
+        serde_json::to_writer_pretty(file, &list).unwrap();
     }
 }

@@ -99,7 +99,6 @@ impl<'a> Command<'a> {
     /**
      * Adds arguments to the command
      */
-
     pub fn with_args(mut self, args: &Vec<Arg>) -> Command<'a> {
         if self.args.is_none() {
             self.args = Some(vec![]);

@@ -181,26 +181,7 @@ fn main() {
             let display = command.has("display");
             let to = command.get_value_of("to");
 
-            if type_of_words != "english"
-                && type_of_words != "latin"
-                && type_of_words != "inflections"
-                && type_of_words != "inflection"
-                && type_of_words != "not_packons"
-                && type_of_words != "not_packon"
-                && type_of_words != "packon"
-                && type_of_words != "packons"
-                && type_of_words != "prefixes"
-                && type_of_words != "prefix"
-                && type_of_words != "stems"
-                && type_of_words != "stem"
-                && type_of_words != "suffixes"
-                && type_of_words != "suffix"
-                && type_of_words != "tackons"
-                && type_of_words != "tackon"
-                && type_of_words != "tickons"
-                && type_of_words != "tickon"
-                && type_of_words != "unique_latin"
-            {
+            if !WordType::is_valid_word_type(&type_of_words) {
                 println!(
                     "Invalid type of words. Please use `help` to see the available types of words."
                 );
