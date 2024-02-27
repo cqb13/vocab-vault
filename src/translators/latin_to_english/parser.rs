@@ -43,6 +43,7 @@ pub fn find_form(latin_word: &str, reduced: bool) -> Option<Vec<LatinTranslation
         }
     }
 
+    //TODO: curebantur -> currebantur (needs to work on stem or word: curo -> curro)
     let (stems, inflections) = check_stems(latin_word, &latin_word_inflections);
     let mut output = lookup_stems(stems, inflections);
 

@@ -66,9 +66,9 @@ pub fn reduce(latin_word: &str) -> Option<Vec<LatinTranslationInfo>> {
             word.word.set_modifiers(modifiers.clone());
         }
 
-        return output;
+        output
     } else {
-        return None;
+        None
     }
 }
 

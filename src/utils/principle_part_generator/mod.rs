@@ -65,7 +65,6 @@ pub fn generate_principle_parts(
     }
 }
 
-// first item in endings is the ending, and the second item is the number of the stem the ending is attached to
 pub fn set_principle_parts(
     parts: Vec<String>,
     endings: Vec<(&str, i8)>,
@@ -81,26 +80,30 @@ pub fn set_principle_parts(
         return vec![parts[0].clone() + " | " + special_case.unwrap_or("")];
     }
 
-    for (ending_number, ending) in endings.into_iter().enumerate() {
-        if parts[ending_number] == "zzz" {
+    // number in ending is referring to principle part number to add ending to
+    for ending in endings {
+        let ending_to_add_to_part = ending.0;
+        let part_to_add_ending_to = ending.1;
+
+        if ending_to_add_to_part == "" && part_to_add_ending_to == 0 {
             principle_parts.push("---".to_string());
             continue;
         }
 
-        if ending.0 == "" && ending.1 == 0 {
-            // when there is no principle part
-            principle_parts.push("---".to_string());
-        } else if ending.0 == "" && ending.1 != 0 {
-            // when the stem is the principle part
-            principle_parts.push(parts[ending.1 as usize - 1].clone());
-        } else if ending.0 != "" && ending.1 == 0 {
-            // when the stem is replaced with the ending
-            principle_parts.push(ending.0.to_string());
-        } else {
-            // adding
-            principle_parts.push(parts[ending.1 as usize - 1].clone() + &ending.0);
+        if ending_to_add_to_part != "" && part_to_add_ending_to == 0 {
+            principle_parts.push(ending_to_add_to_part.to_string());
+            continue;
         }
-    }
 
+        let mut part = parts[part_to_add_ending_to as usize - 1].to_string();
+
+        if part == "zzz" {
+            principle_parts.push("---".to_string());
+            continue;
+        }
+
+        part.push_str(ending_to_add_to_part);
+        principle_parts.push(part);
+    }
     principle_parts
 }
