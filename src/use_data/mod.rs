@@ -151,6 +151,7 @@ pub fn get_list(
         println!("{}", serde_json::to_string_pretty(&list).unwrap());
     }
 
+    // TODO: have a default file name if file is not in path, have add json ending if ending is not json or there is no ending
     if to.is_some() {
         let file_path = to.unwrap();
         let file = std::fs::File::create(file_path).unwrap();

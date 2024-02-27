@@ -116,7 +116,6 @@ fn main() {
                     .with_name("random")
                     .with_short('r')
                     .with_long("random")
-                    .with_value_name("RANDOM")
                     .with_help("Get words from a random position")
                     .requires("amount"),
                 )
@@ -125,7 +124,6 @@ fn main() {
                     .with_name("display")
                     .with_short('d')
                     .with_long("display")
-                    .with_value_name("DISPLAY")
                     .with_help("Will display as json"),
                 )
                 .with_arg(
