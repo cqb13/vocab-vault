@@ -88,7 +88,7 @@ fn check_stems(
                             std::process::exit(0);
                         }
                     };
-
+                    //???: Weird issue here where some words get inflections by should not (cur)
                     if n_from_stem.len() == 1 && n_from_stem[0] != n_from_inflection[0] {
                         continue;
                     }
