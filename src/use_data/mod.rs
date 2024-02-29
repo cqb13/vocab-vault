@@ -39,10 +39,11 @@ pub enum WordType {
     Tackons,
     Tickons,
     UniqueLatin,
+    Unknown,
 }
 
 impl WordType {
-    pub fn from_str(s: &str) -> Result<WordType, String> {
+    pub fn from_str(s: &str) -> Result<WordType, WordType> {
         match s {
             "english" => Ok(WordType::English), // done
             "latin" => Ok(WordType::Latin),     // done
@@ -55,7 +56,14 @@ impl WordType {
             "tackons" | "tackon" => Ok(WordType::Tackons),
             "tickons" | "tickon" => Ok(WordType::Tickons),
             "unique_latin" => Ok(WordType::UniqueLatin), // done
-            _ => Err(format!("Invalid word type: {}", s)),
+            _ => Err(WordType::Unknown),
+        }
+    }
+
+    pub fn is_unknown(&self) -> bool {
+        match self {
+            WordType::Unknown => true,
+            _ => false,
         }
     }
 
@@ -88,9 +96,7 @@ pub fn get_list(
     exact: Option<i32>,
     amount: Option<i32>,
     random: bool,
-    display: bool,
-    to: Option<String>,
-) {
+) -> String {
     let list: OutputList = match word_type {
         WordType::English => {
             let list = parse_english_dictionary(pos_list, max, min, exact, amount, random);
@@ -146,15 +152,8 @@ pub fn get_list(
                 parse_latin_dictionary(dictionary, pos_list, max, min, exact, amount, random);
             OutputList::Latin(list)
         }
+        WordType::Unknown => panic!("Unknown word type"),
     };
-    if display {
-        println!("{}", serde_json::to_string_pretty(&list).unwrap());
-    }
 
-    // TODO: have a default file name if file is not in path, have add json ending if ending is not json or there is no ending
-    if to.is_some() {
-        let file_path = to.unwrap();
-        let file = std::fs::File::create(file_path).unwrap();
-        serde_json::to_writer_pretty(file, &list).unwrap();
-    }
+    serde_json::to_string_pretty(&list).unwrap()
 }
