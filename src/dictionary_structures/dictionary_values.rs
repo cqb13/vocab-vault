@@ -269,7 +269,12 @@ impl Serialize for LatinWordInfo {
         );
         map.insert(
             "parts".to_string(),
-            serde_json::Value::String(self.parts.join(" ")),
+            serde_json::Value::Array(
+                self.parts
+                    .iter()
+                    .map(|p| serde_json::Value::String(p.to_string()))
+                    .collect(),
+            ),
         );
         map.insert(
             "senses".to_string(),
