@@ -1,111 +1,71 @@
 # Vocab Vault
 
-Vocab Vault is a port of [Open Words TS](https://github.com/Templar-Development/Open-Words-TS) TypeScript code to Rust for future maintenance and improvement.
+Vocab Vault is a Rust-based API designed to facilitate translations between English and Latin, utilizing the comprehensive Whitaker's Words Dictionary. Initially inspired by the [Open Words TS](https://github.com/Templar-Development/Open-Words-TS) project, Vocab Vault aims to extend the legacy of William Whitaker's original Words program, which can be explored further at [dsanson/Words](https://github.com/dsanson/Words).
 
-Find the original Whitaker's Words written in Ada at https://github.com/dsanson/Words, thoughtfully documented and maintained by [dsanson](https://github.com/dsanson). More information about William Whitaker and the Words program is available there.
+## API Usage Guide
 
-## CLI Usage Guide
+Transitioning from a CLI tool to a more accessible web API, Vocab Vault now offers several HTTP endpoints for users to easily translate texts between English and Latin without the need for local installation, as it operates as a hosted service.
 
-The CLI is designed to provide translation functionality between English and Latin, using the Whitaker's Words Dictionary.
+### Website
 
-### Installation
+For an interactive experience, users can translate text using the [Learning Latin website](https://learninglatin.net/translate).
 
-#### From Source
+### HTTP Endpoints
 
-To install and build from source, you must have [Rust](https://www.rust-lang.org/tools/install) installed. Then, run the following command:
+Vocab Vault provides two primary endpoints for translations, detailed below:
 
-```bash
-$ git clone https://github.com/cqb13/vocab-vault.git
-$ cd vocab-vault
-$ cargo install --path .
-$ cargo build --release
-$ cargo run --release -- [command] [arguments]
-```
+#### Latin to English Translation
 
-#### From Binary
+- **Endpoint:** `/latin_to_english`
+- **Method:** GET
+- **Query Parameters:**
+  - `latin_text`: The Latin text you want to translate.
+  - `max`: Optional. The maximum number of definitions to return per word.
+  - `tricks`: Boolean. Whether to apply various tricks for improved translation accuracy.
+  - `sort`: Boolean. Whether to sort the translations (e.g., by frequency).
 
-To install from a binary, download the latest release from the [releases page](https://github.com/cqb13/vocab-vault/releases)
-
-```bash
-$ cd [download directory]
-$ vocab-vault [command] [arguments]
-```
-
-#### Website
-
-You can also use the [website](https://learninglatin.net/translate) to translate text.
-
-**Note:** The website is currently using the original TypeScript code, not the Rust code.
-
-### Command Line Arguments
-
-- `--help` or `-h`: Display help information
-
-#### `transEng` Command (Translate English to Latin)
-
-Translate English text to Latin using the following command:
+**Example Request:**
 
 ```bash
-$ vocab_vault transEng "English text to translate"
+curl "http://localhost:8080/latin_to_english?latin_text=amor&max=5&tricks=true&sort=true"
 ```
 
-- `"English text to translate"`: The English text you want to translate
-- `-m` or `--max ` `<MAX_ENTRIES>`: The maximum number of entries to return (default: 6)
-- `-s` or `--sort`: Sort the output by frequency
-- `-p` or `--pretty`: Display a pretty version of the output (requires `-f`)
-- `-d` or `--detailed`: Add more information to prettified output (requires `-p`)
+#### English to Latin Translation
 
-#### `transLat` Command (Translate Latin to English)
+- **Endpoint:** `/english_to_latin`
+- **Method:** GET
+- **Query Parameters:**
+  - `english_text`: The English text you want to translate.
+  - `max`: Optional. The maximum number of definitions to return per word.
+  - `sort`: Boolean. Whether to sort the translations (e.g., by frequency).
 
-Translate Latin text to English using the following command:
+**Example Request:**
 
 ```bash
-$ vocab_vault transLat "Latin text to translate"
+curl "http://localhost:8080/english_to_latin?english_text=love&max=5&sort=true"
 ```
 
-- `"Latin text to translate"`: The Latin text you want to translate
-- `-t` or `--tricks`: Attempt to use various tricks on words for better results
-- `-m` or `--max ` `<MAX_ENTRIES>`: The maximum number of entries to return (default: 6)
-- `-s` or `--sort`: Sort the output by frequency
-- `-p` or `--pretty`: Display a pretty version of the output (requires `-f`)
-- `-d` or `--detailed`: Add more information to prettified output (requires `-p`)
+#### Getting a List of Words
 
-#### `getList` Command (Gets a specific list of words from the dictionary)
+- **Endpoint:** `/get_list`
+- **Method:** GET
+- **Query Parameters:**
+  - `type_of_words`: The category of words to retrieve (e.g., verbs, nouns).
+  - `pos_list`: A comma-separated list of parts of speech to filter the words.
+  - Other optional parameters include `max`, `min`, `exact`, `amount`, and `random` to refine the search.
 
-Get a specific list of words from the dictionary using the following command:
+**Example Request:**
 
 ```bash
-$ vocab_vault getList "word_type"
+curl "http://localhost:8080/get_list?type_of_words=noun&pos_list=nominative,accusative&max=10&random=true"
 ```
 
-- `"word_type"`: The type of word list you want to get
-  - english, latin, inflections, not_packons, packons, prefixes, stems, suffixes, tackons, tickons, unique_latin
-- `-p` or `--pos` `<part Of Speech List>`: A list of parts of speech to filter by (separated by commas)
-  - noun, verb, participle, adjective, preposition, pronoun, interjection, numeral, conjunction, adverb, number, supine, packon, tackon, prefix, suffix
-- `-m` or `--max` `<MAX_WORD_LEN>`: The maximum length of words to return
-- `-n` or `--min` `<MIN_WORD_LEN>`: The minimum length of words to return
-- `-e` or `--exact` `<EXACT>`: Only return words that match the exact length
-- `-a` or `--amount` `<AMOUNT>`: The amount of words to return
-- `-r` or `--random`: Picks words from random positions
-- `-d` or `--display`: Display the words as json
-- `-t` or `--to` `<TO>`: Saves the list of words to a json file
+### Running the API
 
-### Example Usage
-
-Translate English to Latin with 2 options per translation which are sorted by frequency:
+To launch the Vocab Vault API, use the following command:
 
 ```bash
-$ vocab_vault transEng "why" -m 2 -s
+cargo run --release
 ```
 
-Translate Latin to English with tricks and pretty output:
-
-```bash
-$ vocab_vault transLat "cur" -t -p
-```
-
-Get a list of Latin words with a specific part of speech and save it to a file:
-
-```bash
-$ vocab_vault getList "latin" -p noun,verb -m 6 -n 3 -t "latin_words.json"
-```
+After starting, the API will be available at `http://0.0.0.0:8080`, ready to serve translation requests.

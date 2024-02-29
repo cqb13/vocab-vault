@@ -14,11 +14,6 @@ use use_data::{get_list, WordType};
 use utils::data::{get_english_dictionary, get_latin_dictionary};
 use utils::sanitize_word;
 
-// create an example query for each service
-// http://localhost:8080/latin_to_english?latin_text=amor%20est%20vitae&max=3&tricks=true&sort=true
-// http://localhost:8080/english_to_latin?english_text=love%20is%20life&max=3&sort=true
-// http://localhost:8080/get_list?type_of_words=latin&pos_list=noun,verb&max=5&min=3&exact=4&amount=4&random=true
-
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
     HttpServer::new(|| {
