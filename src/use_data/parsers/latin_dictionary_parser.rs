@@ -20,7 +20,7 @@ pub fn parse_latin_dictionary(
             let mut rng = rand::thread_rng();
             while latin_word_info_list.len() as i32 != amount {
                 let random_index = rng.gen_range(0..dictionary.len());
-                let word_at_index = dictionary[random_index].clone();
+                let mut word_at_index = dictionary[random_index].clone();
                 if !word_fits_filters(
                     &word_at_index.orth,
                     &word_at_index.pos,
@@ -31,14 +31,15 @@ pub fn parse_latin_dictionary(
                 ) {
                     continue;
                 }
+                word_at_index.generate_principle_parts();
                 latin_word_info_list.push(word_at_index);
             }
         } else {
-            for word in dictionary {
+            for mut word in dictionary {
                 if !word_fits_filters(&word.orth, &word.pos, &pos_list, &max, &min, &exact) {
                     continue;
                 }
-
+                word.generate_principle_parts();
                 latin_word_info_list.push(word);
                 if latin_word_info_list.len() as i32 == amount {
                     break;
