@@ -46,10 +46,12 @@ pub fn parse_latin_dictionary(
             }
         }
     } else {
-        for word in dictionary {
+        for mut word in dictionary {
             if !word_fits_filters(&word.orth, &word.pos, &pos_list, &max, &min, &exact) {
                 continue;
             }
+
+            word.generate_principle_parts();
 
             latin_word_info_list.push(word);
         }
