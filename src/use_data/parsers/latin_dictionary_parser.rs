@@ -3,7 +3,6 @@ use crate::dictionary_structures::dictionary_values::LatinWordInfo;
 use crate::use_data::utils::word_fits_filters;
 use rand::Rng;
 
-//TODO: Generate principle parts, and check for extension senses in parse.
 pub fn parse_latin_dictionary(
     dictionary: Vec<LatinWordInfo>,
     pos_list: Option<Vec<PartOfSpeech>>,

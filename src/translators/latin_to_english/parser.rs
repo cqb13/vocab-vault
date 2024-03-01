@@ -54,6 +54,7 @@ pub fn find_form(latin_word: &str, reduced: bool) -> Option<Vec<LatinTranslation
     output
 }
 
+//??? weird issue, when word searched alone, 1 result but when with others, different result ("cur" vs "cur sum hic")
 fn check_stems(
     latin_word: &str,
     latin_word_inflections: &Vec<Inflection>,
@@ -88,6 +89,7 @@ fn check_stems(
                             std::process::exit(0);
                         }
                     };
+
                     //???: Weird issue here where some words get inflections by should not (cur)
                     if n_from_stem.len() == 1 && n_from_stem[0] != n_from_inflection[0] {
                         continue;
