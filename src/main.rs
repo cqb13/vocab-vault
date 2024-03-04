@@ -14,7 +14,7 @@ use utils::data::{get_english_dictionary, get_latin_dictionary};
 use utils::sanitize_word;
 
 use crate::cli::ArgValue;
-
+//TODO: add a command for searching a word by id in english or latin dictionary
 fn main() {
     let global_args_for_translation = vec![
         Arg::new()
