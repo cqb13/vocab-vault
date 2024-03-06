@@ -54,7 +54,6 @@ pub fn find_form(latin_word: &str, reduced: bool) -> Option<Vec<LatinTranslation
     output
 }
 
-//??? weird issue, when word searched alone, 1 result but when with others, different result ("cur" vs "cur sum hic")
 fn check_stems(
     latin_word: &str,
     latin_word_inflections: &Vec<Inflection>,
