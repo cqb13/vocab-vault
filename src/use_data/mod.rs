@@ -151,10 +151,30 @@ pub fn get_list(
         println!("{}", serde_json::to_string_pretty(&list).unwrap());
     }
 
-    // TODO: have a default file name if file is not in path, have add json ending if ending is not json or there is no ending
     if to.is_some() {
-        let file_path = to.unwrap();
-        let file = std::fs::File::create(file_path).unwrap();
+        let mut file_path = to.unwrap();
+
+        if !file_path.ends_with(".json") {
+            file_path.push_str(".json");
+        }
+
+        if std::path::Path::new(&file_path).exists() {
+            println!("File already exists, do you want to overwrite it? (y/n)");
+            let mut input = String::new();
+            std::io::stdin().read_line(&mut input).unwrap();
+            if input.trim() != "y" {
+                return;
+            }
+        }
+
+        let path = std::path::Path::new(&file_path);
+
+        if !path.exists() {
+            std::fs::create_dir_all(path.parent().unwrap()).unwrap();
+        }
+
+        let file = std::fs::File::create(&file_path).unwrap();
         serde_json::to_writer_pretty(file, &list).unwrap();
+        println!("File created successfully at {}", file_path);
     }
 }
