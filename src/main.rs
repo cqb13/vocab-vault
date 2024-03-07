@@ -15,6 +15,7 @@ use utils::sanitize_word;
 
 use crate::cli::ArgValue;
 //TODO: add a command for searching a word by id in english or latin dictionary
+//TODO: display the amount of time it took for a command to execute
 fn main() {
     let global_args_for_translation = vec![
         Arg::new()
