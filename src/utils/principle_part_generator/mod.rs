@@ -95,7 +95,11 @@ pub fn set_principle_parts(
             continue;
         }
 
-        let mut part = parts[part_to_add_ending_to as usize - 1].to_string();
+        let mut part = if part_to_add_ending_to as usize - 1 >= parts.len() {
+            "---".to_string()
+        } else {
+            parts[part_to_add_ending_to as usize - 1].to_string()
+        };
 
         if part == "zzz" {
             principle_parts.push("---".to_string());
