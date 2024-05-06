@@ -4,6 +4,7 @@ use crate::translators::latin_to_english::translator::lookup_stems;
 use crate::translators::latin_to_english::utils::reduce;
 use crate::translators::latin_to_english::LatinTranslationInfo;
 use crate::utils::data::{get_latin_inflections, get_latin_stems, get_unique_latin_words};
+use crate::translators::latin_to_english::tricks::try_medieval_tricks;
 
 pub fn parse(latin_word: &str, reduced: bool) -> Option<Vec<LatinTranslationInfo>> {
     match parse_unique_latin_words(latin_word) {
@@ -50,6 +51,8 @@ pub fn find_form(latin_word: &str, reduced: bool) -> Option<Vec<LatinTranslation
     if output.is_none() && !reduced {
         output = reduce(latin_word);
     }
+
+    // do tricks on stems
 
     output
 }

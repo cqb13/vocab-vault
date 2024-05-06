@@ -4,7 +4,9 @@ pub mod word_mods;
 use crate::translators::latin_to_english::tricks::trick_lists::{
     get_any_tricks, match_slur_trick_list, match_tricks_list, Trick,
 };
-use crate::translators::latin_to_english::tricks::word_mods::{flip, flip_flop, internal};
+use crate::translators::latin_to_english::tricks::word_mods::{
+    double_consonants, flip, flip_flop, internal,
+};
 
 pub enum Operation {
     FlipFlop,
@@ -91,6 +93,17 @@ pub fn try_syncopes(word: &str) -> TrickResult {
 
     if new_word != word {
         return TrickResult::Found(new_word.to_string(), vec![explanation]);
+    }
+
+    TrickResult::NotFound
+}
+
+pub fn try_medieval_tricks(word: &str) -> TrickResult {
+    let new_word = word.to_string();
+
+    let (updated_word, updated_explanation) = double_consonants(&new_word);
+    if updated_word != new_word {
+        return TrickResult::Found(updated_word, vec![updated_explanation]);
     }
 
     TrickResult::NotFound
