@@ -17,6 +17,15 @@ pub enum Language {
     English,
 }
 
+impl Language {
+    pub fn as_str(&self) -> &str {
+        match self {
+            Language::Latin => "Latin",
+            Language::English => "English",
+        }
+    }
+}
+
 pub enum Structure {
     LatinWordInfo,
     Inflection,

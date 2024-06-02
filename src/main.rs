@@ -4,6 +4,8 @@ pub mod translators;
 pub mod use_data;
 pub mod utils;
 
+use std::io::Write;
+
 use cli::{Arg, Cli, Command};
 use dictionary_structures::dictionary_keys::PartOfSpeech;
 use translators::english_to_latin::translate_english_to_latin;
@@ -130,6 +132,7 @@ fn main() {
                 .with_help("The file to export the results to"),
             ),
         Command::new("help", "Helps you"),
+        Command::new("tui", "Starts the tui"),
     ]);
 
     let command = cli.match_commands();
@@ -233,6 +236,48 @@ fn main() {
         }
         "help" => {
             cli.help();
+        }
+        "tui" => {
+            let mut input = String::new();
+            let mut language = Language::Latin;
+            loop {
+                print!("> ");
+                input.clear();
+                std::io::stdout().flush().unwrap();
+                std::io::stdin().read_line(&mut input).unwrap();
+                let input = input.trim();
+
+                match input {
+                    ".exit" | ".quit" | "q" => {
+                        break;
+                    }
+                    ".help" => {
+                        println!("Commands:");
+                        println!(".help - Displays this message");
+                        println!(".exit - Exits the program");
+                        println!(".switch - Switches between latin and english");
+                        println!("enter a word to translate it")
+                    }
+                    ".switch" => {
+                        language = match language {
+                            Language::Latin => Language::English,
+                            Language::English => Language::Latin,
+                        };
+                        println!("Switched to {:?}", language.as_str());
+                    }
+                    ".clear" => {
+                        print!("\x1B[2J\x1B[1;1H");
+                    }
+                    _ => match language {
+                        Language::Latin => {
+                            latin_to_english(input, 6, true, true, true, false);
+                        }
+                        Language::English => {
+                            english_to_latin(input, 6, true, true, true);
+                        }
+                    },
+                }
+            }
         }
         _ => {
             println!("Invalid command. Please use `help` to see the available commands.");
