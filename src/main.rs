@@ -4,7 +4,7 @@ pub mod translators;
 pub mod use_data;
 pub mod utils;
 
-use cli::{Arg, Cli, Command, Property};
+use cli::{Arg, Cli, Command};
 use dictionary_structures::dictionary_keys::PartOfSpeech;
 use translators::english_to_latin::translate_english_to_latin;
 use translators::latin_to_english::translate_latin_to_english;
@@ -47,97 +47,90 @@ fn main() {
             .requires("pretty"),
     ];
 
-    let cli = Cli::new(
-        Property::Auto,
-        Property::Auto,
-        Property::Auto,
-        Property::Auto,
-        Property::Auto,
-        vec![
-            Command::new("transEng", "Translate english to latin")
-                .with_args(&global_args_for_translation),
-            Command::new("transLat", "Translate latin to english")
-                .with_args(&global_args_for_translation)
-                .with_arg(
-                    Arg::new()
-                        .with_name("tricks")
-                        .with_short('t')
-                        .with_long("tricks")
-                        .with_help("Will attempt to use various tricks to find the translation"),
-                ),
-            Command::new("getList", "Gets a list of words based on the options provided")
-                .with_arg(
-                    Arg::new()
-                    .with_name("type")
-                    .with_value_name("TYPE")
-                    .with_help("The type of words to get. Options: english, latin, inflections, not_packons, packons, prefixes, stems, suffixes, tackons, tickons, unique_latin"),
-                )
-                .with_arg(
-                    Arg::new()
-                    .with_name("pos")
-                    .with_short('p')
-                    .with_long("pos")
-                    .with_value_name("POS")
-                    .with_help("The part of speeches to include, separated by commas"),
-                )
-                .with_arg(
-                    Arg::new()
-                    .with_name("max")
-                    .with_short('m')
-                    .with_long("max")
-                    .with_value_name("MAX")
-                    .with_help("The maximum word length"),
-                )
-                .with_arg(
-                    Arg::new()
-                    .with_name("min")
-                    .with_short('n')
-                    .with_long("min")
-                    .with_value_name("MIN")
-                    .with_help("The minimum word length"),
-                )
-                .with_arg(
-                    Arg::new()
-                    .with_name("exact")
-                    .with_short('e')
-                    .with_long("exact")
-                    .with_value_name("EXACT")
-                    .with_help("The exact word length"),
-                )
-                .with_arg(
-                    Arg::new()
-                    .with_name("amount")
-                    .with_short('a')
-                    .with_long("amount")
-                    .with_value_name("AMOUNT")
-                    .with_help("The amount of words to get"),
-                )
-                .with_arg(
-                    Arg::new()
-                    .with_name("random")
-                    .with_short('r')
-                    .with_long("random")
-                    .with_help("Get words from a random position")
-                    .requires("amount"),
-                )
-                .with_arg(
-                    Arg::new()
-                    .with_name("display")
-                    .with_short('d')
-                    .with_long("display")
-                    .with_help("Will display as json"),
-                )
-                .with_arg(
-                    Arg::new()
-                    .with_name("to")
+    let cli = Cli::new().with_default_command("tui").with_commands(vec![
+        Command::new("transEng", "Translate english to latin")
+            .with_args(&global_args_for_translation),
+        Command::new("transLat", "Translate latin to english")
+            .with_args(&global_args_for_translation)
+            .with_arg(
+                Arg::new()
+                    .with_name("tricks")
                     .with_short('t')
-                    .with_long("to")
-                    .with_value_name("TO")
-                    .with_help("The file to export the results to"),
-                ),
-            Command::new("help", "Helps you"),
-        ],
-    );
+                    .with_long("tricks")
+                    .with_help("Will attempt to use various tricks to find the translation"),
+            ),
+        Command::new("getList", "Gets a list of words based on the options provided")
+            .with_arg(
+                Arg::new()
+                .with_name("type")
+                .with_value_name("TYPE")
+                .with_help("The type of words to get. Options: english, latin, inflections, not_packons, packons, prefixes, stems, suffixes, tackons, tickons, unique_latin"),
+            )
+            .with_arg(
+                Arg::new()
+                .with_name("pos")
+                .with_short('p')
+                .with_long("pos")
+                .with_value_name("POS")
+                .with_help("The part of speeches to include, separated by commas"),
+            )
+            .with_arg(
+                Arg::new()
+                .with_name("max")
+                .with_short('m')
+                .with_long("max")
+                .with_value_name("MAX")
+                .with_help("The maximum word length"),
+            )
+            .with_arg(
+                Arg::new()
+                .with_name("min")
+                .with_short('n')
+                .with_long("min")
+                .with_value_name("MIN")
+                .with_help("The minimum word length"),
+            )
+            .with_arg(
+                Arg::new()
+                .with_name("exact")
+                .with_short('e')
+                .with_long("exact")
+                .with_value_name("EXACT")
+                .with_help("The exact word length"),
+            )
+            .with_arg(
+                Arg::new()
+                .with_name("amount")
+                .with_short('a')
+                .with_long("amount")
+                .with_value_name("AMOUNT")
+                .with_help("The amount of words to get"),
+            )
+            .with_arg(
+                Arg::new()
+                .with_name("random")
+                .with_short('r')
+                .with_long("random")
+                .with_help("Get words from a random position")
+                .requires("amount"),
+            )
+            .with_arg(
+                Arg::new()
+                .with_name("display")
+                .with_short('d')
+                .with_long("display")
+                .with_help("Will display as json"),
+            )
+            .with_arg(
+                Arg::new()
+                .with_name("to")
+                .with_short('t')
+                .with_long("to")
+                .with_value_name("TO")
+                .with_help("The file to export the results to"),
+            ),
+        Command::new("help", "Helps you"),
+    ]);
 
     let command = cli.match_commands();
 
