@@ -45,22 +45,21 @@ pub fn find_form(latin_word: &str, reduced: bool) -> Option<Vec<LatinTranslation
     }
 
     let (stems, inflections) = check_stems(latin_word, &latin_word_inflections, false);
-    let mut output = lookup_stems(stems.clone(), inflections);
+    let mut output = lookup_stems(stems, inflections);
 
     if output.is_none() && !reduced {
         output = reduce(latin_word);
     }
 
-    //TODO: curebantur -> currebantur (needs to work on stem or word: cureb -> curreb)
+    //curebantur -> currebantur (needs to work on stem or word: cureb -> curreb)
     if output.is_none() {
         let (stems, inflections) = check_stems(latin_word, &latin_word_inflections, true);
-        output = lookup_stems(stems.clone(), inflections);
+        output = lookup_stems(stems, inflections);
     }
 
     output
 }
 
-//TODO: move all tricks here and rework to return explanation of tricks from here
 fn check_stems(
     latin_word: &str,
     latin_word_inflections: &Vec<Inflection>,
