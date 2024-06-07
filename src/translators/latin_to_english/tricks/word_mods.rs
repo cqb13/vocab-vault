@@ -84,21 +84,21 @@ pub fn double_consonants(latin_word: &str) -> (String, String) {
             continue;
         }
 
-        if i == 0 || i == split_word.len() - 1 {
+        if i == 0 && is_vowel(split_word[i + 1]) {
             doubled_word.push(*letter);
             continue;
-        }
-
-        // make sure in bounds for both checks
-        if is_vowel(split_word[i - 1]) && is_vowel(split_word[i + 1]) {
+        } else if i == split_word.len() - 1 && is_vowel(split_word[i - 1]) {
             doubled_word.push(*letter);
             doubled_word.push(*letter);
+            continue;
+        } else if is_vowel(split_word[i - 1]) && is_vowel(split_word[i + 1]) {
+            doubled_word.push(*letter);
+            doubled_word.push(*letter);
+            continue;
         } else {
             doubled_word.push(*letter);
         }
     }
-
-    println!("{}", doubled_word);
 
     if doubled_word.len() > latin_word.len() {
         explanation = format!("Consonants may be doubled in '{}'", latin_word);
