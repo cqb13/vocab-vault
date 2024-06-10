@@ -71,8 +71,10 @@ fn check_stems(
     let mut found_inflection_forms: Vec<String> = Vec::new();
 
     for inflection in latin_word_inflections {
+        //TODO: if the inflection.ending is "" and word cant take inflection endings, continue
         let word_stem = latin_word.trim_end_matches(&inflection.ending);
 
+        //TODO: add trick explanation
         let word_stem = match tricks {
             true => {
                 let tricked = try_medieval_tricks(word_stem);
@@ -110,7 +112,7 @@ fn check_stems(
                         }
                     };
 
-                    //???: Weird issue here where some words get inflections by should not (cur)
+                    //???: Weird issue here where some words get inflections but should not (cur)
                     if n_from_stem.len() == 1 && n_from_stem[0] != n_from_inflection[0] {
                         continue;
                     }

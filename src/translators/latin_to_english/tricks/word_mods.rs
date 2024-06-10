@@ -78,12 +78,15 @@ pub fn double_consonants(latin_word: &str) -> (String, String) {
 
     let split_word: Vec<char> = latin_word.chars().collect();
 
+    if split_word.len() == 1 {
+        return (latin_word.to_string(), explanation);
+    }
+
     for (i, letter) in split_word.iter().enumerate() {
         if is_vowel(letter.to_owned()) {
             doubled_word.push(*letter);
             continue;
         }
-
         if i == 0 && is_vowel(split_word[i + 1]) {
             doubled_word.push(*letter);
             continue;
