@@ -47,6 +47,7 @@ struct LatinToEnglishQuery {
 
 #[get("/latin_to_english")]
 async fn query_latin_to_english(query: web::Query<LatinToEnglishQuery>) -> impl Responder {
+    println!("Received Latin to English query: {:?}", query);
     let latin_words: Vec<&str> = query.latin_text.split(" ").collect();
     let mut translations: Vec<Translation> = Vec::new();
 
@@ -75,6 +76,7 @@ struct EnglishToLatinQuery {
 
 #[get("/english_to_latin")]
 async fn query_english_to_latin(query: web::Query<EnglishToLatinQuery>) -> impl Responder {
+    println!("Received English to Latin query: {:?}", query);
     let english_words: Vec<&str> = query.english_text.split(" ").collect();
     let mut translations: Vec<Translation> = Vec::new();
 
@@ -114,6 +116,7 @@ struct GetListQuery {
 
 #[get("/get_list")]
 async fn query_get_list(query: web::Query<GetListQuery>) -> impl Responder {
+    println!("Received get list query: {:?}", query);
     if !WordType::is_valid_word_type(&query.type_of_words) {
         return HttpResponse::BadRequest().body("Invalid type of words.");
     }
