@@ -4,7 +4,7 @@ pub mod use_data;
 pub mod utils;
 
 use actix_cors::Cors;
-use actix_web::{get, http, web, App, HttpResponse, HttpServer, Responder};
+use actix_web::{get, http, web, App, HttpRequest, HttpResponse, HttpServer, Responder};
 use dictionary_structures::dictionary_keys::PartOfSpeech;
 use serde::Deserialize;
 use translators::english_to_latin::translate_english_to_latin;
@@ -45,9 +45,21 @@ struct LatinToEnglishQuery {
     sort: bool,
 }
 
+impl LatinToEnglishQuery {
+    pub fn to_string(&self) -> String {
+        format!(
+            "text: {}, max: {:?}, tricks: {}, sort: {}",
+            self.latin_text, self.max, self.tricks, self.sort
+        )
+    }
+}
+
 #[get("/latin_to_english")]
-async fn query_latin_to_english(query: web::Query<LatinToEnglishQuery>) -> impl Responder {
-    println!("Received Latin to English query: {:?}", query);
+async fn query_latin_to_english(
+    req: HttpRequest,
+    query: web::Query<LatinToEnglishQuery>,
+) -> impl Responder {
+    log(&req, "Latin to English", &query.to_string());
     let latin_words: Vec<&str> = query.latin_text.split(" ").collect();
     let mut translations: Vec<Translation> = Vec::new();
 
@@ -74,9 +86,21 @@ struct EnglishToLatinQuery {
     sort: bool,
 }
 
+impl EnglishToLatinQuery {
+    pub fn to_string(&self) -> String {
+        format!(
+            "text: {}, max: {:?}, sort: {}",
+            self.english_text, self.max, self.sort
+        )
+    }
+}
+
 #[get("/english_to_latin")]
-async fn query_english_to_latin(query: web::Query<EnglishToLatinQuery>) -> impl Responder {
-    println!("Received English to Latin query: {:?}", query);
+async fn query_english_to_latin(
+    req: HttpRequest,
+    query: web::Query<EnglishToLatinQuery>,
+) -> impl Responder {
+    log(&req, "English to Latin", &query.to_string());
     let english_words: Vec<&str> = query.english_text.split(" ").collect();
     let mut translations: Vec<Translation> = Vec::new();
 
@@ -114,9 +138,18 @@ struct GetListQuery {
     random: bool,
 }
 
+impl GetListQuery {
+    pub fn to_string(&self) -> String {
+        format!(
+            "type_of_words: {}, pos_list: {}, max: {:?}, min: {:?}, exact: {:?}, amount: {:?}, random: {}",
+            self.type_of_words, self.pos_list, self.max, self.min, self.exact, self.amount, self.random
+        )
+    }
+}
+
 #[get("/get_list")]
-async fn query_get_list(query: web::Query<GetListQuery>) -> impl Responder {
-    println!("Received get list query: {:?}", query);
+async fn query_get_list(req: HttpRequest, query: web::Query<GetListQuery>) -> impl Responder {
+    log(&req, "Get list", &query.to_string());
     if !WordType::is_valid_word_type(&query.type_of_words) {
         return HttpResponse::BadRequest().body("Invalid type of words.");
     }
@@ -153,4 +186,10 @@ async fn query_get_list(query: web::Query<GetListQuery>) -> impl Responder {
     );
 
     HttpResponse::Ok().body(list)
+}
+
+fn log(request: &HttpRequest, name: &str, query: &str) {
+    let connection_info = request.connection_info();
+    let client_ip = connection_info.realip_remote_addr().unwrap_or("Unknown IP");
+    println!("Received {} query from {} | {}", name, client_ip, query);
 }
