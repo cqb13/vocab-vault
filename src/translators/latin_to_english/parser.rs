@@ -1,6 +1,7 @@
 use crate::dictionary_structures::dictionary_keys::PartOfSpeech;
 use crate::dictionary_structures::dictionary_values::{Inflection, LatinWordInfo, NValue, Stem};
 use crate::translators::latin_to_english::translator::lookup_stems;
+use crate::translators::latin_to_english::tricks::{try_medieval_tricks, TrickResult};
 use crate::translators::latin_to_english::utils::reduce;
 use crate::translators::latin_to_english::LatinTranslationInfo;
 use crate::utils::data::{get_latin_inflections, get_latin_stems, get_unique_latin_words};
@@ -43,12 +44,17 @@ pub fn find_form(latin_word: &str, reduced: bool) -> Option<Vec<LatinTranslation
         }
     }
 
-    //TODO: curebantur -> currebantur (needs to work on stem or word: curo -> curro)
-    let (stems, inflections) = check_stems(latin_word, &latin_word_inflections);
+    let (stems, inflections) = check_stems(latin_word, &latin_word_inflections, false);
     let mut output = lookup_stems(stems, inflections);
 
     if output.is_none() && !reduced {
         output = reduce(latin_word);
+    }
+
+    //curebantur -> currebantur (needs to work on stem or word: cureb -> curreb)
+    if output.is_none() {
+        let (stems, inflections) = check_stems(latin_word, &latin_word_inflections, true);
+        output = lookup_stems(stems, inflections);
     }
 
     output
@@ -57,6 +63,7 @@ pub fn find_form(latin_word: &str, reduced: bool) -> Option<Vec<LatinTranslation
 fn check_stems(
     latin_word: &str,
     latin_word_inflections: &Vec<Inflection>,
+    tricks: bool,
 ) -> (Vec<Stem>, Vec<Inflection>) {
     let latin_stems = get_latin_stems();
     let mut matched_stems: Vec<Stem> = Vec::new();
@@ -64,7 +71,23 @@ fn check_stems(
     let mut found_inflection_forms: Vec<String> = Vec::new();
 
     for inflection in latin_word_inflections {
+        //TODO: if the inflection.ending is "" and word cant take inflection endings, continue
         let word_stem = latin_word.trim_end_matches(&inflection.ending);
+
+        //TODO: add trick explanation
+        let word_stem = match tricks {
+            true => {
+                let tricked = try_medieval_tricks(word_stem);
+
+                let word_stem = match tricked {
+                    TrickResult::Found(word, _) => word,
+                    TrickResult::NotFound => word_stem.to_string(),
+                };
+
+                word_stem
+            }
+            false => word_stem.to_string(),
+        };
 
         for stem in &latin_stems {
             if word_stem == stem.orth {
@@ -89,6 +112,7 @@ fn check_stems(
                         }
                     };
 
+                    //???: Weird issue here where some words get inflections but should not (cur)
                     if n_from_stem.len() == 1 && n_from_stem[0] != n_from_inflection[0] {
                         continue;
                     }

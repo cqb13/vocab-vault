@@ -1,3 +1,5 @@
+use crate::utils::is_vowel;
+
 pub fn flip(str_to_replace: &str, replacement_str: &str, word: &str) -> (String, String) {
     let mut new_word = String::from(word);
     let mut explanation = String::from("");
@@ -68,4 +70,42 @@ pub fn internal(str_to_replace: &str, replacement_str: &str, word: &str) -> (Str
     }
 
     (word.to_string(), explanation)
+}
+
+pub fn double_consonants(latin_word: &str) -> (String, String) {
+    let mut doubled_word = String::new();
+    let mut explanation = String::new();
+
+    let split_word: Vec<char> = latin_word.chars().collect();
+
+    if split_word.len() == 1 {
+        return (latin_word.to_string(), explanation);
+    }
+
+    for (i, letter) in split_word.iter().enumerate() {
+        if is_vowel(letter.to_owned()) {
+            doubled_word.push(*letter);
+            continue;
+        }
+        if i == 0 && is_vowel(split_word[i + 1]) {
+            doubled_word.push(*letter);
+            continue;
+        } else if i == split_word.len() - 1 && is_vowel(split_word[i - 1]) {
+            doubled_word.push(*letter);
+            doubled_word.push(*letter);
+            continue;
+        } else if is_vowel(split_word[i - 1]) && is_vowel(split_word[i + 1]) {
+            doubled_word.push(*letter);
+            doubled_word.push(*letter);
+            continue;
+        } else {
+            doubled_word.push(*letter);
+        }
+    }
+
+    if doubled_word.len() > latin_word.len() {
+        explanation = format!("Consonants may be doubled in '{}'", latin_word);
+    }
+
+    (doubled_word, explanation)
 }
