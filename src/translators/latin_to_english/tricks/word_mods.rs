@@ -87,13 +87,24 @@ pub fn double_consonants(latin_word: &str) -> (String, String) {
             doubled_word.push(*letter);
             continue;
         }
-        if i == 0 && is_vowel(split_word[i + 1]) {
-            doubled_word.push(*letter);
-            continue;
-        } else if i == split_word.len() - 1 && is_vowel(split_word[i - 1]) {
-            doubled_word.push(*letter);
-            doubled_word.push(*letter);
-            continue;
+        if i == 0 {
+            if is_vowel(split_word[i + 1]) {
+                doubled_word.push(*letter);
+                doubled_word.push(*letter);
+                continue;
+            } else {
+                doubled_word.push(*letter);
+                continue;
+            }
+        } else if i == split_word.len() - 1 {
+            if is_vowel(split_word[i - 1]) {
+                doubled_word.push(*letter);
+                doubled_word.push(*letter);
+                continue;
+            } else {
+                doubled_word.push(*letter);
+                continue;
+            }
         } else if is_vowel(split_word[i - 1]) && is_vowel(split_word[i + 1]) {
             doubled_word.push(*letter);
             doubled_word.push(*letter);
