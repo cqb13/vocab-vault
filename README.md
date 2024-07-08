@@ -99,7 +99,7 @@ $ vocab_vault transEng "why" -m 2 -s
 Translate Latin to English with tricks and pretty output:
 
 ```bash
-$ vocab_vault transLat "cur" -t -p
+$ vocab_vault transLat "cur sum hic" -t -p
 ```
 
 Get a list of Latin words with a specific part of speech and save it to a file:
