@@ -157,7 +157,7 @@ impl Translation {
     }
 
     pub fn display(&self, display_type: DisplayType) {
-        println!("{}", self.word);
+        println!("{}:", self.word);
         match display_type {
             DisplayType::Pretty(detailed) => match &self.definitions {
                 TranslationType::Latin(definitions) => {
@@ -266,6 +266,7 @@ impl Translation {
                         }
                         println!();
                     }
+                    println!()
                 }
             },
             DisplayType::Json => {
