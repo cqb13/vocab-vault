@@ -17,9 +17,10 @@ To install and build from source, you must have [Rust](https://www.rust-lang.org
 ```bash
 $ git clone https://github.com/cqb13/vocab-vault.git
 $ cd vocab-vault
-$ cargo install --path .
 $ cargo build --release
 $ cargo run --release -- [command] [arguments]
+# to add to path
+$ cargo install --path .
 ```
 
 #### From Binary
@@ -37,60 +38,57 @@ You can also use the [website](https://learninglatin.net/translate) to translate
 
 **Note:** The website is currently using the original TypeScript code, not the Rust code.
 
-### Command Line Arguments
+### Usage
 
-- `--help` or `-h`: Display help information
-
-#### `transEng` Command (Translate English to Latin)
-
-Translate English text to Latin using the following command:
-
-```bash
-$ vocab_vault transEng "English text to translate"
+```sh
+  vocab-vault [COMMAND] [OPTIONS]
 ```
 
-- `"English text to translate"`: The English text you want to translate
-- `-m` or `--max ` `<MAX_ENTRIES>`: The maximum number of entries to return (default: 6)
-- `-s` or `--sort`: Sort the output by frequency
-- `-p` or `--pretty`: Display a pretty version of the output (requires `-f`)
-- `-d` or `--detailed`: Add more information to prettified output (requires `-p`)
+#### Commands
 
-#### `transLat` Command (Translate Latin to English)
-
-Translate Latin text to English using the following command:
-
-```bash
-$ vocab_vault transLat "Latin text to translate"
 ```
-
-- `"Latin text to translate"`: The Latin text you want to translate
-- `-t` or `--tricks`: Attempt to use various tricks on words for better results
-- `-m` or `--max ` `<MAX_ENTRIES>`: The maximum number of entries to return (default: 6)
-- `-s` or `--sort`: Sort the output by frequency
-- `-p` or `--pretty`: Display a pretty version of the output (requires `-f`)
-- `-d` or `--detailed`: Add more information to prettified output (requires `-p`)
-
-#### `getList` Command (Gets a specific list of words from the dictionary)
-
-Get a specific list of words from the dictionary using the following command:
-
-```bash
-$ vocab_vault getList "word_type"
+  transEng
+      Translate english to latin
+                                <WORDS>      The words to translate
+      -m           --max        <MAX>        The maximum number of translations per definition (default: 6)
+      -s           --sort       <>           Sort the output by word frequency
+      -p           --pretty     <>           Prints the output in a pretty format
+      -d           --detailed   <>           Adds more information to the pretty output
+  transLat
+      Translate latin to english
+                                <WORDS>      The words to translate
+      -m           --max        <MAX>        The maximum number of translations per definition (default: 6)
+      -s           --sort       <>           Sort the output by word frequency
+      -p           --pretty     <>           Prints the output in a pretty format
+      -d           --detailed   <>           Adds more information to the pretty output
+      -t           --tricks     <>           Will attempt to use various tricks to find the translation
+  getList
+      Gets a list of words based on the options provided
+                                <TYPE>       The type of words to get. Options: english, latin, inflections, not_packons, packons, prefixes, stems, suffixes, tackons, tickons, unique_latin
+      -p           --pos        <POS>        The part of speeches to include, separated by commas
+      -m           --max        <MAX>        The maximum word length
+      -n           --min        <MIN>        The minimum word length
+      -e           --exact      <EXACT>      The exact word length
+      -a           --amount     <AMOUNT>     The amount of words to get
+      -r           --random     <>           Get words from a random position
+      -d           --display    <>           Will display as json
+      -t           --to         <TO>         The file to export the results to
+  help
+      Helps you
+                                <COMMAND>    A command to help with
+  tui
+      Starts the tui (.help for info)
 ```
-
-- `"word_type"`: The type of word list you want to get
-  - english, latin, inflections, not_packons, packons, prefixes, stems, suffixes, tackons, tickons, unique_latin
-- `-p` or `--pos` `<part Of Speech List>`: A list of parts of speech to filter by (separated by commas)
-  - noun, verb, participle, adjective, preposition, pronoun, interjection, numeral, conjunction, adverb, number, supine, packon, tackon, prefix, suffix
-- `-m` or `--max` `<MAX_WORD_LEN>`: The maximum length of words to return
-- `-n` or `--min` `<MIN_WORD_LEN>`: The minimum length of words to return
-- `-e` or `--exact` `<EXACT>`: Only return words that match the exact length
-- `-a` or `--amount` `<AMOUNT>`: The amount of words to return
-- `-r` or `--random`: Picks words from random positions
-- `-d` or `--display`: Display the words as json
-- `-t` or `--to` `<TO>`: Saves the list of words to a json file
 
 ### Example Usage
+
+Help:
+
+```bash
+$ vocab_vault help
+
+$ vocab_vault help transEng
+```
 
 Translate English to Latin with 2 options per translation which are sorted by frequency:
 

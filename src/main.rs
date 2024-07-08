@@ -131,8 +131,14 @@ fn main() {
                 .with_value_name("TO")
                 .with_help("The file to export the results to"),
             ),
-        Command::new("help", "Helps you"),
-        Command::new("tui", "Starts the tui"),
+        Command::new("help", "Helps you")
+            .with_arg(
+                Arg::new()
+                .with_name("command")
+                .with_value_name("COMMAND")
+                .with_help("A command to help with"),
+            ),
+        Command::new("tui", "Starts the tui (.help for info)"),
     ]);
 
     let command = cli.match_commands();
@@ -235,7 +241,8 @@ fn main() {
             );
         }
         "help" => {
-            cli.help();
+            let command = command.get_value().to_option();
+            cli.help(command);
         }
         "tui" => {
             let mut input = String::new();
