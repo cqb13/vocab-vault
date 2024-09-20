@@ -7,16 +7,17 @@ use crate::translators::latin_to_english::LatinTranslationInfo;
 use crate::utils::data::{get_latin_inflections, get_latin_stems, get_unique_latin_words};
 
 pub fn parse(latin_word: &str, reduced: bool) -> Option<Vec<LatinTranslationInfo>> {
-    match parse_unique_latin_words(latin_word) {
-        Some(unique_word) => {
-            let mut translation = LatinTranslationInfo::new();
-            translation.word = unique_word;
-            return Some(vec![translation]);
-        }
-        None => (),
+    match find_form(latin_word, reduced) {
+        Some(form) => return Some(form),
+        None => match parse_unique_latin_words(latin_word) {
+            Some(unique_word) => {
+                let mut translation = LatinTranslationInfo::new();
+                translation.word = unique_word;
+                return Some(vec![translation]);
+            }
+            None => None,
+        },
     }
-
-    find_form(latin_word, reduced)
 }
 
 fn parse_unique_latin_words(latin_word: &str) -> Option<LatinWordInfo> {
@@ -112,7 +113,7 @@ fn check_stems(
                         }
                     };
 
-                    //???: Weird issue here where some words get inflections but should not (cur)
+                    //TODO: Weird issue here where some words get inflections but should not (cur)
                     if n_from_stem.len() == 1 && n_from_stem[0] != n_from_inflection[0] {
                         continue;
                     }
