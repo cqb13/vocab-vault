@@ -198,7 +198,7 @@ fn main() {
                 ArgValue::Present(pos) => {
                     let pos_list: Vec<PartOfSpeech> = pos
                         .split(",")
-                        .map(|pos| PartOfSpeech::dict_key_to_part_of_speech(pos))
+                        .map(|pos| PartOfSpeech::dict_key_to_part_of_speech(pos.trim()))
                         .collect();
                     Some(pos_list)
                 }
