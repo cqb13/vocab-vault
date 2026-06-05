@@ -5,7 +5,6 @@ use crate::dictionary_structures::dictionary_values::Form;
 use crate::translators::english_to_latin::EnglishTranslationInfo;
 use crate::translators::latin_to_english::LatinTranslationInfo;
 use serde::{Deserialize, Serialize, Serializer};
-use std::mem::take;
 
 pub enum DisplayType {
     Pretty(bool), // true if detailed
@@ -64,77 +63,51 @@ impl Translation {
      * Should only be called after all parsing is done.
      */
     pub fn post_process(&mut self, language: Language, sort: bool) {
-        let processed_translation = self;
-
         match language {
             Language::Latin => {
                 if sort {
-                    processed_translation.sort();
+                    self.sort();
                 }
 
-                processed_translation.definitions = match &mut processed_translation.definitions {
-                    TranslationType::Latin(definitions) => {
-                        let new_definitions: Vec<_> = definitions
-                            .drain(..)
-                            .map(|mut definition| {
-                                definition.word.form.str_form_to_long_form(
-                                    definition.word.pos,
-                                    Structure::LatinWordInfo,
-                                );
+                if let TranslationType::Latin(definitions) = &mut self.definitions {
+                    for definition in definitions.iter_mut() {
+                        definition
+                            .word
+                            .form
+                            .str_form_to_long_form(definition.word.pos, Structure::LatinWordInfo);
 
-                                definition.word.generate_principle_parts();
+                        definition.word.generate_principle_parts();
 
-                                definition
-                                    .stem
+                        definition
+                            .stem
+                            .form
+                            .str_form_to_long_form(definition.word.pos, Structure::Stem);
+
+                        if definition.inflections.is_some() {
+                            definition.remove_inflections_with_wrong_pos();
+                            let part_of_speech = definition.word.pos;
+                            let inflections = definition.inflections.as_mut().unwrap();
+
+                            inflections.iter_mut().for_each(|inflection| {
+                                inflection
                                     .form
-                                    .str_form_to_long_form(definition.word.pos, Structure::Stem);
-
-                                if let Some(mut inflections) = take(&mut definition.inflections) {
-                                    definition.remove_inflections_with_wrong_pos();
-                                    let part_of_speech = definition.word.pos;
-
-                                    inflections.iter_mut().for_each(|inflection| {
-                                        inflection.form.str_form_to_long_form(
-                                            part_of_speech,
-                                            Structure::Inflection,
-                                        );
-                                    });
-
-                                    definition.inflections = Some(inflections);
-                                }
-                                definition
-                            })
-                            .collect();
-                        TranslationType::Latin(new_definitions)
+                                    .str_form_to_long_form(part_of_speech, Structure::Inflection);
+                            });
+                        }
                     }
-                    _ => {
-                        println!("Expected Latin translation type");
-                        std::process::exit(0);
-                    }
-                };
+                }
             }
             Language::English => {
-                processed_translation.definitions = match &mut processed_translation.definitions {
-                    TranslationType::English(definitions) => {
-                        let new_definitions: Vec<_> = definitions
-                            .drain(..)
-                            .map(|mut definition| {
-                                definition.translation.form.str_form_to_long_form(
-                                    definition.word.pos,
-                                    Structure::LatinWordInfo,
-                                );
+                if let TranslationType::English(definitions) = &mut self.definitions {
+                    for definition in definitions.iter_mut() {
+                        definition
+                            .translation
+                            .form
+                            .str_form_to_long_form(definition.word.pos, Structure::LatinWordInfo);
 
-                                definition.translation.generate_principle_parts();
-                                definition
-                            })
-                            .collect();
-                        TranslationType::English(new_definitions)
+                        definition.translation.generate_principle_parts();
                     }
-                    _ => {
-                        println!("Expected English translation type");
-                        std::process::exit(0);
-                    }
-                };
+                }
             }
         }
     }

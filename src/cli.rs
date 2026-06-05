@@ -247,7 +247,7 @@ impl<'a> Cli<'a> {
         self
     }
 
-    pub fn with_commands(mut self, commands: Vec<Command<'a>>) -> Cli {
+    pub fn with_commands(mut self, commands: Vec<Command<'a>>) -> Cli<'a> {
         self.commands = commands;
         self
     }

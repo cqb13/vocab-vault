@@ -288,21 +288,6 @@ impl PartOfSpeech {
         }
     }
 
-    pub fn convert_to_generator(&self) -> crate::utils::principle_part_generator::Generator {
-        match &self {
-            PartOfSpeech::Noun => crate::utils::principle_part_generator::Generator::Noun,
-            PartOfSpeech::Pronoun => crate::utils::principle_part_generator::Generator::Pronoun,
-            PartOfSpeech::Adjective => crate::utils::principle_part_generator::Generator::Adjective,
-            PartOfSpeech::Verb => crate::utils::principle_part_generator::Generator::Verb,
-            PartOfSpeech::Participle => crate::utils::principle_part_generator::Generator::Verb,
-            PartOfSpeech::Numeral => crate::utils::principle_part_generator::Generator::Numeral,
-            _ => {
-                println!("Cannot convert {:?} to a generator", self);
-                std::process::exit(0);
-            }
-        }
-    }
-
     pub fn dict_key_to_part_of_speech(key: &str) -> PartOfSpeech {
         match key.trim_matches('"') {
             "N" | "noun" => PartOfSpeech::Noun,

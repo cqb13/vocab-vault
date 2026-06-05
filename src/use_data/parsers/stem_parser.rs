@@ -34,7 +34,8 @@ pub fn parse_latin_stems(
                 stem_list.push(stem_at_index);
             }
         } else {
-            for stem in latin_stems {
+            for stem in latin_stems.iter() {
+                let stem = stem.clone();
                 if !word_fits_filters(&stem.orth, &stem.pos, &pos_list, &max, &min, &exact) {
                     continue;
                 }
@@ -46,7 +47,8 @@ pub fn parse_latin_stems(
             }
         }
     } else {
-        for stem in latin_stems {
+        for stem in latin_stems.iter() {
+            let stem = stem.clone();
             if !word_fits_filters(&stem.orth, &stem.pos, &pos_list, &max, &min, &exact) {
                 continue;
             }

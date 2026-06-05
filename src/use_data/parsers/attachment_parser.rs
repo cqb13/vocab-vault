@@ -4,7 +4,7 @@ use crate::use_data::utils::word_fits_filters;
 use rand::Rng;
 
 pub fn parse_attachments(
-    attachments: Vec<Attachment>,
+    attachments: &[Attachment],
     pos_list: Option<Vec<PartOfSpeech>>,
     max: Option<i32>,
     min: Option<i32>,
@@ -33,7 +33,8 @@ pub fn parse_attachments(
                 attachment_list.push(attachment_at_index);
             }
         } else {
-            for attachment in attachments {
+            for attachment in attachments.iter() {
+                let attachment = attachment.clone();
                 if !word_fits_filters(
                     &attachment.orth,
                     &attachment.pos,
@@ -52,7 +53,8 @@ pub fn parse_attachments(
             }
         }
     } else {
-        for attachment in attachments {
+        for attachment in attachments.iter() {
+            let attachment = attachment.clone();
             if !word_fits_filters(
                 &attachment.orth,
                 &attachment.pos,

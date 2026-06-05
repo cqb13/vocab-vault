@@ -34,7 +34,8 @@ pub fn parse_english_dictionary(
                 english_word_info_list.push(word_at_index);
             }
         } else {
-            for word in english_dictionary {
+            for word in english_dictionary.iter() {
+                let word = word.clone();
                 if !word_fits_filters(&word.orth, &word.pos, &pos_list, &max, &min, &exact) {
                     continue;
                 }
@@ -46,7 +47,8 @@ pub fn parse_english_dictionary(
             }
         }
     } else {
-        for word in english_dictionary {
+        for word in english_dictionary.iter() {
+            let word = word.clone();
             if !word_fits_filters(&word.orth, &word.pos, &pos_list, &max, &min, &exact) {
                 continue;
             }

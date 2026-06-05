@@ -367,29 +367,7 @@ impl<'de> Deserialize<'de> for LatinWordInfo {
         let form = serde_json::from_value(map.remove("form").unwrap())
             .expect("Failed to deserialize form");
         let info = map.remove("info").unwrap().to_string();
-        // n is a list of values, so it can be a string, an integer, or a list of integers
-
-        let n_value =
-            serde_json::from_value(map.remove("n").unwrap()).expect("Failed to deserialize n");
-        let n = match n_value {
-            serde_json::Value::Array(n) => Some(
-                n.iter()
-                    .map(|n| {
-                        if n.is_array() {
-                            NValue::IntInt(
-                                n[0].to_string().parse().unwrap(),
-                                n[1].to_string().parse().unwrap(),
-                            )
-                        } else if n.is_string() {
-                            NValue::String(serde_json::from_value(n.to_owned()).unwrap())
-                        } else {
-                            NValue::Integer(n.to_string().parse().unwrap())
-                        }
-                    })
-                    .collect(),
-            ),
-            _ => None,
-        };
+        let n = parse_n_from_map(map.remove("n"));
 
         let id = map.remove("id").unwrap().to_string().parse().unwrap();
 
@@ -432,31 +410,7 @@ impl<'de> Deserialize<'de> for UniqueLatinWordInfo {
         let form = serde_json::from_value(map.remove("form").unwrap())
             .expect("Failed to deserialize form");
         let info = map.remove("info").unwrap().to_string();
-        let n = match map.remove("n") {
-            Some(n) => {
-                let n_value = serde_json::from_value(n).expect("Failed to deserialize n");
-                match n_value {
-                    serde_json::Value::Array(n) => Some(
-                        n.iter()
-                            .map(|n| {
-                                if n.is_array() {
-                                    NValue::IntInt(
-                                        n[0].to_string().parse().unwrap(),
-                                        n[1].to_string().parse().unwrap(),
-                                    )
-                                } else if n.is_string() {
-                                    NValue::String(serde_json::from_value(n.to_owned()).unwrap())
-                                } else {
-                                    NValue::Integer(n.to_string().parse().unwrap())
-                                }
-                            })
-                            .collect(),
-                    ),
-                    _ => None,
-                }
-            }
-            None => None,
-        };
+        let n = parse_n_from_map(map.remove("n"));
 
         Ok(UniqueLatinWordInfo {
             orth,
@@ -771,31 +725,7 @@ impl<'de> Deserialize<'de> for Inflection {
             serde_json::from_value(map.remove("pos").unwrap()).expect("Failed to deserialize pos");
         let note = serde_json::from_value(map.remove("note").unwrap())
             .expect("Failed to deserialize note");
-        let n = match map.remove("n") {
-            Some(n) => {
-                let n_value = serde_json::from_value(n).expect("Failed to deserialize n");
-                match n_value {
-                    serde_json::Value::Array(n) => Some(
-                        n.iter()
-                            .map(|n| {
-                                if n.is_array() {
-                                    NValue::IntInt(
-                                        n[0].to_string().parse().unwrap(),
-                                        n[1].to_string().parse().unwrap(),
-                                    )
-                                } else if n.is_string() {
-                                    NValue::String(serde_json::from_value(n.to_owned()).unwrap())
-                                } else {
-                                    NValue::Integer(n.to_string().parse().unwrap())
-                                }
-                            })
-                            .collect(),
-                    ),
-                    _ => None,
-                }
-            }
-            None => None,
-        };
+        let n = parse_n_from_map(map.remove("n"));
         let form = serde_json::from_value(map.remove("form").unwrap())
             .expect("Failed to deserialize form");
 
@@ -953,31 +883,7 @@ impl<'de> Deserialize<'de> for Stem {
             .expect("Failed to deserialize form");
         let orth: String = serde_json::from_value(map.remove("orth").unwrap())
             .expect("Failed to deserialize orth");
-        let n = match map.remove("n") {
-            Some(n) => {
-                let n_value = serde_json::from_value(n).expect("Failed to deserialize n");
-                match n_value {
-                    serde_json::Value::Array(n) => Some(
-                        n.iter()
-                            .map(|n| {
-                                if n.is_array() {
-                                    NValue::IntInt(
-                                        n[0].to_string().parse().unwrap(),
-                                        n[1].to_string().parse().unwrap(),
-                                    )
-                                } else if n.is_string() {
-                                    NValue::String(serde_json::from_value(n.to_owned()).unwrap())
-                                } else {
-                                    NValue::Integer(n.to_string().parse().unwrap())
-                                }
-                            })
-                            .collect(),
-                    ),
-                    _ => None,
-                }
-            }
-            None => None,
-        };
+        let n = parse_n_from_map(map.remove("n"));
         let wid =
             serde_json::from_value(map.remove("wid").unwrap()).expect("Failed to deserialize wid");
 
@@ -1126,6 +1032,29 @@ impl Serialize for Modifier {
             serde_json::Value::String(self.modifier.as_str()),
         );
         serde_json::Value::Object(map).serialize(serializer)
+    }
+}
+
+fn parse_n_from_map(n: Option<serde_json::Value>) -> Option<Vec<NValue>> {
+    let value = n?;
+    match value {
+        serde_json::Value::Array(arr) => Some(
+            arr.iter()
+                .map(|n| {
+                    if n.is_array() {
+                        NValue::IntInt(
+                            n[0].to_string().parse().unwrap_or(0),
+                            n[1].to_string().parse().unwrap_or(0),
+                        )
+                    } else if n.is_string() {
+                        NValue::String(n.as_str().unwrap_or_default().to_string())
+                    } else {
+                        NValue::Integer(n.to_string().parse().unwrap_or(0))
+                    }
+                })
+                .collect(),
+        ),
+        _ => None,
     }
 }
 
@@ -1511,10 +1440,9 @@ impl LongForm {
     }
 
     pub fn as_clean_str(&self) -> String {
-        let mut not_clean = self.as_str();
-        not_clean = not_clean.replace("unknown", "");
-        not_clean
+        self.as_str()
             .split_whitespace()
+            .filter(|s| *s != "unknown")
             .collect::<Vec<&str>>()
             .join(" ")
     }

@@ -33,33 +33,20 @@ pub fn generate_principle_parts(
 ) -> Vec<String> {
     match generator {
         Generator::Noun => {
-            if gender.is_none() {
-                println!("A gender is required for generating principle parts for a noun, but none was provided");
-                std::process::exit(0);
-            }
-
-            generate_for_nouns(num_type_1, num_type_2, gender.unwrap(), parts)
+            let gender = gender.expect("A gender is required for generating principle parts for a noun, but none was provided");
+            generate_for_nouns(num_type_1, num_type_2, gender, parts)
         }
         Generator::Adjective => {
-            if comparison.is_none() {
-                println!("A comparison is required for generating principle parts for an adjective, but none was provided");
-                std::process::exit(0);
-            }
-            generate_for_adjectives(num_type_1, num_type_2, parts, comparison.unwrap())
+            let comparison = comparison.expect("A comparison is required for generating principle parts for an adjective, but none was provided");
+            generate_for_adjectives(num_type_1, num_type_2, parts, comparison)
         }
         Generator::Verb => {
-            if verb_type.is_none() {
-                println!("A verb type is required for generating principle parts for a verb, but none was provided");
-                std::process::exit(0);
-            }
-            generate_for_verbs(num_type_1, num_type_2, parts, verb_type.unwrap())
+            let verb_type = verb_type.expect("A verb type is required for generating principle parts for a verb, but none was provided");
+            generate_for_verbs(num_type_1, num_type_2, parts, verb_type)
         }
         Generator::Numeral => {
-            if numeral_type.is_none() {
-                println!("A numeral type is required for generating principle parts for a numeral, but none was provided");
-                std::process::exit(0);
-            }
-            generate_for_numerals(num_type_1, num_type_2, parts, numeral_type.unwrap())
+            let numeral_type = numeral_type.expect("A numeral type is required for generating principle parts for a numeral, but none was provided");
+            generate_for_numerals(num_type_1, num_type_2, parts, numeral_type)
         }
         Generator::Pronoun => generate_for_pronouns(num_type_1, num_type_2, parts),
     }
@@ -73,11 +60,8 @@ pub fn set_principle_parts(
     let mut principle_parts = Vec::new();
 
     if endings.iter().all(|x| x.0 == "" && x.1 == 0) {
-        if special_case.is_none() {
-            println!("No Endings or Special Case provided");
-            std::process::exit(0);
-        }
-        return vec![parts[0].clone() + " | " + special_case.unwrap_or("")];
+        let special = special_case.expect("No Endings or Special Case provided");
+        return vec![parts[0].clone() + " | " + special];
     }
 
     // number in ending is referring to principle part number to add ending to

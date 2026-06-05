@@ -34,7 +34,8 @@ pub fn parse_latin_inflections(
                 inflection_list.push(inflection_at_index);
             }
         } else {
-            for inflection in latin_inflections {
+            for inflection in latin_inflections.iter() {
+                let inflection = inflection.clone();
                 if !word_fits_filters(
                     &inflection.ending,
                     &inflection.pos,
@@ -53,7 +54,8 @@ pub fn parse_latin_inflections(
             }
         }
     } else {
-        for inflection in latin_inflections {
+        for inflection in latin_inflections.iter() {
+            let inflection = inflection.clone();
             if !word_fits_filters(
                 &inflection.ending,
                 &inflection.pos,

@@ -60,12 +60,7 @@ impl WordType {
     }
 
     pub fn is_valid_word_type(s: &str) -> bool {
-        match s {
-            "english" | "latin" | "inflections" | "inflection" | "not_packons" | "not_packon"
-            | "packon" | "packons" | "prefixes" | "prefix" | "stems" | "stem" | "suffixes"
-            | "suffix" | "tackons" | "tackon" | "tickons" | "tickon" | "unique_latin" => true,
-            _ => false,
-        }
+        Self::from_str(s).is_ok()
     }
 }
 

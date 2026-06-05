@@ -5,7 +5,7 @@ use rand::Rng;
 
 // need to generate principal parts before checking if the word fits the filter, to account for length filters
 pub fn parse_latin_dictionary(
-    dictionary: Vec<LatinWordInfo>,
+    dictionary: &[LatinWordInfo],
     pos_list: Option<Vec<PartOfSpeech>>,
     max: Option<i32>,
     min: Option<i32>,
@@ -35,7 +35,8 @@ pub fn parse_latin_dictionary(
                 latin_word_info_list.push(word_at_index);
             }
         } else {
-            for mut word in dictionary {
+            for word in dictionary.iter() {
+                let mut word = word.clone();
                 word.generate_principle_parts();
                 if !word_fits_filters(&word.orth, &word.pos, &pos_list, &max, &min, &exact) {
                     continue;
@@ -47,7 +48,8 @@ pub fn parse_latin_dictionary(
             }
         }
     } else {
-        for mut word in dictionary {
+        for word in dictionary.iter() {
+            let mut word = word.clone();
             word.generate_principle_parts();
             if !word_fits_filters(&word.orth, &word.pos, &pos_list, &max, &min, &exact) {
                 continue;

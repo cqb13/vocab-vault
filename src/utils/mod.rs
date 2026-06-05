@@ -24,16 +24,15 @@ pub fn number_with_ending(number: i8) -> String {
  * Removes all non-alphanumeric characters from a string
  */
 pub fn sanitize_word(word: &str) -> String {
-    let mut word = word.to_owned();
-    word = word.trim().to_lowercase();
+    let mut word = word.trim().to_lowercase();
 
     // allows for translation of numbers to roman numerals
-    if contains_number(word.clone()) && !is_all_numbers(&word) {
-        word = remove_all_numbers(word.clone());
+    if contains_number(&word) && !is_all_numbers(&word) {
+        word = remove_all_numbers(&word);
     }
 
-    if contains_non_alphanumeric(word.clone()) {
-        word = remove_non_alphanumeric(word.clone());
+    if contains_non_alphanumeric(&word) {
+        word = remove_non_alphanumeric(&word);
     }
 
     word
@@ -43,19 +42,19 @@ pub fn is_all_numbers(word: &str) -> bool {
     word.chars().all(char::is_numeric)
 }
 
-pub fn contains_number(word: String) -> bool {
+pub fn contains_number(word: &str) -> bool {
     word.chars().any(char::is_numeric)
 }
 
-pub fn remove_all_numbers(word: String) -> String {
+pub fn remove_all_numbers(word: &str) -> String {
     word.chars().filter(|c| !c.is_numeric()).collect()
 }
 
-pub fn contains_non_alphanumeric(word: String) -> bool {
+pub fn contains_non_alphanumeric(word: &str) -> bool {
     word.chars().any(|c| !c.is_alphanumeric())
 }
 
-pub fn remove_non_alphanumeric(word: String) -> String {
+pub fn remove_non_alphanumeric(word: &str) -> String {
     word.chars().filter(|c| c.is_alphanumeric()).collect()
 }
 
@@ -75,14 +74,6 @@ pub fn is_roman_digit(c: char) -> bool {
 
 pub fn is_roman_number(possible_roman_number: &str) -> bool {
     possible_roman_number.chars().all(is_roman_digit)
-}
-
-pub fn is_common_prefix(prefix: String) -> bool {
-    let constant_prefixes = [
-        "dis", "ex", "in", "per", "prae", "pro", "re", "si", "sub", "super", "trans",
-    ];
-
-    constant_prefixes.contains(&prefix.as_str())
 }
 
 pub fn translate_roman_digit_to_number(c: char) -> Result<i32, String> {
@@ -211,4 +202,99 @@ fn split_number_by_places(number: &str) -> Vec<u32> {
     }
 
     array_of_true_digits
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_sanitize_word_lowercases() {
+        assert_eq!(sanitize_word("AMOR"), "amor");
+    }
+
+    #[test]
+    fn test_sanitize_word_trims() {
+        assert_eq!(sanitize_word("  amor  "), "amor");
+    }
+
+    #[test]
+    fn test_sanitize_word_removes_punctuation() {
+        assert_eq!(sanitize_word("amor!"), "amor");
+        assert_eq!(sanitize_word("amor?"), "amor");
+        assert_eq!(sanitize_word("amor."), "amor");
+    }
+
+    #[test]
+    fn test_sanitize_word_removes_numbers_mixed() {
+        assert_eq!(sanitize_word("amor1"), "amor");
+    }
+
+    #[test]
+    fn test_sanitize_word_preserves_all_numbers() {
+        assert_eq!(sanitize_word("123"), "123");
+    }
+
+    #[test]
+    fn test_number_with_ending() {
+        assert_eq!(number_with_ending(1), "1st");
+        assert_eq!(number_with_ending(2), "2nd");
+        assert_eq!(number_with_ending(3), "3rd");
+        assert_eq!(number_with_ending(4), "4th");
+        assert_eq!(number_with_ending(11), "11th");
+        assert_eq!(number_with_ending(12), "12th");
+        assert_eq!(number_with_ending(13), "13th");
+        assert_eq!(number_with_ending(21), "21st");
+        assert_eq!(number_with_ending(22), "22nd");
+        assert_eq!(number_with_ending(23), "23rd");
+    }
+
+    #[test]
+    fn test_is_all_numbers() {
+        assert!(is_all_numbers("123"));
+        assert!(!is_all_numbers("abc"));
+        assert!(!is_all_numbers("a1b2"));
+    }
+
+    #[test]
+    fn test_evaluate_roman_numeral() {
+        assert_eq!(evaluate_roman_numeral("I").unwrap(), 1);
+        assert_eq!(evaluate_roman_numeral("IV").unwrap(), 4);
+        assert_eq!(evaluate_roman_numeral("IX").unwrap(), 9);
+        assert_eq!(evaluate_roman_numeral("XLII").unwrap(), 42);
+        assert_eq!(evaluate_roman_numeral("XC").unwrap(), 90);
+        assert_eq!(evaluate_roman_numeral("CD").unwrap(), 400);
+        assert_eq!(evaluate_roman_numeral("MCMXCVIII").unwrap(), 1998);
+    }
+
+    #[test]
+    fn test_is_roman_number() {
+        assert!(is_roman_number("XIV"));
+        assert!(is_roman_number("MCMXCVIII"));
+        assert!(!is_roman_number("ABC"));
+    }
+
+    #[test]
+    fn test_is_vowel() {
+        assert!(is_vowel('a'));
+        assert!(is_vowel('e'));
+        assert!(is_vowel('i'));
+        assert!(is_vowel('o'));
+        assert!(is_vowel('u'));
+        assert!(!is_vowel('b'));
+        assert!(!is_vowel('y'));
+    }
+
+    #[test]
+    fn test_contains_number() {
+        assert!(contains_number("abc123"));
+        assert!(!contains_number("abc"));
+    }
+
+    #[test]
+    fn test_remove_non_alphanumeric() {
+        assert_eq!(remove_non_alphanumeric("hello!world?"), "helloworld");
+        assert_eq!(remove_non_alphanumeric("no punctuation"), "nopunctuation");
+        assert_eq!(remove_non_alphanumeric("keep123"), "keep123");
+    }
 }

@@ -34,3 +34,112 @@ pub fn word_fits_filters(
 
     true
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_word_fits_no_filters() {
+        assert!(word_fits_filters(
+            "amor",
+            &PartOfSpeech::Noun,
+            &None,
+            &None,
+            &None,
+            &None
+        ));
+    }
+
+    #[test]
+    fn test_word_fits_pos_filter() {
+        assert!(word_fits_filters(
+            "amor",
+            &PartOfSpeech::Noun,
+            &Some(vec![PartOfSpeech::Noun]),
+            &None,
+            &None,
+            &None
+        ));
+        assert!(!word_fits_filters(
+            "amor",
+            &PartOfSpeech::Noun,
+            &Some(vec![PartOfSpeech::Verb]),
+            &None,
+            &None,
+            &None
+        ));
+    }
+
+    #[test]
+    fn test_word_fits_length_filters() {
+        assert!(word_fits_filters(
+            "amor",
+            &PartOfSpeech::Noun,
+            &None,
+            &Some(6),
+            &None,
+            &None
+        ));
+        assert!(!word_fits_filters(
+            "amor",
+            &PartOfSpeech::Noun,
+            &None,
+            &Some(3),
+            &None,
+            &None
+        ));
+        assert!(word_fits_filters(
+            "amor",
+            &PartOfSpeech::Noun,
+            &None,
+            &None,
+            &Some(3),
+            &None
+        ));
+        assert!(!word_fits_filters(
+            "amor",
+            &PartOfSpeech::Noun,
+            &None,
+            &None,
+            &Some(6),
+            &None
+        ));
+        assert!(word_fits_filters(
+            "amor",
+            &PartOfSpeech::Noun,
+            &None,
+            &None,
+            &None,
+            &Some(4)
+        ));
+        assert!(!word_fits_filters(
+            "amor",
+            &PartOfSpeech::Noun,
+            &None,
+            &None,
+            &None,
+            &Some(5)
+        ));
+    }
+
+    #[test]
+    fn test_word_fits_combined_filters() {
+        assert!(word_fits_filters(
+            "amor",
+            &PartOfSpeech::Noun,
+            &Some(vec![PartOfSpeech::Noun]),
+            &Some(6),
+            &Some(2),
+            &None
+        ));
+        assert!(!word_fits_filters(
+            "amor",
+            &PartOfSpeech::Noun,
+            &Some(vec![PartOfSpeech::Verb]),
+            &Some(6),
+            &Some(2),
+            &None
+        ));
+    }
+}

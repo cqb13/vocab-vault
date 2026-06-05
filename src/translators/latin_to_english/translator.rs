@@ -4,18 +4,20 @@ use crate::translators::latin_to_english::utils::add_stem_to_word;
 use crate::translators::latin_to_english::LatinTranslationInfo;
 use crate::utils::data::get_latin_dictionary;
 use std::collections::HashMap;
+use std::sync::OnceLock;
+
+fn get_latin_map() -> &'static HashMap<i32, &'static LatinWordInfo> {
+    static MAP: OnceLock<HashMap<i32, &'static LatinWordInfo>> = OnceLock::new();
+    MAP.get_or_init(|| get_latin_dictionary().iter().map(|w| (w.id, w)).collect())
+}
 
 pub fn lookup_stems(
     stems: Vec<Stem>,
     inflections: Vec<Inflection>,
 ) -> Option<Vec<LatinTranslationInfo>> {
-    let latin_dictionary = get_latin_dictionary();
     let mut output: Vec<LatinTranslationInfo> = Vec::new();
 
-    let latin_words_map: HashMap<i32, &LatinWordInfo> = latin_dictionary
-        .iter()
-        .map(|word| (word.id, word))
-        .collect();
+    let latin_words_map = get_latin_map();
 
     for stem in stems {
         let dict_word = latin_words_map.get(&stem.wid);

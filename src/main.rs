@@ -1,21 +1,14 @@
-pub mod cli;
-pub mod dictionary_structures;
-pub mod translators;
-pub mod use_data;
-pub mod utils;
-
 use std::io::Write;
 
-use cli::{Arg, Cli, Command};
-use dictionary_structures::dictionary_keys::PartOfSpeech;
-use translators::english_to_latin::translate_english_to_latin;
-use translators::latin_to_english::translate_latin_to_english;
-use translators::{DisplayType, Language, Translation, TranslationType};
-use use_data::{get_list, WordType};
-use utils::data::{get_english_dictionary, get_latin_dictionary};
-use utils::sanitize_word;
+use vocab_vault::cli::{Arg, ArgValue, Cli, Command};
+use vocab_vault::dictionary_structures::dictionary_keys::PartOfSpeech;
+use vocab_vault::translators::english_to_latin::translate_english_to_latin;
+use vocab_vault::translators::latin_to_english::translate_latin_to_english;
+use vocab_vault::translators::{DisplayType, Language, Translation, TranslationType};
+use vocab_vault::use_data::{get_list, WordType};
+use vocab_vault::utils::data::{get_english_dictionary, get_latin_dictionary};
+use vocab_vault::utils::sanitize_word;
 
-use crate::cli::ArgValue;
 //TODO: add a command for searching a word by id in english or latin dictionary
 //TODO: display the amount of time it took for a command to execute
 fn main() {
@@ -150,7 +143,7 @@ fn main() {
                 .get_value_of("max")
                 .throw_if_none()
                 .parse::<usize>()
-                .unwrap();
+                .expect("--max must be a valid number");
             let sort = command.has("sort");
             let pretty = command.has("pretty");
             let detailed = command.has("detailed");
@@ -163,7 +156,7 @@ fn main() {
                 .get_value_of("max")
                 .throw_if_none()
                 .parse::<usize>()
-                .unwrap();
+                .expect("--max must be a valid number");
             let sort = command.has("sort");
             let pretty = command.has("pretty");
             let detailed = command.has("detailed");
@@ -189,10 +182,13 @@ fn main() {
                 return;
             }
 
-            let word_type = WordType::from_str(type_of_words.as_str()).unwrap_or_else(|e| {
-                println!("{}", e);
-                std::process::exit(0);
-            });
+            let word_type = match WordType::from_str(&type_of_words) {
+                Ok(t) => t,
+                Err(e) => {
+                    println!("{}", e);
+                    return;
+                }
+            };
 
             let pos_list = match pos {
                 ArgValue::Present(pos) => {
@@ -205,29 +201,34 @@ fn main() {
                 ArgValue::Missing(_) => None,
             };
 
-            if pos_list.is_some() && pos_list.as_ref().unwrap().contains(&PartOfSpeech::Unknown) {
+            if pos_list
+                .as_ref()
+                .is_some_and(|list| list.contains(&PartOfSpeech::Unknown))
+            {
                 println!("Invalid part of speech entered.");
                 println!("Please use the following: noun, verb, participle, adjective, preposition, pronoun, interjection, numeral, conjunction, adverb, number, supine, packon, tackon, prefix, suffix");
                 std::process::exit(0);
             }
 
+            let parse_usize = |s: String| s.parse::<usize>().ok().map(|v| v as i32);
+
             let max = match max {
-                ArgValue::Present(max) => Some(max.parse::<usize>().unwrap() as i32),
+                ArgValue::Present(max) => parse_usize(max),
                 ArgValue::Missing(_) => None,
             };
 
             let min = match min {
-                ArgValue::Present(min) => Some(min.parse::<usize>().unwrap() as i32),
+                ArgValue::Present(min) => parse_usize(min),
                 ArgValue::Missing(_) => None,
             };
 
             let exact = match exact {
-                ArgValue::Present(exact) => Some(exact.parse::<usize>().unwrap() as i32),
+                ArgValue::Present(exact) => parse_usize(exact),
                 ArgValue::Missing(_) => None,
             };
 
             let amount = match amount {
-                ArgValue::Present(amount) => Some(amount.parse::<usize>().unwrap() as i32),
+                ArgValue::Present(amount) => parse_usize(amount),
                 ArgValue::Missing(_) => None,
             };
 
@@ -250,8 +251,10 @@ fn main() {
             loop {
                 print!("> ");
                 input.clear();
-                std::io::stdout().flush().unwrap();
-                std::io::stdin().read_line(&mut input).unwrap();
+                let _ = std::io::stdout().flush();
+                if std::io::stdin().read_line(&mut input).is_err() {
+                    break;
+                }
                 let input = input.trim();
 
                 match input {
@@ -301,10 +304,9 @@ fn latin_to_english(
     pretty_output: bool,
     detailed_pretty_output: bool,
 ) {
-    let latin_words: Vec<&str> = latin_text.split(" ").collect();
     let mut translations: Vec<Translation> = Vec::new();
 
-    for word in latin_words {
+    for word in latin_text.split_whitespace() {
         let mut definitions = translate_latin_to_english(&sanitize_word(word), tricks);
         definitions.truncate(max);
         let mut translation =
@@ -319,7 +321,10 @@ fn latin_to_english(
             translation.display(DisplayType::Pretty(detailed_pretty_output));
         }
     } else {
-        println!("{}", serde_json::to_string_pretty(&translations).unwrap());
+        match serde_json::to_string_pretty(&translations) {
+            Ok(json) => println!("{}", json),
+            Err(e) => eprintln!("Failed to serialize translations: {}", e),
+        }
     }
 }
 
@@ -330,16 +335,14 @@ fn english_to_latin(
     pretty_output: bool,
     detailed_pretty_output: bool,
 ) {
-    let english_words: Vec<&str> = english_text.split(" ").collect();
-    let mut translations: Vec<Translation> = Vec::new();
-
     let latin_dictionary = get_latin_dictionary();
     let english_dictionary = get_english_dictionary();
+    let mut translations: Vec<Translation> = Vec::new();
 
-    for word in english_words {
+    for word in english_text.split_whitespace() {
         let definitions = translate_english_to_latin(
-            &english_dictionary,
-            &latin_dictionary,
+            english_dictionary,
+            latin_dictionary,
             &sanitize_word(word),
             max,
             sort,
@@ -355,6 +358,9 @@ fn english_to_latin(
             translation.display(DisplayType::Pretty(detailed_pretty_output));
         }
     } else {
-        println!("{}", serde_json::to_string_pretty(&translations).unwrap());
+        match serde_json::to_string_pretty(&translations) {
+            Ok(json) => println!("{}", json),
+            Err(e) => eprintln!("Failed to serialize translations: {}", e),
+        }
     }
 }
