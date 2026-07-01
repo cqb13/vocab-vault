@@ -85,25 +85,25 @@ You can also use the [website](https://learninglatin.net/translate) to translate
 Help:
 
 ```bash
-$ vocab_vault help
+$ vocab-vault help
 
-$ vocab_vault help transEng
+$ vocab-vault help transEng
 ```
 
 Translate English to Latin with 2 options per translation which are sorted by frequency:
 
 ```bash
-$ vocab_vault transEng "why" -m 2 -s
+$ vocab-vault transEng "why" -m 2 -s
 ```
 
 Translate Latin to English with tricks and pretty output:
 
 ```bash
-$ vocab_vault transLat "cur sum hic" -t -p
+$ vocab-vault transLat "cur sum hic" -t -p
 ```
 
 Get a list of Latin words with a specific part of speech and save it to a file:
 
 ```bash
-$ vocab_vault getList "latin" -p noun,verb -m 6 -n 3 -t "latin_words.json"
+$ vocab-vault getList "latin" -p noun,verb -m 6 -n 3 -t "latin_words.json"
 ```
